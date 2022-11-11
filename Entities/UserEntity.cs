@@ -1,6 +1,6 @@
 ﻿namespace ApiVida.Entities
 {
-    public interface Interface
+    public class UserEntity
     {
         public int userId { get; set; }
         public string userName { get; set; }
