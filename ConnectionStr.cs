@@ -5,7 +5,7 @@ using System.Web;
 using System.Configuration;
 namespace PgTodoExample
 {
-    public class ConnStr
+    public class ConnectionStr
     {
         public static string Get()
         {
