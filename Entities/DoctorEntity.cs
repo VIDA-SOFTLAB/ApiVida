@@ -1,10 +1,10 @@
 ﻿namespace ApiVida.Entities
 {
-    public class DoctorEntity : UserEntity { 
+    public class DoctorEntity : UserEntity {
+        public int doctorId { get; set; }
         public int userId { get; set; }
-        public int CRM { get; set; }
-        public int medicalSpecialtyId { get; set; }
-        public int medicalSpecialtyName { get; set; }
+        public string CRM { get; set; }
+        MedicalSpecialtyEntity medicalSpecialties { get; set; }
 
     }
 }

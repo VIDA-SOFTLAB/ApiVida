@@ -2,8 +2,9 @@
 {
     public class PatientEntity: UserEntity
     {
-        MedicalInsurance? MedicalInsuranceInfos { get; set; }
-        public string? MedicalInsuranceId { get; set; }
+        public int patientId { get; set; }
+        MedicalInsurancePlanEntity? MedicalInsuranceInfos { get; set; }
+        public string? MedicalInsurancePatientCode { get; set; }
 
     }
 }

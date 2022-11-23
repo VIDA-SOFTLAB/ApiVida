@@ -12,7 +12,7 @@ namespace ApiVida
         public virtual DbSet<UserEntity> Users { get; set; }
         public virtual DbSet<DoctorEntity> Doctors { get; set; }
         public virtual DbSet<PatientEntity> Patients { get; set; }
-        public virtual DbSet<MedicalInsurance> MedicalInsuranceInformations { get; set; }
+        public virtual DbSet<MedicalInsuranceEntity> MedicalInsuranceInformations { get; set; }
 
     }
 }
