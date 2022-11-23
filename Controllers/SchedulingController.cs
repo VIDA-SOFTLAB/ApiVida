@@ -24,10 +24,10 @@ namespace Athenas.Controllers
 
         //Lista todos os schedulings
         //GET api/scheduling
-        [HttpGet("{idAdm}/{idProf}")]
-        public async Task<ActionResult<IEnumerable<Scheduling>>> ListarSchedulings(string idAdm, string idProf)
+        [HttpGet("{idAdm}/{idDoctor}")]
+        public async Task<ActionResult<IEnumerable<Scheduling>>> ListarSchedulings(string idAdm, string idDoctor)
         {
-            List<Scheduling> schedulings = (List<Scheduling>)await schedulingService.ListarSchedulings(idAdm, idProf);
+            List<Scheduling> schedulings = (List<Scheduling>)await schedulingService.ListarSchedulings(idAdm, idDoctor);
             if (schedulings == null)
             {
                 return NotFound();
@@ -40,10 +40,10 @@ namespace Athenas.Controllers
 
         //Cadastra um scheduling
         //POST api/<controller>
-        [HttpPost("{idAdm}/{idProf}")]
-        public async Task<ActionResult<Scheduling>> CadastrarScheduling(string idAdm, string idProf, [FromBody] Scheduling agen)
+        [HttpPost("{idAdm}/{idDoctor}")]
+        public async Task<ActionResult<Scheduling>> CadastrarScheduling(string idAdm, string idDoctor, [FromBody] Scheduling agen)
         {
-            agen = await schedulingService.CadastrarScheduling(idAdm, idProf, agen);
+            agen = await schedulingService.CadastrarScheduling(idAdm, idDoctor, agen);
             if (agen == null)
             {
                 return NotFound();
