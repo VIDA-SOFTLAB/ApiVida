@@ -2,11 +2,23 @@
 namespace ApiVida.Entities
 {
     public class DoctorEntity : UserEntity {
-        //[JsonPropertyName("")]
-        public int doctorId { get; set; }
-        public int userId { get; set; }
+
+        [JsonProperty(PropertyName = "doctorId")]
+        public string DoctorId { get; set; }
+
+        [JsonProperty(PropertyName = "idEspecialidade")]
+        public string IdEspecialidade { get; set; }
+
+        [JsonProperty(PropertyName = "crm")]
         public string CRM { get; set; }
-        MedicalSpecialtyEntity medicalSpecialties { get; set; }
+
+        // o profissional possui uma lista de agendamentos
+        [JsonProperty(PropertyName = "scheduling")]
+        public virtual ICollection<SchedulingEntity> Scheduling { get; set; }
+
+        // pode ter mais de um profissional por serviço
+        [JsonProperty(PropertyName = "medicalSpecialties")]
+        public virtual ICollection<MedicalSpecialtyEntity> MedicalSpecialties { get; set; }
 
     }
 }
