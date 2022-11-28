@@ -1,6 +1,6 @@
 ﻿namespace ApiVida.Entities
 {
-    public class MedicalSpecialtyEntity{
+    public class MedicalSpecialityEntity{
         
         [Key]
         [JsonProperty(PropertyName = "medicalSpecialtyId")]

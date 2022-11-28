@@ -8,7 +8,7 @@ namespace Athenas.Service.Interfaces
 {
     public interface IDoctorService : IDisposable
     {
-        //Listagem de todos profissionais
+        //Listagem de todos doctors
         Task<IEnumerable<Doctor>> ListDoctors(string idAdm, string idMedicalSpeciality);
 
         //Cadastrar um doctor

@@ -20,14 +20,14 @@ namespace Athenas.Service
         //Listagem de doctor
         public async Task<IEnumerable<Doctor>> ListDoctors(string idAdm, string idSer)
         {
-            List<Doctor> profissionais = (List<Doctor>)await Repository<Doctor>.ListDoctors(idAdm, idSer);
-            if (profissionais == null)
+            List<Doctor> doctors = (List<Doctor>)await Repository<Doctor>.ListDoctors(idAdm, idSer);
+            if (doctors == null)
             {
                 return null;
             }
             else
             {
-                return profissionais;
+                return doctors;
             }
         }
 

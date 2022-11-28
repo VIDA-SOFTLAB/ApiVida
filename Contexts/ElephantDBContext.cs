@@ -16,7 +16,7 @@ namespace ApiVida.Contexts
         public virtual DbSet<PatientEntity> Patients { get; set; }
         public virtual DbSet<MedicalInsuranceEntity> MedicalInsuranceInformations { get; set; }
         public virtual DbSet<MedicalInsurancePlanEntity> MedicalInsurancePlans { get; set; }
-        public virtual DbSet<MedicalSpecialtyEntity> MedicalSpecialtyEntities { get; set; }
+        public virtual DbSet<MedicalSpecialityEntity> MedicalSpecialtyEntities { get; set; }
 
     }
 }

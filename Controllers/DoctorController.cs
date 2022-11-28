@@ -24,19 +24,19 @@ namespace Athenas.Controllers
             this.doctorService = doctorService_;
         }
         
-        //Lista todos os profissionais
+        //Lista todos os doctors
         //GET api/doctor
         [HttpGet("{idAdm}/{idMedicalSpeciality}")]
         public async Task<ActionResult<IEnumerable<Doctor>>> ListDoctors(string idAdm, string idMedicalSpeciality)
         {
-            List<Doctor> profissionais = (List<Doctor>)await doctorService.ListDoctors(idAdm, idMedicalSpeciality);
-            if (profissionais == null)
+            List<Doctor> doctors = (List<Doctor>)await doctorService.ListDoctors(idAdm, idMedicalSpeciality);
+            if (doctors == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(profissionais);
+                return Ok(doctors);
             }
         }
 

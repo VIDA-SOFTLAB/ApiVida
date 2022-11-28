@@ -19,9 +19,9 @@ namespace Athenas.Service
 
 
         //Listagem de adm
-        public async Task<IEnumerable<Administrator>> ListarAdministrators()
+        public async Task<IEnumerable<Administrator>> ListAdministrators()
         {
-            List<Administrator> administrators = (List<Administrator>)await Repository<Administrator>.ListarAdm();
+            List<Administrator> administrators = (List<Administrator>)await Repository<Administrator>.ListAdm();
             
             if (administrators == null)
             {

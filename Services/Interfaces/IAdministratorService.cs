@@ -11,7 +11,7 @@ namespace Athenas.Service.Interfaces
     {
 
 		//Listagem de todos os adm
-        Task<IEnumerable<Administrator>> ListarAdministrators();
+        Task<IEnumerable<Administrator>> ListAdministrators();
 
 		//Cadastrar um adm
 		Task<Administrator> AddAdm(Administrator adm);

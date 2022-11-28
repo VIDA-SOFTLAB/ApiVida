@@ -39,9 +39,9 @@ namespace Athenas.Service
             }
         }
 
-        public async Task<IEnumerable<Patients>> ListarPatients()
+        public async Task<IEnumerable<Patients>> ListPatients()
         {
-            List<Patients> patients = (List<Patients>)await Repository<Patients>.ListarPatients();
+            List<Patients> patients = (List<Patients>)await Repository<Patients>.ListPatients();
 
             if (patients == null)
             {

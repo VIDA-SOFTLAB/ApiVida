@@ -28,9 +28,9 @@ namespace Athenas.Controllers
 		//Lista todos os medicalspecialitys
 		//GET api/medicalspeciality
 		[HttpGet("{idAdm}/medicalspecialitys")]
-        public async Task<ActionResult<IEnumerable<MedicalSpeciality>>> ListarMedicalSpecialitys(string idAdm, string idPj)
+        public async Task<ActionResult<IEnumerable<MedicalSpeciality>>> ListMedicalSpecialitys(string idAdm, string idPj)
         {
-            List<MedicalSpeciality> medicalspecialitys = (List<MedicalSpeciality>)await medicalspecialityService.ListarMedicalSpecialitys(idAdm, idPj);
+            List<MedicalSpeciality> medicalspecialitys = (List<MedicalSpeciality>)await medicalspecialityService.ListMedicalSpecialitys(idAdm, idPj);
 
             if (medicalspecialitys == null)
             {

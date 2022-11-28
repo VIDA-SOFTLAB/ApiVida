@@ -24,7 +24,7 @@ namespace Athenas.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]AdministratorDTO loginModel)
         {
-            //List<Administrator> administradores = (List<Administrator>)await Repository<Administrator>.ListarAdm();
+            //List<Administrator> administradores = (List<Administrator>)await Repository<Administrator>.ListAdm();
 
             //Administrator admin = administradores.FirstOrDefault(x => x.Email == loginModel.Email);
 

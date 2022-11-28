@@ -27,7 +27,7 @@ namespace Athenas.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Administrator>>> Get()
         {
-            List<Administrator> administratores = (List<Administrator>)await administratorService.ListarAdministratores();
+            List<Administrator> administratores = (List<Administrator>)await administratorService.ListAdministrators();
 
             if (administratores == null)
             {

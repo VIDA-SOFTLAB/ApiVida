@@ -22,7 +22,7 @@ namespace Athenas.Domain
         public AdressEntity CenterAdress { get; set; }
 
        [JsonProperty(PropertyName = "medicalSpecialty")]
-        public virtual ICollection<MedicalSpecialtyEntity> MedicalSpecialty { get; set; }
-
+        public virtual ICollection<Medi
+        calSpecialityEntity> MedicalSpecialty { get; set; }
     }
 }

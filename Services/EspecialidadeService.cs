@@ -18,9 +18,9 @@ namespace Athenas.Service
         }
 
         //Listagem de especialidade
-        public async Task<IEnumerable<MedicalSpeciality>> ListarMedicalSpecialitys(string idAdm)
+        public async Task<IEnumerable<MedicalSpeciality>> ListMedicalSpecialitys(string idAdm)
         {
-            List<MedicalSpeciality> especialidades = (List<MedicalSpeciality>)await Repository<MedicalSpeciality>.ListarMedicalSpecialitys(idAdm);
+            List<MedicalSpeciality> especialidades = (List<MedicalSpeciality>)await Repository<MedicalSpeciality>.ListMedicalSpecialitys(idAdm);
 
             if (especialidades == null)
             {
@@ -33,9 +33,9 @@ namespace Athenas.Service
         }
 
         //Listagem de especialidade
-        public async Task<IEnumerable<MedicalSpeciality>> ListarTodosMedicalSpecialitys(string idAdm)
+        public async Task<IEnumerable<MedicalSpeciality>> ListAllMedicalSpecialitys(string idAdm)
         {
-            List<MedicalSpeciality> especialidades = (List<MedicalSpeciality>)await Repository<MedicalSpeciality>.ListarTodosMedicalSpecialitys(idAdm);
+            List<MedicalSpeciality> especialidades = (List<MedicalSpeciality>)await Repository<MedicalSpeciality>.ListAllMedicalSpecialitys(idAdm);
 
             if (especialidades == null)
             {

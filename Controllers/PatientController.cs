@@ -43,9 +43,9 @@ namespace Athenas.Controllers
 
         //Lista todos os patients
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patients>>> ListarPatients()
+        public async Task<ActionResult<IEnumerable<Patients>>> ListPatients()
         {
-            List<Patients> patients = (List<Patients>)await patientService.ListarPatients();
+            List<Patients> patients = (List<Patients>)await patientService.ListPatients();
 
             if (patients == null)
             {

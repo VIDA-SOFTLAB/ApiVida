@@ -18,7 +18,7 @@ namespace ApiVida.Entities
 
         // pode ter mais de um profissional por serviço
         [JsonProperty(PropertyName = "medicalSpecialties")]
-        public virtual ICollection<MedicalSpecialtyEntity> MedicalSpecialties { get; set; }
+        public virtual ICollection<MedicalSpecialityEntity> MedicalSpecialties { get; set; }
 
     }
 }

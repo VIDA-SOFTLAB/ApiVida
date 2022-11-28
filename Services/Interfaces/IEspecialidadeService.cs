@@ -10,7 +10,7 @@ namespace Athenas.Service.Interfaces
     public interface IMedicalSpecialityService : IDisposable
     {
         //Listagem de todas especialidades
-        Task<IEnumerable<MedicalSpeciality>> ListarMedicalSpecialitys(string idAdm);
+        Task<IEnumerable<MedicalSpeciality>> ListMedicalSpecialitys(string idAdm);
 
         //Cadastrar uma especialidade
         Task<MedicalSpeciality> CadastrarMedicalSpeciality(string idAdm, MedicalSpeciality esp);

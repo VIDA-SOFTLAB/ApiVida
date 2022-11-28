@@ -44,9 +44,9 @@ namespace Athenas.Controllers
         //Lista todos os medicalinsurances do sistema
         //GET api/medicalinsurance
         [HttpGet("all/{idAdm}/{idMedicalInsurance}")]
-        public async Task<ActionResult<IEnumerable<MedicalInsurance>>> ListarTodosMedicalInsurances(string idAdm)
+        public async Task<ActionResult<IEnumerable<MedicalInsurance>>> ListAllMedicalInsurances(string idAdm)
         {
-            List<MedicalInsurance> medicalinsurances = (List<MedicalInsurance>)await medicalinsuranceService.ListarTodosMedicalInsurances(idAdm);
+            List<MedicalInsurance> medicalinsurances = (List<MedicalInsurance>)await medicalinsuranceService.ListAllMedicalInsurances(idAdm);
             if (medicalinsurances == null)
             {
                 return NotFound();
