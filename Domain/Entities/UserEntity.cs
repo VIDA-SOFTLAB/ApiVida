@@ -61,7 +61,7 @@ namespace ApiVida.Entities
 
         [Required(ErrorMessage = ErrorBase.erro_nec)]
         [JsonProperty(PropertyName = "endereco")]
-        public Endereco Endereco {get; set;}
+        public Adress Adress {get; set;}
 
     }
 }

@@ -25,9 +25,9 @@ namespace Athenas.Controllers
         //Lista todos os schedulings
         //GET api/scheduling
         [HttpGet("{idAdm}/{idDoctor}")]
-        public async Task<ActionResult<IEnumerable<Scheduling>>> ListarSchedulings(string idAdm, string idDoctor)
+        public async Task<ActionResult<IEnumerable<Scheduling>>> ListSchedulings(string idAdm, string idDoctor)
         {
-            List<Scheduling> schedulings = (List<Scheduling>)await schedulingService.ListarSchedulings(idAdm, idDoctor);
+            List<Scheduling> schedulings = (List<Scheduling>)await schedulingService.ListSchedulings(idAdm, idDoctor);
             if (schedulings == null)
             {
                 return NotFound();
@@ -41,9 +41,9 @@ namespace Athenas.Controllers
         //Cadastra um scheduling
         //POST api/<controller>
         [HttpPost("{idAdm}/{idDoctor}")]
-        public async Task<ActionResult<Scheduling>> CadastrarScheduling(string idAdm, string idDoctor, [FromBody] Scheduling agen)
+        public async Task<ActionResult<Scheduling>> AddScheduling(string idAdm, string idDoctor, [FromBody] Scheduling agen)
         {
-            agen = await schedulingService.CadastrarScheduling(idAdm, idDoctor, agen);
+            agen = await schedulingService.AddScheduling(idAdm, idDoctor, agen);
             if (agen == null)
             {
                 return NotFound();
@@ -57,18 +57,18 @@ namespace Athenas.Controllers
         //Lista scheduling específico
         // GET api/<controller>/5
         [HttpGet("specific/{idAdm}/{id}")]
-        public async Task<Scheduling> PegarScheduling(string idAdm, string id)
+        public async Task<Scheduling> GetScheduling(string idAdm, string id)
         {
-            Scheduling scheduling = await schedulingService.PegarScheduling(idAdm, id);
+            Scheduling scheduling = await schedulingService.GetScheduling(idAdm, id);
             return scheduling;
         }
 
         //Atualiza registro de determinado profissional
         // PUT api/<controller>/5
         [HttpPut("{idAdm}/{id}")]
-        public async Task<ActionResult<Scheduling>> AtualizarScheduling(string idAdm, string id, [FromBody]SchedulingDTO schedulingDTO)
+        public async Task<ActionResult<Scheduling>> UpdateScheduling(string idAdm, string id, [FromBody]SchedulingDTO schedulingDTO)
         {
-            Scheduling scheduling = await schedulingService.PegarScheduling(idAdm, id);
+            Scheduling scheduling = await schedulingService.GetScheduling(idAdm, id);
 
             if (scheduling != null)
             {
@@ -87,9 +87,9 @@ namespace Athenas.Controllers
                     schedulingDTO.Cliente = scheduling.Cliente;
                 }
 
-                if (schedulingDTO.IdProfissional == null)
+                if (schedulingDTO.IdDoctor == null)
                 {
-                    schedulingDTO.IdProfissional = scheduling.IdProfissional;
+                    schedulingDTO.IdDoctor = scheduling.IdDoctor;
                 }
                 schedulingDTO.Id = id;
             }
@@ -97,10 +97,10 @@ namespace Athenas.Controllers
             scheduling.Dia = schedulingDTO.Dia;
             scheduling.Horario = schedulingDTO.Horario;
             scheduling.Cliente = schedulingDTO.Cliente;
-            scheduling.IdProfissional = schedulingDTO.IdProfissional;
+            scheduling.IdDoctor = schedulingDTO.IdDoctor;
             scheduling.Id = id;
 
-            var retorno = await schedulingService.AtualizarScheduling(idAdm, scheduling);
+            var retorno = await schedulingService.UpdateScheduling(idAdm, scheduling);
 
             if (retorno == null)
             {
@@ -114,9 +114,9 @@ namespace Athenas.Controllers
 
         //// DELETE api/<controller>/5
         [HttpDelete("{idAdm}/{id}")]
-        public async void DeletarScheduling(string idAdm, string id)
+        public async void DeleteScheduling(string idAdm, string id)
         {
-            await schedulingService.DeletarScheduling(idAdm, id);
+            await schedulingService.DeleteScheduling(idAdm, id);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Athenas.Controllers
         [HttpGet("{id}")]
         public async Task<Administrator> Get(string id)
         {
-			return await administratorService.PegarAdm(id);
+			return await administratorService.GetAdm(id);
         }
 
 		[AllowAnonymous]
@@ -53,7 +53,7 @@ namespace Athenas.Controllers
         //public async Task<ActionResult<Administrator>> Post([FromBody] Administrator administrator)
         public async Task<IActionResult> Post([FromBody] Administrator administrator)
         {
-            Administrator admin = await administratorService.CadastrarAdm(administrator);
+            Administrator admin = await administratorService.AddAdm(administrator);
 
             if (admin == null)
             {
@@ -69,14 +69,14 @@ namespace Athenas.Controllers
         [HttpPut("{id}")]
         public async void Put(string id, [FromBody]Administrator adm)
         {
-              await administratorService.AtualizarAdm(id, adm);
+              await administratorService.UpdateAdm(id, adm);
         }
 
         // Deleta um adm especifico
         [HttpDelete("{id}")]
         public async void Delete(string id)
         {
-            await administratorService.DeletarAdm(id);
+            await administratorService.DeleteAdm(id);
         }
     }
 }

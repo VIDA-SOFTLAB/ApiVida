@@ -34,12 +34,12 @@ namespace Athenas.Service
         }
 
         //Cadastrar um adm
-        public async Task<Administrator> CadastrarAdm(Administrator adm)
+        public async Task<Administrator> AddAdm(Administrator adm)
         {
             adm.PessoaJuridica = new List<PessoaJuridica>();
             adm.HashearSenha();
-            await Repository<Administrator>.CadastrarItem(adm);
-            adm = await Repository<Administrator>.PegarAdmPorEmail(adm.Email);
+            await Repository<Administrator>.AddItem(adm);
+            adm = await Repository<Administrator>.GetAdmPorEmail(adm.Email);
 
             if (adm == null)
             {
@@ -52,9 +52,9 @@ namespace Athenas.Service
         }
 
         //Pegar um único adm
-        public async Task<Administrator> PegarAdm(string id)
+        public async Task<Administrator> GetAdm(string id)
         {
-            Administrator adm = await Repository<Administrator>.PegarAdm(id);
+            Administrator adm = await Repository<Administrator>.GetAdm(id);
 
             if (adm == null)
             {
@@ -68,9 +68,9 @@ namespace Athenas.Service
 
 
         //Atualizar um adm
-        public async Task<Document> AtualizarAdm(string id, Administrator adm)
+        public async Task<Document> UpdateAdm(string id, Administrator adm)
         {
-            Administrator admin = await Repository<Administrator>.PegarAdm(id);
+            Administrator admin = await Repository<Administrator>.GetAdm(id);
 
             if (adm.NomeCompleto == null)
             {
@@ -89,16 +89,16 @@ namespace Athenas.Service
 
             adm.Id = id;
 
-            return await Repository<Administrator>.AtualizarAdm(id, adm);
+            return await Repository<Administrator>.UpdateAdm(id, adm);
         }
 
 
         //Deletar um adm
-        public async Task DeletarAdm(string id)
+        public async Task DeleteAdm(string id)
         {
             try
             {
-                await Repository<Administrator>.DeletarItem(id);
+                await Repository<Administrator>.DeleteItem(id);
             }
             catch (ArgumentException e)
             {

@@ -85,9 +85,9 @@ namespace Athenas.Controllers
                     medicalspecialityDTO.Descricao = esp.Descricao;
                 }
 
-                if (medicalspecialityDTO.Profissional == null)
+                if (medicalspecialityDTO.Doctor == null)
                 {
-                    medicalspecialityDTO.Profissional = esp.Profissional;
+                    medicalspecialityDTO.Doctor = esp.Doctor;
                 }
 
                 medicalspecialityDTO.Id = id;
@@ -95,7 +95,7 @@ namespace Athenas.Controllers
 
             esp.Nome = medicalspecialityDTO.Nome;
             esp.Descricao = medicalspecialityDTO.Descricao;
-            esp.Profissional = medicalspecialityDTO.Profissional;
+            esp.Doctor = medicalspecialityDTO.Doctor;
             esp.Id = id;
 
             var retorno = await medicalspecialityService.AtualizarMedicalSpeciality(idAdm, cat);

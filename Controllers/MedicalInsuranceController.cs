@@ -28,9 +28,9 @@ namespace Athenas.Controllers
 		//Lista todos os medicalinsurances
 		//GET api/medicalinsurance
 		[HttpGet("{idAdm}/{idMedicalInsurance}")]
-        public async Task<ActionResult<IEnumerable<MedicalInsurance>>> ListarMedicalInsurances(string idAdm, string idCat)
+        public async Task<ActionResult<IEnumerable<MedicalInsurance>>> ListMedicalInsurances(string idAdm, string idCat)
         {
-            List<MedicalInsurance> medicalinsurances = (List<MedicalInsurance>)await medicalinsuranceService.ListarMedicalInsurances(idAdm, idCat);
+            List<MedicalInsurance> medicalinsurances = (List<MedicalInsurance>)await medicalinsuranceService.ListMedicalInsurances(idAdm, idCat);
             if (medicalinsurances == null)
             {
                 return NotFound();
@@ -60,18 +60,18 @@ namespace Athenas.Controllers
         //Lista medicalinsurance específico
         // GET api/<controller>/5
         [HttpGet("specific/{idMedicalInsurance}/{id}")]
-        public async Task<MedicalInsurance> PegarMedicalInsurance(string idAdm, string id)
+        public async Task<MedicalInsurance> GetMedicalInsurance(string idAdm, string id)
         {
-            MedicalInsurance medicalinsurance = await medicalinsuranceService.PegarMedicalInsurance(idAdm, id);
+            MedicalInsurance medicalinsurance = await medicalinsuranceService.GetMedicalInsurance(idAdm, id);
             return medicalinsurance;
         }
 
         //Cadastra um medicalinsurance
         //POST api/<controller>
         [HttpPost("{idAdm}/{idMedicalInsurance}")]
-		public async Task<ActionResult<MedicalInsurance>> CadastrarMedicalInsurance(string idAdm, string idCat, [FromBody] MedicalInsurance medicalinsurance)
+		public async Task<ActionResult<MedicalInsurance>> AddMedicalInsurance(string idAdm, string idCat, [FromBody] MedicalInsurance medicalinsurance)
 		{
-            medicalinsurance = await medicalinsuranceService.CadastrarMedicalInsurance(idAdm, idCat, medicalinsurance);
+            medicalinsurance = await medicalinsuranceService.AddMedicalInsurance(idAdm, idCat, medicalinsurance);
 
             if (medicalinsurance == null)
             {
@@ -86,9 +86,9 @@ namespace Athenas.Controllers
         //Atualiza registro de determinado medicalinsurance
         // PUT api/<controller>/5
         [HttpPut("{idAdm}/{id}")]
-        public async Task<ActionResult<MedicalInsurance>> AtualizarMedicalInsurance(string idAdm,string id, [FromBody]MedicalInsuranceDTO medicalinsuranceDTO)
+        public async Task<ActionResult<MedicalInsurance>> UpdateMedicalInsurance(string idAdm,string id, [FromBody]MedicalInsuranceDTO medicalinsuranceDTO)
         {
-            MedicalInsurance serv = await medicalinsuranceService.PegarMedicalInsurance(idAdm, id);
+            MedicalInsurance serv = await medicalinsuranceService.GetMedicalInsurance(idAdm, id);
 
             if (serv != null)
             {
@@ -102,9 +102,9 @@ namespace Athenas.Controllers
                     medicalinsuranceDTO.Descricao = serv.Descricao;
                 }
 
-                if (medicalinsuranceDTO.Profissional == null)
+                if (medicalinsuranceDTO.Doctor == null)
                 {
-                    medicalinsuranceDTO.Profissional = serv.Profissional;
+                    medicalinsuranceDTO.Doctor = serv.Doctor;
                 }
 
                 if (medicalinsuranceDTO.IdCategoria == null)
@@ -116,11 +116,11 @@ namespace Athenas.Controllers
 
             serv.Nome = medicalinsuranceDTO.Nome;
             serv.Descricao = medicalinsuranceDTO.Descricao;
-            serv.Profissional = medicalinsuranceDTO.Profissional;
+            serv.Doctor = medicalinsuranceDTO.Doctor;
             serv.IdCategoria = medicalinsuranceDTO.IdCategoria;
             serv.Id = id;
 
-            var retorno = await medicalinsuranceService.AtualizarMedicalInsurance(idAdm, serv);
+            var retorno = await medicalinsuranceService.UpdateMedicalInsurance(idAdm, serv);
 
             if (retorno == null)
             {
@@ -134,9 +134,9 @@ namespace Athenas.Controllers
 
         // DELETE api/<controller>/5
         [HttpDelete("{idAdm}/{id}")]
-        public async void DeletarMedicalInsurance(string idAdm, string id)
+        public async void DeleteMedicalInsurance(string idAdm, string id)
         {
-            await medicalinsuranceService.DeletarMedicalInsurance(idAdm, id);
+            await medicalinsuranceService.DeleteMedicalInsurance(idAdm, id);
         }
     }
 }

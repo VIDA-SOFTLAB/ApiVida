@@ -7,21 +7,21 @@ using Microsoft.Azure.Documents;
 
 namespace Athenas.Service.Interfaces
 {
-    public interface IEspecialidadeService : IDisposable
+    public interface IMedicalSpecialityService : IDisposable
     {
         //Listagem de todas especialidades
-        Task<IEnumerable<Especialidade>> ListarEspecialidades(string idAdm);
+        Task<IEnumerable<MedicalSpeciality>> ListarMedicalSpecialitys(string idAdm);
 
         //Cadastrar uma especialidade
-        Task<Especialidade> CadastrarEspecialidade(string idAdm, Especialidade esp);
+        Task<MedicalSpeciality> CadastrarMedicalSpeciality(string idAdm, MedicalSpeciality esp);
 
         //Pegar uma única especialidade
-        Task<Especialidade> PegarEspecialidade(string idAdm, string id);
+        Task<MedicalSpeciality> PegarMedicalSpeciality(string idAdm, string id);
 
         //Atualizar uma especialidade
-        Task<Especialidade> AtualizarEspecialidade(string idAdm, Especialidade esp);
+        Task<MedicalSpeciality> AtualizarMedicalSpeciality(string idAdm, MedicalSpeciality esp);
 
         //Deletar uma especialidade
-        Task DeletarEspecialidade(string idAdm, string id);
+        Task DeletarMedicalSpeciality(string idAdm, string id);
     }
 }

@@ -6,8 +6,8 @@ namespace ApiVida.Entities
         [JsonProperty(PropertyName = "doctorId")]
         public string DoctorId { get; set; }
 
-        [JsonProperty(PropertyName = "idEspecialidade")]
-        public string IdEspecialidade { get; set; }
+        [JsonProperty(PropertyName = "idMedicalSpeciality")]
+        public string IdMedicalSpeciality { get; set; }
 
         [JsonProperty(PropertyName = "crm")]
         public string CRM { get; set; }

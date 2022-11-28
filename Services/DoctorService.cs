@@ -18,9 +18,9 @@ namespace Athenas.Service
         }
 
         //Listagem de doctor
-        public async Task<IEnumerable<Doctor>> ListarProfissionais(string idAdm, string idSer)
+        public async Task<IEnumerable<Doctor>> ListDoctors(string idAdm, string idSer)
         {
-            List<Doctor> profissionais = (List<Doctor>)await Repository<Doctor>.ListarProfissionais(idAdm, idSer);
+            List<Doctor> profissionais = (List<Doctor>)await Repository<Doctor>.ListDoctors(idAdm, idSer);
             if (profissionais == null)
             {
                 return null;
@@ -32,25 +32,25 @@ namespace Athenas.Service
         }
 
         //Cadastrar um doctor
-        public async Task<Doctor> CadastrarDoctor(string idAdm, string IdEspecialidade, Doctor pro)
+        public async Task<Doctor> AddDoctor(string idAdm, string IdMedicalSpeciality, Doctor pro)
         {
 
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
-            pro.IdServico = idEspecialidade;
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
+            pro.IdServico = idMedicalSpeciality;
 
-            Doctor vali = await Repository<Doctor>.PegarDoctorPorEmail2(adm, pro.Email);
+            Doctor vali = await Repository<Doctor>.GetDoctorPorEmail2(adm, pro.Email);
 
             if (vali == null)
             {
-                var retorno = await Repository<Doctor>.CadastrarItem(pro);
+                var retorno = await Repository<Doctor>.AddItem(pro);
 
-                pro = await Repository<Doctor>.PegarDoctorPorEmail(pro.Email);
+                pro = await Repository<Doctor>.GetDoctorPorEmail(pro.Email);
 
-                pro.Agendamento = new List<Agendamento>();
+                pro.Scheduling = new List<Scheduling>();
 
-                var retorno2 = await Repository<Administrador>.CadastrarDoctor(adm, pro);
+                var retorno2 = await Repository<Administrator>.AddDoctor(adm, pro);
 
-                await Repository<Servico>.DeletarItem(pro.Id);
+                await Repository<Servico>.DeleteItem(pro.Id);
 
                 if (adm == null || pro == null || retorno == null || retorno2 == null)
                 {
@@ -70,9 +70,9 @@ namespace Athenas.Service
         }
 
         //Pegar um único doctor
-        public async Task<Doctor> PegarDoctor(string idAdm, string id)
+        public async Task<Doctor> GetDoctor(string idAdm, string id)
         {
-            Doctor doctor = await Repository<Doctor>.PegarDoctor(idAdm, id);
+            Doctor doctor = await Repository<Doctor>.GetDoctor(idAdm, id);
 
             if (doctor == null)
             {
@@ -85,10 +85,10 @@ namespace Athenas.Service
         }
 
         //Atualizar um doctor
-        public async Task<Doctor> AtualizarDoctor(string idAdm, Doctor doctor)
+        public async Task<Doctor> UpdateDoctor(string idAdm, Doctor doctor)
         {
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
-            var retorno = await Repository<Doctor>.AtualizarDoctor(adm, doctor);
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
+            var retorno = await Repository<Doctor>.UpdateDoctor(adm, doctor);
 
             if (doctor == null || adm == null || retorno == null)
             {
@@ -101,10 +101,10 @@ namespace Athenas.Service
         }
 
         //Deletar um doctor
-        public async Task DeletarDoctor(string idAdm, string id)
+        public async Task DeleteDoctor(string idAdm, string id)
         {
-            Doctor doctor = await Repository<Doctor>.PegarDoctor(idAdm, id);
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
+            Doctor doctor = await Repository<Doctor>.GetDoctor(idAdm, id);
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
 
             if (doctor == null || adm == null)
             {
@@ -112,7 +112,7 @@ namespace Athenas.Service
             }
             else
             {
-                await Repository<Doctor>.DeletarDoctor(doctor, adm);
+                await Repository<Doctor>.DeleteDoctor(doctor, adm);
             }
         }
     }

@@ -10,11 +10,11 @@ namespace Athenas.Service.Interfaces
     public interface IPatienteService : IDisposable
     {
         //Cadastrar um cliente
-        Task<Document> CadastrarPatiente(Clientes cliente);
+        Task<Document> AddPatient(Clientes cliente);
 
         //Pegar um único cliente
-        Task<Clientes> PegarPatiente(string cpf);
+        Task<Clientes> GetPatient(string cpf);
 
-        Task<IEnumerable<Clientes>> ListarPatientes();
+        Task<IEnumerable<Clientes>> ListPatients();
     }
 }

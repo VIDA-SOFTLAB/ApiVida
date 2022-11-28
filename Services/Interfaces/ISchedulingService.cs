@@ -10,18 +10,18 @@ namespace Athenas.Service.Interfaces
     public interface ISchedulingService : IDisposable
     {
         //Listagem de todos schedulings
-        Task<IEnumerable<Scheduling>> ListarSchedulings(string idAdm, string idPro);
+        Task<IEnumerable<Scheduling>> ListSchedulings(string idAdm, string idPro);
 
         //Cadastrar um scheduling
-        Task<Scheduling> CadastrarScheduling(string idAdm, string idPro, Scheduling scheduling);
+        Task<Scheduling> AddScheduling(string idAdm, string idPro, Scheduling scheduling);
 
         //Pegar um único scheduling
-        Task<Scheduling> PegarScheduling(string idAdm, string id);
+        Task<Scheduling> GetScheduling(string idAdm, string id);
 
         //Atualizar um scheduling
-        Task<Scheduling> AtualizarScheduling(string idAdm, Scheduling scheduling);
+        Task<Scheduling> UpdateScheduling(string idAdm, Scheduling scheduling);
 
         //Deletar um scheduling
-        Task DeletarScheduling(string idAdm, string id);
+        Task DeleteScheduling(string idAdm, string id);
     }
 }

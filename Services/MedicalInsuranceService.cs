@@ -18,9 +18,9 @@ namespace Athenas.Service
         }
 
         //Listagem de medicalinsurance
-        public async Task<IEnumerable<MedicalInsurance>> ListarMedicalInsurances(string idAdm)
+        public async Task<IEnumerable<MedicalInsurance>> ListMedicalInsurances(string idAdm)
         {
-            List<MedicalInsurance> medicalinsurances = (List<MedicalInsurance>)await Repository<MedicalInsurance>.ListarMedicalInsurances(idAdm);
+            List<MedicalInsurance> medicalinsurances = (List<MedicalInsurance>)await Repository<MedicalInsurance>.ListMedicalInsurances(idAdm);
 
             if (medicalinsurances == null)
             {
@@ -34,24 +34,24 @@ namespace Athenas.Service
 
 
         //Cadastrar uma medicalinsurance
-        public async Task<MedicalInsurance> CadastrarMedicalInsurance(string idAdm, MedicalInsurance medicalinsurance)
+        public async Task<MedicalInsurance> AddMedicalInsurance(string idAdm, MedicalInsurance medicalinsurance)
         {
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
             medicalinsurance.IdPessoaJuridica = idPj;
 
-            MedicalInsurance vali = await Repository<MedicalInsurance>.PegarMedicalInsurancePorNome2(adm, medicalinsurance.Nome);
+            MedicalInsurance vali = await Repository<MedicalInsurance>.GetMedicalInsurancePorNome2(adm, medicalinsurance.Nome);
 
             if (vali == null)
             {
 
-                var retorno = await Repository<MedicalInsurance>.CadastrarItem(medicalinsurance);
-                medicalinsurance = await Repository<MedicalInsurance>.PegarMedicalInsurancePorNome(medicalinsurance.Nome);
+                var retorno = await Repository<MedicalInsurance>.AddItem(medicalinsurance);
+                medicalinsurance = await Repository<MedicalInsurance>.GetMedicalInsurancePorNome(medicalinsurance.Nome);
 
                 medicalinsurance.Servico = new List<Servico>();
 
-                var retorno2 = await Repository<Administrador>.CadastrarMedicalInsurance(adm, medicalinsurance);
+                var retorno2 = await Repository<Administrator>.AddMedicalInsurance(adm, medicalinsurance);
 
-                await Repository<MedicalInsurance>.DeletarItem(medicalinsurance.Id);
+                await Repository<MedicalInsurance>.DeleteItem(medicalinsurance.Id);
 
                 if (adm == null || medicalinsurance == null || retorno == null || retorno2 == null)
                 {
@@ -70,9 +70,9 @@ namespace Athenas.Service
         }
 
         //Pegar uma única medicalinsurance
-        public async Task<MedicalInsurance> PegarMedicalInsurance(string idAdm, string id)
+        public async Task<MedicalInsurance> GetMedicalInsurance(string idAdm, string id)
         {
-            MedicalInsurance medicalinsurance = await Repository<MedicalInsurance>.PegarMedicalInsurance(idAdm, id);
+            MedicalInsurance medicalinsurance = await Repository<MedicalInsurance>.GetMedicalInsurance(idAdm, id);
 
             if (medicalinsurance == null)
             {
@@ -86,10 +86,10 @@ namespace Athenas.Service
 
 
         //Atualizar uma medicalinsurance
-        public async Task<MedicalInsurance> AtualizarMedicalInsurance(string idAdm, MedicalInsurance medicalinsurance)
+        public async Task<MedicalInsurance> UpdateMedicalInsurance(string idAdm, MedicalInsurance medicalinsurance)
         {
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
-            var retorno = await Repository<MedicalInsurance>.AtualizarMedicalInsurance(adm, medicalinsurance);
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
+            var retorno = await Repository<MedicalInsurance>.UpdateMedicalInsurance(adm, medicalinsurance);
 
             if (adm == null || retorno == null)
             {
@@ -103,10 +103,10 @@ namespace Athenas.Service
 
 
         //Deletar uma medicalinsurance
-        public async Task DeletarMedicalInsurance(string idAdm, string id)
+        public async Task DeleteMedicalInsurance(string idAdm, string id)
         {
-            MedicalInsurance medicalinsurance = await Repository<MedicalInsurance>.PegarMedicalInsurance(idAdm, id);
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
+            MedicalInsurance medicalinsurance = await Repository<MedicalInsurance>.GetMedicalInsurance(idAdm, id);
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
 
             if (medicalinsurance == null || adm == null)
             {
@@ -114,7 +114,7 @@ namespace Athenas.Service
             }
             else
             {
-                await Repository<PessoaJuridica>.DeletarMedicalInsurance(medicalinsurance, adm);
+                await Repository<PessoaJuridica>.DeleteMedicalInsurance(medicalinsurance, adm);
             }
         }
     }

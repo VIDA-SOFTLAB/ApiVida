@@ -22,13 +22,13 @@ namespace Athenas.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]AdministradorDTO loginModel)
+        public async Task<IActionResult> Post([FromBody]AdministratorDTO loginModel)
         {
-            //List<Administrador> administradores = (List<Administrador>)await Repository<Administrador>.ListarAdm();
+            //List<Administrator> administradores = (List<Administrator>)await Repository<Administrator>.ListarAdm();
 
-            //Administrador admin = administradores.FirstOrDefault(x => x.Email == loginModel.Email);
+            //Administrator admin = administradores.FirstOrDefault(x => x.Email == loginModel.Email);
 
-            Administrador admin = await Repository<Administrador>.PegarAdmPorEmail(loginModel.Email);
+            Administrator admin = await Repository<Administrator>.GetAdmPorEmail(loginModel.Email);
 
             if (admin == null)
                 return Unauthorized();

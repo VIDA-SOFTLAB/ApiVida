@@ -9,7 +9,7 @@ using Athenas.Domain;
 using Athenas.Repository;
 namespace Athenas.Service
 {
-    public class EspecialidadeService : IEspecialidadeService
+    public class MedicalSpecialityService : IMedicalSpecialityService
     {
 
         public void Dispose()
@@ -18,9 +18,9 @@ namespace Athenas.Service
         }
 
         //Listagem de especialidade
-        public async Task<IEnumerable<Especialidade>> ListarEspecialidades(string idAdm)
+        public async Task<IEnumerable<MedicalSpeciality>> ListarMedicalSpecialitys(string idAdm)
         {
-            List<Especialidade> especialidades = (List<Especialidade>)await Repository<Especialidade>.ListarEspecialidades(idAdm);
+            List<MedicalSpeciality> especialidades = (List<MedicalSpeciality>)await Repository<MedicalSpeciality>.ListarMedicalSpecialitys(idAdm);
 
             if (especialidades == null)
             {
@@ -33,9 +33,9 @@ namespace Athenas.Service
         }
 
         //Listagem de especialidade
-        public async Task<IEnumerable<Especialidade>> ListarTodosEspecialidades(string idAdm)
+        public async Task<IEnumerable<MedicalSpeciality>> ListarTodosMedicalSpecialitys(string idAdm)
         {
-            List<Especialidade> especialidades = (List<Especialidade>)await Repository<Especialidade>.ListarTodosEspecialidades(idAdm);
+            List<MedicalSpeciality> especialidades = (List<MedicalSpeciality>)await Repository<MedicalSpeciality>.ListarTodosMedicalSpecialitys(idAdm);
 
             if (especialidades == null)
             {
@@ -48,23 +48,23 @@ namespace Athenas.Service
         }
 
         //Cadastrar um especialidade
-        public async Task<Especialidade> CadastrarEspecialidade(string idAdm, Especialidade especialidade)
+        public async Task<MedicalSpeciality> CadastrarMedicalSpeciality(string idAdm, MedicalSpeciality especialidade)
         {
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
 
-            Especialidade vali = await Repository<Especialidade>.PegarEspecialidadePorNome2(adm, especialidade.Nome);
+            MedicalSpeciality vali = await Repository<MedicalSpeciality>.PegarMedicalSpecialityPorNome2(adm, especialidade.Nome);
 
             if (vali == null)
             {
 
-                var retorno = await Repository<Especialidade>.CadastrarItem(especialidade);
-              //  especialidade = await Repository<PessoaJuridica>.PegarEspecialidadePorNome(especialidade.Nome);
+                var retorno = await Repository<MedicalSpeciality>.AddItem(especialidade);
+              //  especialidade = await Repository<PessoaJuridica>.PegarMedicalSpecialityPorNome(especialidade.Nome);
 
-                especialidade.Profissional = new List<Profissional>();
+                especialidade.Doctor = new List<Doctor>();
 
-                var retorno2 = await Repository<Administrador>.CadastrarEspecialidade(adm, especialidade);
+                var retorno2 = await Repository<Administrator>.CadastrarMedicalSpeciality(adm, especialidade);
 
-                await Repository<Especialidade>.DeletarItem(especialidade.Id);
+                await Repository<MedicalSpeciality>.DeleteItem(especialidade.Id);
 
                 if (adm == null || especialidade == null || retorno == null || retorno2 == null)
                 {
@@ -84,9 +84,9 @@ namespace Athenas.Service
         }
 
         //Pegar um único especialidade
-        public async Task<Especialidade> PegarEspecialidade(string idAdm, string id)
+        public async Task<MedicalSpeciality> PegarMedicalSpeciality(string idAdm, string id)
         {
-            Especialidade especialidade = await Repository<Especialidade>.PegarEspecialidade(idAdm, id);
+            MedicalSpeciality especialidade = await Repository<MedicalSpeciality>.PegarMedicalSpeciality(idAdm, id);
 
             if (especialidade == null)
             {
@@ -99,10 +99,10 @@ namespace Athenas.Service
         }
 
         //Atualizar um especialidade
-        public async Task<Especialidade> AtualizarEspecialidade(string idAdm, Especialidade especialidade)
+        public async Task<MedicalSpeciality> AtualizarMedicalSpeciality(string idAdm, MedicalSpeciality especialidade)
         {
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
-            var retorno = await Repository<Especialidade>.AtualizarEspecialidade(adm, especialidade);
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
+            var retorno = await Repository<MedicalSpeciality>.AtualizarMedicalSpeciality(adm, especialidade);
 
             if (especialidade == null || adm == null || retorno == null)
             {
@@ -115,11 +115,11 @@ namespace Athenas.Service
         }
 
         //Deletar um especialidade
-        public async Task DeletarEspecialidade(string idAdm, string id)
+        public async Task DeletarMedicalSpeciality(string idAdm, string id)
         {
-            Especialidade especialidade = await Repository<Especialidade>.PegarEspecialidade(idAdm, id);
+            MedicalSpeciality especialidade = await Repository<MedicalSpeciality>.PegarMedicalSpeciality(idAdm, id);
 
-            Administrador adm = await Repository<Administrador>.PegarAdm(idAdm);
+            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
 
             if (especialidade == null || adm == null)
             {
@@ -127,7 +127,7 @@ namespace Athenas.Service
             }
             else
             {
-                await Repository<Especialidade>.DeletarEspecialidade(especialidade, adm);
+                await Repository<MedicalSpeciality>.DeletarMedicalSpeciality(especialidade, adm);
             }
         }
     }

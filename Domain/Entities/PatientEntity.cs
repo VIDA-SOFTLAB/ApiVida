@@ -27,7 +27,7 @@ namespace ApiVida.Entities
         public ConvenioDTO Convenio { get; set; }
 
         [JsonProperty("endereco")]
-        public Endereco Endereco { get; set; }
+        public Adress Adress { get; set; }
 
         [JsonProperty("celular")]
         public string Celular { get; set; }

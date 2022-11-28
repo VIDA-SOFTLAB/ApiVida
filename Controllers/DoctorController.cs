@@ -26,10 +26,10 @@ namespace Athenas.Controllers
         
         //Lista todos os profissionais
         //GET api/doctor
-        [HttpGet("{idAdm}/{idEspecialidade}")]
-        public async Task<ActionResult<IEnumerable<Doctor>>> ListarProfissionais(string idAdm, string idEspecialidade)
+        [HttpGet("{idAdm}/{idMedicalSpeciality}")]
+        public async Task<ActionResult<IEnumerable<Doctor>>> ListDoctors(string idAdm, string idMedicalSpeciality)
         {
-            List<Doctor> profissionais = (List<Doctor>)await doctorService.ListarProfissionais(idAdm, idEspecialidade);
+            List<Doctor> profissionais = (List<Doctor>)await doctorService.ListDoctors(idAdm, idMedicalSpeciality);
             if (profissionais == null)
             {
                 return NotFound();
@@ -43,18 +43,18 @@ namespace Athenas.Controllers
         //Lista doctor específico
         // GET api/<controller>/5
         [HttpGet("specific/{idAdm}/{id}")]
-        public async Task<Doctor> PegarDoctor(string idAdm, string id)
+        public async Task<Doctor> GetDoctor(string idAdm, string id)
         {
-            Doctor doctor = await doctorService.PegarDoctor(idAdm, id);
+            Doctor doctor = await doctorService.GetDoctor(idAdm, id);
             return doctor;
         }
 
         //Cadastra Doctor
         //POST api/doctor
-        [HttpPost("{idAdm}/{idEspecialidade}")]
-        public async Task<ActionResult<Doctor>> CadastrarDoctor(string idAdm, string idEspecialidade, [FromBody] Doctor pro)
+        [HttpPost("{idAdm}/{idMedicalSpeciality}")]
+        public async Task<ActionResult<Doctor>> AddDoctor(string idAdm, string idMedicalSpeciality, [FromBody] Doctor pro)
         {
-            pro = await doctorService.CadastrarDoctor(idAdm, idEspecialidade, pro);
+            pro = await doctorService.AddDoctor(idAdm, idMedicalSpeciality, pro);
             if (pro == null)
             {
                 return NotFound();
@@ -68,9 +68,9 @@ namespace Athenas.Controllers
         //Atualiza registro de determinado Doctors
         // PUT api/doctor/2
         [HttpPut("{idAdm}/{id}")]
-        public async Task<ActionResult<Doctor>>  AtualizarDoctor(string idAdm, string id, [FromBody]DoctorDTO doctorDTO)
+        public async Task<ActionResult<Doctor>>  UpdateDoctor(string idAdm, string id, [FromBody]DoctorDTO doctorDTO)
         {
-            Doctor doctor = await doctorService.PegarDoctor(idAdm, id);
+            Doctor doctor = await doctorService.GetDoctor(idAdm, id);
 
             if (doctor != null)
             {
@@ -84,14 +84,14 @@ namespace Athenas.Controllers
                     doctorDTO.Email = doctor.Email;
                 }
 
-                if (doctorDTO.Agendamento == null)
+                if (doctorDTO.Scheduling == null)
                 {
-                    doctorDTO.Agendamento = doctor.Agendamento;
+                    doctorDTO.Scheduling = doctor.Scheduling;
                 }
 
-                if (doctorDTO.IdEspecialidade == null)
+                if (doctorDTO.IdMedicalSpeciality == null)
                 {
-                    doctorDTO.IdEspecialidade = doctor.IdEspecialidade;
+                    doctorDTO.IdMedicalSpeciality = doctor.IdMedicalSpeciality;
                 }
 
                 if (doctorDTO.Pin == null)
@@ -104,11 +104,11 @@ namespace Athenas.Controllers
             doctor.NomeCompleto = doctorDTO.NomeCompleto;
             doctor.Email = doctorDTO.Email;
             doctor.Pin = doctorDTO.Pin;
-            doctor.Agendamento = doctorDTO.Agendamento;
-            doctor.IdEspecialidade = doctorDTO.IdEspecialidade;
+            doctor.Scheduling = doctorDTO.Scheduling;
+            doctor.IdMedicalSpeciality = doctorDTO.IdMedicalSpeciality;
             doctor.Id = id;
 
-            var retorno = await doctorService.AtualizarDoctor(idAdm, doctor);
+            var retorno = await doctorService.UpdateDoctor(idAdm, doctor);
 
             if (retorno == null)
             {
@@ -124,7 +124,7 @@ namespace Athenas.Controllers
         [HttpDelete("{idAdm}/{id}")]
         public async void Delete(string idAdm, string id)
         {
-            await doctorService.DeletarDoctor(idAdm, id);
+            await doctorService.DeleteDoctor(idAdm, id);
         }
     }
 }
