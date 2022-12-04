@@ -80,9 +80,9 @@ namespace Athenas.Controllers
                     medicalspecialityDTO.Nome = esp.Nome;
                 }
 
-                if (medicalspecialityDTO.Descricao == null)
+                if (medicalspecialityDTO.Description == null)
                 {
-                    medicalspecialityDTO.Descricao = esp.Descricao;
+                    medicalspecialityDTO.Description = esp.Description;
                 }
 
                 if (medicalspecialityDTO.Doctor == null)
@@ -94,7 +94,7 @@ namespace Athenas.Controllers
             }
 
             esp.Nome = medicalspecialityDTO.Nome;
-            esp.Descricao = medicalspecialityDTO.Descricao;
+            esp.Description = medicalspecialityDTO.Description;
             esp.Doctor = medicalspecialityDTO.Doctor;
             esp.Id = id;
 

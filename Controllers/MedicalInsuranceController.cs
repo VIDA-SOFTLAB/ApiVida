@@ -97,9 +97,9 @@ namespace Athenas.Controllers
                     medicalinsuranceDTO.Nome = serv.Nome;
                 }
 
-                if (medicalinsuranceDTO.Descricao == null)
+                if (medicalinsuranceDTO.Description == null)
                 {
-                    medicalinsuranceDTO.Descricao = serv.Descricao;
+                    medicalinsuranceDTO.Description = serv.Description;
                 }
 
                 if (medicalinsuranceDTO.Doctor == null)
@@ -115,7 +115,7 @@ namespace Athenas.Controllers
             }
 
             serv.Nome = medicalinsuranceDTO.Nome;
-            serv.Descricao = medicalinsuranceDTO.Descricao;
+            serv.Description = medicalinsuranceDTO.Description;
             serv.Doctor = medicalinsuranceDTO.Doctor;
             serv.IdCategoria = medicalinsuranceDTO.IdCategoria;
             serv.Id = id;

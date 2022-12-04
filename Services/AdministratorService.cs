@@ -37,7 +37,7 @@ namespace Athenas.Service
         public async Task<Administrator> AddAdm(Administrator adm)
         {
             adm.PessoaJuridica = new List<PessoaJuridica>();
-            adm.HashearSenha();
+            adm.HashearPassword();
             await Repository<Administrator>.AddItem(adm);
             adm = await Repository<Administrator>.GetAdmPorEmail(adm.Email);
 
@@ -77,9 +77,9 @@ namespace Athenas.Service
                 adm.NomeCompleto = admin.NomeCompleto;
             }
 
-            if (adm.Senha == null)
+            if (adm.Password == null)
             {
-                adm.Senha = admin.Senha;
+                adm.Password = admin.Password;
             }
 
             if (adm.Email == null)

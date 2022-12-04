@@ -20,8 +20,8 @@ namespace Athenas.Domain
 
         [MinLength(4, ErrorMessage = ErrorBase.erro_min)]
         [MaxLength(255, ErrorMessage = ErrorBase.erro_max)]
-        [JsonProperty(PropertyName = "descricao")]
-        public string Descricao { get; set; }
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         // pode ter mais de um profissional por serviço
         [JsonProperty(PropertyName = "profissional")]

@@ -13,21 +13,29 @@ namespace Athenas.Domain
     public class AdmEntity : UserEntity
     {
         [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
+        [MaxLength(64, ErrorMessage = ErrorBase.erro_max)]
+        [DataType(DataType.EmailAddress, ErrorMessage = ErrorBase.erro_for)]
+        [RegularExpression(".+\\@.+\\..+", ErrorMessage = ErrorBase.erro_for)]
+        [JsonProperty(PropertyName = "email")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = ErrorBase.erro_nec)]
         [JsonProperty(PropertyName = "password")]
         [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
-        public string password { get; set; }
-        
-        [JsonProperty(PropertyName = "doctorEntity")]
-        public virtual ICollection<DoctorEntity> DoctorEntity { get; set; }
+        public string Password { get; set; }
 
-        // Hashear Senha
-        public void HashearSenha()
+/*        [JsonProperty(PropertyName = "doctorEntity")]
+        public virtual ICollection<DoctorEntity> DoctorEntity { get; set; }
+*/
+        // Hashear Password
+        public void HashearPassword()
         {
             // Create a SHA256   
             using (SHA256 sha256Hash = SHA256.Create())
             {
                 // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(this.Senha + ErrorBase.global_salt));
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(this.Password + ErrorBase.global_salt));
 
                 // Convert byte array to a string   
                 StringBuilder builder = new StringBuilder();
@@ -35,7 +43,7 @@ namespace Athenas.Domain
                 {
                     builder.Append(bytes[i].ToString("x2"));
                 }
-                this.Senha = builder.ToString();
+                this.Password = builder.ToString();
             }
         }
     }

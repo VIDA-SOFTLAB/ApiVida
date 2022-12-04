@@ -33,9 +33,9 @@ namespace Athenas.Controllers
             if (admin == null)
                 return Unauthorized();
 
-            loginModel.HashearSenha();
+            loginModel.HashearPassword();
 
-            if (admin.Senha != loginModel.Senha)
+            if (admin.Password != loginModel.Password)
             {
                 admin = null;
             } 

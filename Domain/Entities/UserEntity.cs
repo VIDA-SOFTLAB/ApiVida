@@ -60,7 +60,7 @@ namespace ApiVida.Entities
         public GenderEnum GenderEnum {get; set;}
 
         [Required(ErrorMessage = ErrorBase.erro_nec)]
-        [JsonProperty(PropertyName = "endereco")]
+        [JsonProperty(PropertyName = "adress")]
         public Adress Adress {get; set;}
 
     }

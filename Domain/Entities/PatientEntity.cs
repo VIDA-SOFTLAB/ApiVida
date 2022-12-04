@@ -23,18 +23,6 @@ namespace ApiVida.Entities
         [JsonProperty("cpf")]
         public string Cpf { get; set; }
 
-        [JsonProperty("convenio")]
-        public ConvenioDTO Convenio { get; set; }
-
-        [JsonProperty("endereco")]
-        public Adress Adress { get; set; }
-
-        [JsonProperty("celular")]
-        public string Celular { get; set; }
-
-        [JsonProperty("dataNascimento")]
-        public string DataNascimento { get; set; }
-
         [Required(ErrorMessage = ErrorBase.erro_nec)]
         [JsonProperty(PropertyName = "medicalInsurance")]
         public MedicalInsuranceEntity MedicalInsurance {get; set;}

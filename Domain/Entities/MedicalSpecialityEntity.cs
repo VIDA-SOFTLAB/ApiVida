@@ -15,8 +15,8 @@
         [Required(ErrorMessage = ErrorBase.erro_nec)]
         [MinLength(4, ErrorMessage = ErrorBase.erro_min)]
         [MaxLength(255, ErrorMessage = ErrorBase.erro_max)]
-        [JsonProperty(PropertyName = "descricao")]
-        public string Descricao { get; set; }
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         [JsonProperty(PropertyName = "doctorsEspeciality")]
         public virtual ICollection<DoctorEntity> doctorsEspeciality { get; set; }

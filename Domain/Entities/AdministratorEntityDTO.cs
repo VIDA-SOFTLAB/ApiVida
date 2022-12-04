@@ -24,14 +24,14 @@ namespace Athenas.Domain
         [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
         public string Password { get; set; }
 
-        // Hashear Senha
-        public void HashearSenha()
+        // Hashear Password
+        public void HashearPassword()
         {
             // Create a SHA256   
             using (SHA256 sha256Hash = SHA256.Create())
             {
                 // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(this.Senha + ErrorBase.global_salt));
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(this.Password + ErrorBase.global_salt));
 
                 // Convert byte array to a string   
                 StringBuilder builder = new StringBuilder();
@@ -39,7 +39,7 @@ namespace Athenas.Domain
                 {
                     builder.Append(bytes[i].ToString("x2"));
                 }
-                this.Senha = builder.ToString();
+                this.Password = builder.ToString();
             }
         }
     }
