@@ -39,8 +39,8 @@ namespace ApiVida
 							ValidateAudience = true,
 							ValidateLifetime = true,
 							ValidateIssuerSigningKey = true,
-							ValidIssuer = "admin.com",
-							ValidAudience = "admin.com",
+							ValidIssuer = "iris2.s@email.com",
+							ValidAudience = "iris2.s@email.com",
 							IssuerSigningKey = JwtSecurityKey.Create("a-password-very-big-to-be-good")
 						};
 
@@ -87,8 +87,8 @@ namespace ApiVida
 
             app.UseMvc();
 
-            Repository<AdmEntity>.Initialize("Adm");
-            Repository<PatientEntity>.Initialize("Patient");	
+            Repository<AdmEntity>.Initialize("Adm4");
+            Repository<PatientEntity>.Initialize("Patient4");	
         }
     }
 

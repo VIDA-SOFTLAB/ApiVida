@@ -14,8 +14,8 @@ namespace ApiVida.JwtDomains
 
 		private SecurityKey securityKey = null;
 		private string subject = "";
-		private string issuer = "admin.com";
-		private string audience = "admin.com";
+		private string issuer = "iris2.s@email.com";
+		private string audience = "iris2.s@email.com";
 		private string nameId = "";
 		private Dictionary<string, string> claims = new Dictionary<string, string>();
         private int expiryInMinutes;
