@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using ApiVida.Domain.Errors;
 
-namespace ApiVida.Domain
+namespace ApiVida.Domain.Entities
 {
     public class DoctorEntityDTO
     {
@@ -32,12 +33,12 @@ namespace ApiVida.Domain
         public string IdEspecialidade { get; set; }
 
         // o profissional possui uma lista de agendamentos
-        [JsonProperty(PropertyName = "agendamento")]
-        public virtual ICollection<Agendamento> Agendamento { get; set; }
+        [JsonProperty(PropertyName = "scheduling")]
+        public virtual ICollection<SchedulingEntity> Scheduling { get; set; }
 
         // pode ter mais de um profissional por serviço
-        [JsonProperty(PropertyName = "especialidade")]
-        public virtual ICollection<Especialidade> Especialidade { get; set; }
+        [JsonProperty(PropertyName = "medicalSpeciality")]
+        public virtual ICollection<MedicalSpecialityEntity> MedicalSpeciality { get; set; }
 
     }
 }

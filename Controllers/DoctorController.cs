@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using ApiVida.Domain;
 using ApiVida.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Controllers
 {
@@ -27,9 +28,9 @@ namespace ApiVida.Controllers
         //Lista todos os doctors
         //GET api/doctor
         [HttpGet("{idAdm}/{idMedicalSpeciality}")]
-        public async Task<ActionResult<IEnumerable<Doctor>>> ListDoctors(string idAdm, string idMedicalSpeciality)
+        public async Task<ActionResult<IEnumerable<DoctorEntity>>> ListDoctors(string idAdm, string idMedicalSpeciality)
         {
-            List<Doctor> doctors = (List<Doctor>)await doctorService.ListDoctors(idAdm, idMedicalSpeciality);
+            List<DoctorEntity> doctors = (List<DoctorEntity>)await doctorService.ListDoctors(idAdm, idMedicalSpeciality);
             if (doctors == null)
             {
                 return NotFound();
@@ -43,16 +44,16 @@ namespace ApiVida.Controllers
         //Lista doctor específico
         // GET api/<controller>/5
         [HttpGet("specific/{idAdm}/{id}")]
-        public async Task<Doctor> GetDoctor(string idAdm, string id)
+        public async Task<DoctorEntity> GetDoctor(string idAdm, string id)
         {
-            Doctor doctor = await doctorService.GetDoctor(idAdm, id);
+            DoctorEntity doctor = await doctorService.GetDoctor(idAdm, id);
             return doctor;
         }
 
         //Cadastra Doctor
         //POST api/doctor
         [HttpPost("{idAdm}/{idMedicalSpeciality}")]
-        public async Task<ActionResult<Doctor>> AddDoctor(string idAdm, string idMedicalSpeciality, [FromBody] Doctor pro)
+        public async Task<ActionResult<DoctorEntity>> AddDoctor(string idAdm, string idMedicalSpeciality, [FromBody] DoctorEntity pro)
         {
             pro = await doctorService.AddDoctor(idAdm, idMedicalSpeciality, pro);
             if (pro == null)
@@ -68,15 +69,15 @@ namespace ApiVida.Controllers
         //Atualiza registro de determinado Doctors
         // PUT api/doctor/2
         [HttpPut("{idAdm}/{id}")]
-        public async Task<ActionResult<Doctor>>  UpdateDoctor(string idAdm, string id, [FromBody]DoctorDTO doctorDTO)
+        public async Task<ActionResult<DoctorEntity>>  UpdateDoctor(string idAdm, string id, [FromBody]DoctorEntity doctorDTO)
         {
-            Doctor doctor = await doctorService.GetDoctor(idAdm, id);
+            DoctorEntity doctor = await doctorService.GetDoctor(idAdm, id);
 
             if (doctor != null)
             {
-                if (doctorDTO.NomeCompleto == null)
+                if (doctorDTO.UserName == null)
                 {
-                    doctorDTO.NomeCompleto = doctor.NomeCompleto;
+                    doctorDTO.UserName = doctor.UserName;
                 }
 
                 if (doctorDTO.Email == null)
@@ -94,19 +95,19 @@ namespace ApiVida.Controllers
                     doctorDTO.IdMedicalSpeciality = doctor.IdMedicalSpeciality;
                 }
 
-                if (doctorDTO.Pin == null)
+                if (doctorDTO.Adress == null)
                 {
-                    doctorDTO.Pin = doctorDTO.Pin;
+                    doctorDTO.Adress = doctorDTO.Adress;
                 }
-                doctorDTO.Id = id;
+                doctorDTO.UserId = id;
             }
 
-            doctor.NomeCompleto = doctorDTO.NomeCompleto;
+            doctor.UserName = doctorDTO.UserName;
             doctor.Email = doctorDTO.Email;
-            doctor.Pin = doctorDTO.Pin;
-            doctor.Scheduling = doctorDTO.Scheduling;
             doctor.IdMedicalSpeciality = doctorDTO.IdMedicalSpeciality;
-            doctor.Id = id;
+            doctor.Scheduling = doctorDTO.Scheduling;
+            doctorDTO.Adress = doctorDTO.Adress;
+            doctor.UserId = id;
 
             var retorno = await doctorService.UpdateDoctor(idAdm, doctor);
 

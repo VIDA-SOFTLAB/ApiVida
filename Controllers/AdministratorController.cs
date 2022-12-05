@@ -8,6 +8,8 @@ using ApiVida.Domain;
 using ApiVida.Service.Interfaces;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
+using ApiVida.Controllers;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Controllers
 {
@@ -25,9 +27,9 @@ namespace ApiVida.Controllers
 
         //Lista todos os administratores
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Administrator>>> Get()
+        public async Task<ActionResult<IEnumerable<AdministratorEntityDTO>>> Get()
         {
-            List<Administrator> administratores = (List<Administrator>)await administratorService.ListAdministrators();
+            List<AdministratorEntityDTO> administratores = (List<AdministratorEntityDTO>)await administratorService.ListAdministrators();
 
             if (administratores == null)
             {
@@ -41,7 +43,7 @@ namespace ApiVida.Controllers
 
         //Lista adm específico
         [HttpGet("{id}")]
-        public async Task<Administrator> Get(string id)
+        public async Task<AdministratorEntityDTO> Get(string id)
         {
 			return await administratorService.GetAdm(id);
         }
@@ -51,9 +53,9 @@ namespace ApiVida.Controllers
         //Cadastra um adm
         [HttpPost]
         //public async Task<ActionResult<Administrator>> Post([FromBody] Administrator administrator)
-        public async Task<IActionResult> Post([FromBody] Administrator administrator)
+        public async Task<IActionResult> Post([FromBody] AdministratorEntityDTO administrator)
         {
-            Administrator admin = await administratorService.AddAdm(administrator);
+            AdministratorEntityDTO admin = await administratorService.AddAdm(administrator);
 
             if (admin == null)
             {
@@ -67,7 +69,7 @@ namespace ApiVida.Controllers
 
         //Atualiza registro de determinado adm
         [HttpPut("{id}")]
-        public async void Put(string id, [FromBody]Administrator adm)
+        public async void Put(string id, [FromBody]AdministratorEntityDTO adm)
         {
               await administratorService.UpdateAdm(id, adm);
         }

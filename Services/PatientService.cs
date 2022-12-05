@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ApiVida.Service.Interfaces;
 using Microsoft.Azure.Documents;
-using ApiVida.Domain;
+using ApiVida.Domain.Entities;
 using ApiVida.Repository;
+using ApiVida.Service.Interfaces;
 
 namespace ApiVida.Service
 {
-    public class PatientService : IPatientService
+    public class PatientService : IPatienteService
     {
         public void Dispose()
         {
@@ -18,16 +19,16 @@ namespace ApiVida.Service
         }
 
         //Cadastrar um patient
-        public async Task<Document> CadastrarPatient(Patients patients)
+        public async Task<Document> CadastrarPatient(PatientEntity patients)
         {
-            return await Repository<Patients>.CadastrarPatient(patients);
+            return await Repository<PatientEntity>.RegisterPatient(patients);
 
         }
 
         //Pegar um único patient
-        public async Task<Patients> PegarPatient(string cpf)
+        public async Task<PatientEntity> PegarPatient(string cpf)
         {
-            Patients patients = await Repository<Patients>.PegarPatient(cpf);
+            PatientEntity patients = await Repository<PatientEntity>.GetPatient(cpf);
 
             if (patients == null)
             {
@@ -39,9 +40,9 @@ namespace ApiVida.Service
             }
         }
 
-        public async Task<IEnumerable<Patients>> ListPatients()
+        public async Task<IEnumerable<PatientEntity>> ListPatients()
         {
-            List<Patients> patients = (List<Patients>)await Repository<Patients>.ListPatients();
+            List<PatientEntity> patients = (List<PatientEntity>)await Repository<PatientEntity>.ListPatients();
 
             if (patients == null)
             {
@@ -51,6 +52,16 @@ namespace ApiVida.Service
             {
                 return patients;
             }
+        }
+
+        public Task<Document> AddPatient(PatientEntity p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PatientEntity> GetPatient(string cpf)
+        {
+            throw new NotImplementedException();
         }
     }
 }

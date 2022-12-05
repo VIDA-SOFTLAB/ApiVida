@@ -4,22 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiVida.Domain;
 using Microsoft.Azure.Documents;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Service.Interfaces
 {
     public interface ISchedulingService : IDisposable
     {
         //Listagem de todos schedulings
-        Task<IEnumerable<Scheduling>> ListSchedulings(string idAdm, string idPro);
+        Task<IEnumerable<SchedulingEntity>> ListSchedulings(string idAdm, string idPro);
 
         //Cadastrar um scheduling
-        Task<Scheduling> AddScheduling(string idAdm, string idPro, Scheduling scheduling);
+        Task<SchedulingEntity> AddScheduling(string idAdm, string idPro, SchedulingEntity scheduling);
 
         //Pegar um único scheduling
-        Task<Scheduling> GetScheduling(string idAdm, string id);
+        Task<SchedulingEntity> GetScheduling(string idAdm, string id);
 
         //Atualizar um scheduling
-        Task<Scheduling> UpdateScheduling(string idAdm, Scheduling scheduling);
+        Task<SchedulingEntity> UpdateScheduling(string idAdm, SchedulingEntity scheduling);
 
         //Deletar um scheduling
         Task DeleteScheduling(string idAdm, string id);

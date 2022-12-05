@@ -9,9 +9,9 @@ using ApiVida.Domain;
 using ApiVida.Repository;
 namespace ApiVida.Service
 {
-    public class SchedulingService : ISchedulingService
+    public class SchedulingService //: ISchedulingService
     {
-        public void Dispose()
+  /*      public void Dispose()
         {
             //throw new NotImplementedException();
         }
@@ -118,6 +118,6 @@ namespace ApiVida.Service
             {
                 await Repository<Scheduling>.DeleteScheduling(scheduling, adm);
             }
-        }
+        }*/
     }
 }

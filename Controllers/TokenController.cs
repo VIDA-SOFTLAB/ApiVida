@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Security.Cryptography;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Controllers
 {
@@ -22,13 +23,13 @@ namespace ApiVida.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]AdministratorDTO loginModel)
+        public async Task<IActionResult> Post([FromBody]AdministratorEntityDTO loginModel)
         {
             //List<Administrator> administradores = (List<Administrator>)await Repository<Administrator>.ListAdm();
 
             //Administrator admin = administradores.FirstOrDefault(x => x.Email == loginModel.Email);
 
-            Administrator admin = await Repository<Administrator>.GetAdmPorEmail(loginModel.Email);
+            AdministratorEntityDTO admin = await Repository<AdministratorEntityDTO>.GetAdmByEmail(loginModel.Email);
 
             if (admin == null)
                 return Unauthorized();

@@ -9,6 +9,7 @@ using ApiVida.Repository;
 using ApiVida.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using ApiVida.Controllers;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Controllers
 {
@@ -28,9 +29,9 @@ namespace ApiVida.Controllers
 		//Lista todos os medicalspecialitys
 		//GET api/medicalspeciality
 		[HttpGet("{idAdm}/medicalspecialitys")]
-        public async Task<ActionResult<IEnumerable<MedicalSpeciality>>> ListMedicalSpecialitys(string idAdm, string idPj)
+        public async Task<ActionResult<IEnumerable<MedicalSpecialityEntity>>> ListMedicalSpecialitys(string idAdm, string idPj)
         {
-            List<MedicalSpeciality> medicalspecialitys = (List<MedicalSpeciality>)await medicalspecialityService.ListMedicalSpecialitys(idAdm, idPj);
+            List<MedicalSpecialityEntity> medicalspecialitys = (List<MedicalSpecialityEntity>)await medicalspecialityService.ListMedicalSpecialitys(idAdm);
 
             if (medicalspecialitys == null)
             {
@@ -45,39 +46,39 @@ namespace ApiVida.Controllers
         //Lista medicalspeciality específico
         // GET api/<controller>/5
         [HttpGet("specific/{idAdm}/{id}")]
-        public async Task<MedicalSpeciality> PegarMedicalSpeciality(string idAdm, string id)
+        public async Task<MedicalSpecialityEntity> PegarMedicalSpeciality(string idAdm, string id)
         {
-            return await medicalspecialityService.PegarMedicalSpeciality(idAdm, id);
+            return await medicalspecialityService.GetMedicalSpeciality(idAdm, id);
         }
 
 		//Cadastra um medicalspeciality
 		//POST api/<controller>
 		[HttpPost("{idAdm}/medicalspecialitys")]
-        public async Task<ActionResult<MedicalSpeciality>> CadastrarMedicalSpeciality(string idAdm, string idPj, [FromBody] MedicalSpeciality cat)
+        public async Task<ActionResult<MedicalSpecialityEntity>> CadastrarMedicalSpeciality(string idAdm, string idPj, [FromBody] MedicalSpecialityEntity ms)
 		{
-            cat = await medicalspecialityService.CadastrarMedicalSpeciality(idAdm, idPj, cat);
-            if (cat == null)
+            ms = await medicalspecialityService.AddMedicalSpeciality(idAdm, ms);
+            if (ms == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(cat);
+                return Ok(ms);
             }
         }
         
 		//Atualiza registro de determinado medicalspeciality
 		// PUT api/<controller>/5
 		[HttpPut("{idAdm}/{id}")]
-        public async Task<ActionResult<MedicalSpeciality>> AtualizarMedicalSpeciality(string idAdm, string id, [FromBody]MedicalSpecialityDTO medicalspecialityDTO)
+        public async Task<ActionResult<MedicalSpecialityEntity>> AtualizarMedicalSpeciality(string idAdm, string id, [FromBody]MedicalSpecialityEntity medicalspecialityDTO)
         {
-            MedicalSpeciality esp = await medicalspecialityService.PegarMedicalSpeciality(idAdm, id);
+            MedicalSpecialityEntity esp = await medicalspecialityService.GetMedicalSpeciality(idAdm, id);
 
             if (esp != null)
             {
-                if (medicalspecialityDTO.Nome == null)
+                if (medicalspecialityDTO.MedicalSpecialtyName == null)
                 {
-                    medicalspecialityDTO.Nome = esp.Nome;
+                    medicalspecialityDTO.MedicalSpecialtyName = esp.MedicalSpecialtyName;
                 }
 
                 if (medicalspecialityDTO.Description == null)
@@ -85,20 +86,20 @@ namespace ApiVida.Controllers
                     medicalspecialityDTO.Description = esp.Description;
                 }
 
-                if (medicalspecialityDTO.Doctor == null)
+                if (medicalspecialityDTO.doctorsEspeciality == null)
                 {
-                    medicalspecialityDTO.Doctor = esp.Doctor;
+                    medicalspecialityDTO.doctorsEspeciality = esp.doctorsEspeciality;
                 }
 
-                medicalspecialityDTO.Id = id;
+                medicalspecialityDTO.MedicalSpecialtyId = id;
             }
 
-            esp.Nome = medicalspecialityDTO.Nome;
+            esp.MedicalSpecialtyName = medicalspecialityDTO.MedicalSpecialtyName;
             esp.Description = medicalspecialityDTO.Description;
-            esp.Doctor = medicalspecialityDTO.Doctor;
-            esp.Id = id;
+            esp.doctorsEspeciality = medicalspecialityDTO.doctorsEspeciality;
+            esp.MedicalSpecialtyId = id;
 
-            var retorno = await medicalspecialityService.AtualizarMedicalSpeciality(idAdm, cat);
+            var retorno = await medicalspecialityService.UpdateMedicalSpeciality(idAdm, medicalspecialityDTO);
 
             if (retorno == null)
             {
@@ -114,7 +115,7 @@ namespace ApiVida.Controllers
         [HttpDelete("{idAdm}/{id}")]
         public async void DeletarMedicalSpeciality(string idAdm, string id)
         {
-            await medicalspecialityService.DeletarMedicalSpeciality(idAdm, id);
+            await medicalspecialityService.DeleteMedicalSpeciality(idAdm, id);
         }
     }
 }

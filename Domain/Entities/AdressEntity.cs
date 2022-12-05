@@ -1,11 +1,12 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using ApiVida.Domain.Errors;
 
-namespace ApiVida.Domain
+namespace ApiVida.Domain.Entities
 {
     public class AdressEntity 
     {

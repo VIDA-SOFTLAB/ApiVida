@@ -1,4 +1,4 @@
-﻿using ApiVida.Entities;
+﻿using ApiVida.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiVida.Contexts

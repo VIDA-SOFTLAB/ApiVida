@@ -9,6 +9,9 @@ using ApiVida.Repository;
 using Microsoft.AspNetCore.Cors;
 using ApiVida.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using ApiVida.Domain.Entities;
+using ApiVida.Service;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Controllers
 {
@@ -19,33 +22,33 @@ namespace ApiVida.Controllers
     public class PatientController : Controller
     {
 
-        private readonly IPatientService patientService;
+        private readonly IPatienteService patientService;
 
-        public PatientController(IPatientService patientService_)
+        public PatientController(IPatienteService patientService_)
         {
             this.patientService = patientService_;
         }
 
         [HttpPost]
-        public async void CadastrarPatient([FromBody] Patients patient)
+        public async void AddPatient([FromBody] PatientEntity patient)
         {
-            await patientService.CadastrarPatient(patient);
+            await patientService.AddPatient(patient);
         }
 
         //Lista agendamento específico
         // GET api/<controller>/5
         [HttpGet("{cpf}")]
-        public async Task<Patients> PegarPatient(string cpf)
+        public async Task<PatientEntity> PegarPatient(string cpf)
         {
-            Patients patient = await patientService.PegarPatient(cpf);
+            PatientEntity patient = await patientService.GetPatient(cpf);
             return patient;
         }
 
         //Lista todos os patients
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patients>>> ListPatients()
+        public async Task<ActionResult<IEnumerable<PatientEntity>>> ListPatients()
         {
-            List<Patients> patients = (List<Patients>)await patientService.ListPatients();
+            List<PatientEntity> patients = (List<PatientEntity>)await patientService.ListPatients();
 
             if (patients == null)
             {

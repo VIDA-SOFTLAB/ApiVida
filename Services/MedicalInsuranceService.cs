@@ -5,22 +5,23 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ApiVida.Service.Interfaces;
 using Microsoft.Azure.Documents;
-using ApiVida.Domain;
+using ApiVida.Domain.Entities;
 using ApiVida.Repository;
+using ApiVida.Service.Interfaces;
 
 namespace ApiVida.Service
 {
-    public class MedicalInsuranceService : IMedicalInsuranceService
+    public class MedicalInsuranceService //: IMedicalInsuranceService
     {
-        public void Dispose()
+       /*  public void Dispose()
         {
             //throw new NotImplementedException();
         }
 
         //Listagem de medicalinsurance
-        public async Task<IEnumerable<MedicalInsurance>> ListMedicalInsurances(string idAdm)
+/*        public async Task<IEnumerable<MedicalInsuranceEntity>> ListMedicalInsurances(string idAdm)
         {
-            List<MedicalInsurance> medicalinsurances = (List<MedicalInsurance>)await Repository<MedicalInsurance>.ListMedicalInsurances(idAdm);
+            List<MedicalInsuranceEntity> medicalinsurances = (List<MedicalInsuranceEntity>)await Repository<MedicalInsuranceEntity>.ListMedicalInsurances(idAdm);
 
             if (medicalinsurances == null)
             {
@@ -31,27 +32,26 @@ namespace ApiVida.Service
                 return medicalinsurances;
             }
         }
-
+*/
 
         //Cadastrar uma medicalinsurance
-        public async Task<MedicalInsurance> AddMedicalInsurance(string idAdm, MedicalInsurance medicalinsurance)
+/*        public async Task<MedicalInsuranceEntity> AddMedicalInsurance(string idAdm, MedicalInsuranceEntity medicalinsurance)
         {
-            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
-            medicalinsurance.IdPessoaJuridica = idPj;
+            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(idAdm);
 
-            MedicalInsurance vali = await Repository<MedicalInsurance>.GetMedicalInsurancePorNome2(adm, medicalinsurance.Nome);
+            MedicalInsuranceEntity vali = await Repository<MedicalInsuranceEntity>.GetMedicalInsurancePorNome2(adm, medicalinsurance.Nome);
 
             if (vali == null)
             {
 
-                var retorno = await Repository<MedicalInsurance>.AddItem(medicalinsurance);
-                medicalinsurance = await Repository<MedicalInsurance>.GetMedicalInsurancePorNome(medicalinsurance.Nome);
+                var retorno = await Repository<MedicalInsuranceEntity>.AddItem(medicalinsurance);
+                medicalinsurance = await Repository<MedicalInsuranceEntity>.GetMedicalInsurancePorNome(medicalinsurance.Nome);
 
                 medicalinsurance.Servico = new List<Servico>();
 
-                var retorno2 = await Repository<Administrator>.AddMedicalInsurance(adm, medicalinsurance);
+                var retorno2 = await Repository<AdministratorEntityDTO>.AddMedicalInsurance(adm, medicalinsurance);
 
-                await Repository<MedicalInsurance>.DeleteItem(medicalinsurance.Id);
+                await Repository<MedicalInsuranceEntity>.DeleteItem(medicalinsurance.Id);
 
                 if (adm == null || medicalinsurance == null || retorno == null || retorno2 == null)
                 {
@@ -70,9 +70,9 @@ namespace ApiVida.Service
         }
 
         //Pegar uma única medicalinsurance
-        public async Task<MedicalInsurance> GetMedicalInsurance(string idAdm, string id)
+        public async Task<MedicalInsuranceEntity> GetMedicalInsurance(string idAdm, string id)
         {
-            MedicalInsurance medicalinsurance = await Repository<MedicalInsurance>.GetMedicalInsurance(idAdm, id);
+            MedicalInsuranceEntity medicalinsurance = await Repository<MedicalInsuranceEntity>.GetMedicalInsurance(idAdm, id);
 
             if (medicalinsurance == null)
             {
@@ -86,10 +86,10 @@ namespace ApiVida.Service
 
 
         //Atualizar uma medicalinsurance
-        public async Task<MedicalInsurance> UpdateMedicalInsurance(string idAdm, MedicalInsurance medicalinsurance)
+        public async Task<MedicalInsuranceEntity> UpdateMedicalInsurance(string idAdm, MedicalInsuranceEntity medicalinsurance)
         {
-            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
-            var retorno = await Repository<MedicalInsurance>.UpdateMedicalInsurance(adm, medicalinsurance);
+            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(idAdm);
+            var retorno = await Repository<MedicalInsuranceEntity>.UpdateMedicalInsurance(adm, medicalinsurance);
 
             if (adm == null || retorno == null)
             {
@@ -105,8 +105,8 @@ namespace ApiVida.Service
         //Deletar uma medicalinsurance
         public async Task DeleteMedicalInsurance(string idAdm, string id)
         {
-            MedicalInsurance medicalinsurance = await Repository<MedicalInsurance>.GetMedicalInsurance(idAdm, id);
-            Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
+            MedicalInsuranceEntity medicalinsurance = await Repository<MedicalInsuranceEntity>.GetMedicalInsurance(idAdm, id);
+            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(idAdm);
 
             if (medicalinsurance == null || adm == null)
             {
@@ -116,6 +116,6 @@ namespace ApiVida.Service
             {
                 await Repository<PessoaJuridica>.DeleteMedicalInsurance(medicalinsurance, adm);
             }
-        }
+        }*/
     }
 }

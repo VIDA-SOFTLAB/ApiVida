@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiVida.Domain;
 using Microsoft.Azure.Documents;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Service.Interfaces
 {
@@ -11,16 +12,16 @@ namespace ApiVida.Service.Interfaces
     {
 
 		//Listagem de todos os adm
-        Task<IEnumerable<Administrator>> ListAdministrators();
+        Task<IEnumerable<AdministratorEntityDTO>> ListAdministrators();
 
 		//Cadastrar um adm
-		Task<Administrator> AddAdm(Administrator adm);
+		Task<AdministratorEntityDTO> AddAdm(AdministratorEntityDTO adm);
 
 		//Pegar um único adm por seu id
-		Task<Administrator> GetAdm(string id);
+		Task<AdministratorEntityDTO> GetAdm(string id);
 
 		//Atualizar um adm
-		Task<Document> UpdateAdm(string id, Administrator adm);
+		Task<Document> UpdateAdm(string id, AdministratorEntityDTO adm);
 
 		//Deletar um adm
 		Task DeleteAdm(string id);

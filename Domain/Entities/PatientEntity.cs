@@ -13,9 +13,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using ApiVida.Domain.Errors;
 
 
-namespace ApiVida.Entities
+namespace ApiVida.Domain.Entities
 {
     public class PatientEntity: UserEntity
     {

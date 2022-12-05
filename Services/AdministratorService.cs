@@ -4,9 +4,11 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ApiVida.Service.Interfaces;
-using Microsoft.Azure.Documents;
 using ApiVida.Domain;
 using ApiVida.Repository;
+using ApiVida.Service.Interfaces;
+using ApiVida.Domain.Entities;
+using Microsoft.Azure.Documents;
 
 namespace ApiVida.Service
 {
@@ -19,9 +21,9 @@ namespace ApiVida.Service
 
 
         //Listagem de adm
-        public async Task<IEnumerable<Administrator>> ListAdministrators()
+        public async Task<IEnumerable<AdministratorEntityDTO>> ListAdministrators()
         {
-            List<Administrator> administrators = (List<Administrator>)await Repository<Administrator>.ListAdm();
+            List<AdministratorEntityDTO> administrators = (List<AdministratorEntityDTO>)await Repository<AdministratorEntityDTO>.ListAdm();
             
             if (administrators == null)
             {
@@ -34,12 +36,11 @@ namespace ApiVida.Service
         }
 
         //Cadastrar um adm
-        public async Task<Administrator> AddAdm(Administrator adm)
+        public async Task<AdministratorEntityDTO> AddAdm(AdministratorEntityDTO adm)
         {
-            adm.PessoaJuridica = new List<PessoaJuridica>();
             adm.HashearPassword();
-            await Repository<Administrator>.AddItem(adm);
-            adm = await Repository<Administrator>.GetAdmPorEmail(adm.Email);
+            await Repository<AdministratorEntityDTO>.RegisterItem(adm);
+            adm = await Repository<AdministratorEntityDTO>.GetAdmByEmail(adm.Email);
 
             if (adm == null)
             {
@@ -52,9 +53,9 @@ namespace ApiVida.Service
         }
 
         //Pegar um único adm
-        public async Task<Administrator> GetAdm(string id)
+        public async Task<AdministratorEntityDTO> GetAdm(string id)
         {
-            Administrator adm = await Repository<Administrator>.GetAdm(id);
+            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(id);
 
             if (adm == null)
             {
@@ -68,13 +69,13 @@ namespace ApiVida.Service
 
 
         //Atualizar um adm
-        public async Task<Document> UpdateAdm(string id, Administrator adm)
+        public async Task<Document> UpdateAdm(string id, AdministratorEntityDTO adm)
         {
-            Administrator admin = await Repository<Administrator>.GetAdm(id);
+            AdministratorEntityDTO admin = await Repository<AdministratorEntityDTO>.GetAdm(id);
 
-            if (adm.NomeCompleto == null)
+            if (adm.Email == null)
             {
-                adm.NomeCompleto = admin.NomeCompleto;
+                adm.Email = admin.Email;
             }
 
             if (adm.Password == null)
@@ -89,7 +90,7 @@ namespace ApiVida.Service
 
             adm.Id = id;
 
-            return await Repository<Administrator>.UpdateAdm(id, adm);
+            return await Repository<AdministratorEntityDTO>.UpdateAdm(id, adm);
         }
 
 
@@ -98,7 +99,7 @@ namespace ApiVida.Service
         {
             try
             {
-                await Repository<Administrator>.DeleteItem(id);
+                await Repository<AdministratorEntityDTO>.DeletarItem(id);
             }
             catch (ArgumentException e)
             {

@@ -6,9 +6,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using UserEntity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ApiVida.Domain.Errors;
 
-namespace ApiVida.Domain
+namespace ApiVida.Domain.Entities
 {
 
     public class AdmEntity : UserEntity

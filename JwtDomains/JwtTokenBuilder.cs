@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Athenas.JwtDomains
+namespace ApiVida.JwtDomains
 {
 	public class JwtTokenBuilder
 	{

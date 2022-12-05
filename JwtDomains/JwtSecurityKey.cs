@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Athenas.JwtDomains
+namespace ApiVida.JwtDomains
 {
 	public class JwtSecurityKey
 	{

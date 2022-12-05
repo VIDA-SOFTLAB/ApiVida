@@ -7,18 +7,22 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
-using Athenas.Controllers;
-using Athenas.Domain;
+using ApiVida.Controllers;
+using ApiVida.Domain;
+using ApiVida.Domain.Entities;
 
-namespace Athenas.Repository
+namespace ApiVida.Repository
 {
     public class Repository<T> where T : class
     {
-        private static readonly string Endpoint = "https://sn-athena-dev2.documents.azure.com:443/";
-        private static readonly string Key = "3NR1lbh0SBxXgq2F64ZRRvlpXdUsXxrjnJJ4ZqOqQEG28gALXUxjjWBbcaeZU6PpUXcgWpeBTtu68m5rLsIm5w=="; //C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
-        private static readonly string DatabaseId = "Athena";
-        private static string CollectionId = "Collection";
+        private static readonly string Endpoint = "https://db-vida.documents.azure.com/";
+        private static readonly string Key = "CqzzcSBParBTTTcpgVLckyWOmpimIPNq6bLnlFTPg80CkyY8QqusQbNLmnt5WxVu9i1TGCQPRG2DACDbHy0Ilg=="; //C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
+        private static readonly string DatabaseId = "DBVida";
+        private static string CollectionId = "ConteinerVida";
         private static DocumentClient client;
+
+
+        // TODO: listar, cdastrar, deletar e dar update em doctor, patient, schedulings..
 
         // -------------------------------------------- BDO -------------------------------------
         //Inicializa as collections especificadas (método chamado na classe Startup)
@@ -118,19 +122,19 @@ namespace Athenas.Repository
             }
         }
 
-        public static async Task<IEnumerable<Administrator>> ListarAdm()
+        public static async Task<IEnumerable<AdministratorEntityDTO>> ListAdm()
         {
             try
             {
-                IDocumentQuery<Administrator> query = client.CreateDocumentQuery<Administrator>(
+                IDocumentQuery<AdministratorEntityDTO> query = client.CreateDocumentQuery<AdministratorEntityDTO>(
                     UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
                     new FeedOptions { MaxItemCount = -1 })
                     .AsDocumentQuery();
 
-                List<Administrator> results = new List<Administrator>();
+                List<AdministratorEntityDTO> results = new List<AdministratorEntityDTO>();
                 while (query.HasMoreResults)
                 {
-                    results.AddRange(await query.ExecuteNextAsync<Administrator>());
+                    results.AddRange(await query.ExecuteNextAsync<AdministratorEntityDTO>());
                 }
 
                 return results;
@@ -142,13 +146,13 @@ namespace Athenas.Repository
         }
 
         // Busca um administrador especificao by seu email
-        public static async Task<Administrator> GetAdmByEmail(string email)
+        public static async Task<AdministratorEntityDTO> GetAdmByEmail(string email)
         {
             try
             {
-                Administrator adm = new Administrator();
+                AdministratorEntityDTO adm = new AdministratorEntityDTO();
 
-                adm = client.CreateDocumentQuery<Administrator>(
+                adm = client.CreateDocumentQuery<AdministratorEntityDTO>(
                     UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
                     new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
                         .Where(x => x.Email == email)
@@ -162,7 +166,7 @@ namespace Athenas.Repository
             }
         }
 
-        public static async Task<Document> AtualizarAdm(string id, T item)
+        public static async Task<Document> UpdateAdm(string id, T item)
         {
             try
             {
@@ -175,358 +179,104 @@ namespace Athenas.Repository
         }
 
         // -------------------------------------------- DOCTOR -------------------------------------
-        public static async Task<IEnumerable<DoctorEntity>> ListarDoctorEntity(string idAdm, string idServ)
+        public static async Task<IEnumerable<DoctorEntity>> ListDoctorEntity(string idAdm, string idServ)
         {
-            try
-            {
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, idAdm));
-                Administrator adm = (Administrator)(dynamic)document;
-
-                List<DoctorEntity> results = new List<DoctorEntity>();
-                foreach (PessoaJuridica p in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in p.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity pro in s.DoctorEntity)
-                            {
-                                results.Add(pro);
-                            }
-                        }
-                    }
-                }
-
-                return results.Where(x => x.IdServico == idServ).ToList();
-            }
-            catch (Exception e)
-            {
                 return null;
-            }
+
         }
 
         public static async Task<DoctorEntity> GetDoctorEntityByEmail(string email)
         {
-            try
-            {
-                DoctorEntity prof = new DoctorEntity();
+                            return null;
 
-                prof = client.CreateDocumentQuery<DoctorEntity>(
-                    UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
-                    new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
-                        .Where(x => x.Email == email)
-                        .AsEnumerable()
-                        .FirstOrDefault();
-
-                return prof;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
         }
 
-        public static async Task<DoctorEntity> GetDoctorEntityByEmail2(Administrator adm, string email)
+        public static async Task<DoctorEntity> GetDoctorEntityByEmail2(AdministratorEntityDTO adm, string email)
         {
-            try
-            {
-                List<DoctorEntity> results = new List<DoctorEntity>();
-                foreach (PessoaJuridica pj in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in pj.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity p in s.DoctorEntity)
-                            {
-                                results.Add(p);
-                            }
-                        }
-                    }
-                }
-                DoctorEntity profissional = results.Where(x => x.Email == email).ToList()[0];
-                return profissional;
-            }
-            catch (Exception e)
-            {
                 return null;
-            }
+
         }
 
         public static async Task<DoctorEntity> GetDoctorEntity(string idAdm, string id)
         {
-            try
-            {
-                Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
-
-                List<DoctorEntity> results = new List<DoctorEntity>();
-                foreach (PessoaJuridica pj in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in pj.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity p in s.DoctorEntity)
-                            {
-                                results.Add(p);
-                            }
-                        }
-                    }
-                }
-                DoctorEntity profissional = results.Where(x => x.Id == id).ToList()[0];
-                return profissional;
-            }
-            catch (Exception e)
-            {
                 return null;
-            }
+
         }
 
         //Atualiza o adm a partir do Cadastro de um servico
-        public static async Task<Document> RegisterDoctorEntity(Administrator adm, DoctorEntity prof)
+        public static async Task<Document> RegisterDoctorEntity(AdministratorEntityDTO adm, DoctorEntity prof)
         {
-            try
-            {
-                // recebe uma lista de pjs
-                foreach (PessoaJuridica p in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in p.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            // verificar lista de categorias
-                            if (s.DoctorEntity == null)
-                            {
-                                s.DoctorEntity = new List<DoctorEntity>();
-                            }
-                            if (s.Id == prof.IdServico)
-                            {
-                                s.DoctorEntity.Add(prof);
-                            }
-                        }
-                    }
-                }
-                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, adm.Id), adm);
-            }
-            catch (Exception e)
-            {
                 return null;
-            }
+
         }
 
         //Atualiza a categoria a partir do Cadastro de Serviço
-        public static async Task<Document> AtualizarDoctorEntity(Administrator adm, DoctorEntity profissional)
+        public static async Task<Document> UpdateDoctorEntity(AdministratorEntityDTO adm, DoctorEntity profissional)
         {
-            try
-            {
-                foreach (PessoaJuridica pj in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in pj.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity p in s.DoctorEntity)
-                            {
-                                if (p.Id == profissional.Id)
-                                {
-                                    p.Id = profissional.Id;
-                                    p.NameCompleto = profissional.NameCompleto;
-                                    p.Email = profissional.Email;
-                                    p.Pin = profissional.Pin;
-                                    p.SchedulingEntity = profissional.SchedulingEntity;
-                                    p.IdServico = profissional.IdServico;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, adm.Id), adm);
-            }
-            catch (Exception e)
-            {
                 return null;
-            }
+
         }
 
-        public static async Task<Document> DeletarDoctorEntity(DoctorEntity prof, Administrator adm)
+        public static async Task<Document> DeleteDoctorEntity(DoctorEntity prof, AdministratorEntityDTO adm)
         {
-            try
-            {
-                foreach (PessoaJuridica pj in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in pj.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity p in s.DoctorEntity)
-                            {
-                                if (p.Id == prof.Id)
-                                {
-                                    ICollection<DoctorEntity> profs = new List<DoctorEntity>(s.DoctorEntity);
-
-                                    var item = profs.SingleOrDefault(x => x.Id == prof.Id);
-                                    if (item != null)
-                                    {
-                                        profs.Remove(item);
-                                        s.DoctorEntity = profs;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, adm.Id), adm);
-            }
-            catch (Exception e)
-            {
                 return null;
-            }
+
         }
-        // -------------------------------------------- AGENDAMENTO -------------------------------------
-        public static async Task<IEnumerable<SchedulingEntity>> ListarSchedulingEntitys(string idAdm, string idProf)
-        {
-            try
-            {
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, idAdm));
-                Administrator adm = (Administrator)(dynamic)document;
-
-                List<SchedulingEntity> results = new List<SchedulingEntity>();
-                foreach (PessoaJuridica p in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in p.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity pro in s.DoctorEntity)
-                            {
-                                foreach (SchedulingEntity a in pro.SchedulingEntity)
-                                {
-                                    results.Add(a);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                return results.Where(x => x.IdDoctorEntity == idProf).ToList();
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+        // -------------------------------------------- SCHEDULING -------------------------------------
+        public static async Task<IEnumerable<SchedulingEntity>> ListarSchedulings(string idAdm, string idProf)
+        {            return null;
         }
 
-        public static async Task<SchedulingEntity> GetSchedulingEntityPeloHorario(DateTime horario)
-        {
-            try
-            {
-                SchedulingEntity agend = new SchedulingEntity();
-
-                agend = client.CreateDocumentQuery<SchedulingEntity>(
-                    UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
-                    new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
-                        .Where(x => x.Horario == horario)
-                        .AsEnumerable()
-                        .FirstOrDefault();
-
-                return agend;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+        public static async Task<SchedulingEntity> GetSchedulingByHour(DateTime horario)
+        {            return null;
         }
 
-        public static async Task<SchedulingEntity> GetSchedulingEntityPeloHorario2(Administrator adm, DateTime horario)
-        {
-            try
-            {
-                List<SchedulingEntity> results = new List<SchedulingEntity>();
-                foreach (PessoaJuridica pj in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in pj.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity p in s.DoctorEntity)
-                            {
-                                foreach (SchedulingEntity a in p.SchedulingEntity)
-                                {
-                                    results.Add(a);
-                                }
-                            }
-                        }
-                    }
-                }
-                SchedulingEntity scheduling = results.Where(x => x.Horario == horario).ToList()[0];
-                return scheduling;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+        public static async Task<SchedulingEntity> GetSchedulingByHour2(AdministratorEntityDTO adm, DateTime horario)
+        {            return null;
+
         }
 
-        public static async Task<SchedulingEntity> GetSchedulingEntity(string idAdm, string id)
+        public static async Task<SchedulingEntity> GetScheduling(string idAdm, string id)
         {
-            try
-            {
-                Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
-                List<SchedulingEntity> results = new List<SchedulingEntity>();
-                foreach (PessoaJuridica pj in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in pj.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity p in s.DoctorEntity)
-                            {
-                                foreach (SchedulingEntity a in p.SchedulingEntity)
-                                {
-                                    results.Add(a);
-                                }
-                            }
-                        }
-                    }
-                }
-                SchedulingEntity scheduling = results.Where(x => x.Id == id).ToList()[0];
-                return scheduling;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            return null;
         }
 
         //Atualiza o adm a partir do Cadastro de um servico
-        public static async Task<Document> RegisterSchedulingEntity(Administrator adm, SchedulingEntity agend)
-        {
-            try
+        public static async Task<Document> RegisterScheduling(AdministratorEntityDTO adm, SchedulingEntity agend)
+        {            return null;
+
+        }
+
+        public static async Task<Document> UpdateScheduling(AdministratorEntityDTO adm, SchedulingEntity scheduling)
+        {            return null;
+
+        }
+
+        public static async Task<Document> DeleteScheduling(SchedulingEntity agend, AdministratorEntityDTO adm)
+        {            return null;
+
+        }
+
+
+
+
+        // -------------------------------------------- PATIENT -------------------------------------
+        public static async Task<IEnumerable<PatientEntity>> ListPatients()
+        {          
+              try
             {
-                // recebe uma lista de pjs
-                foreach (PessoaJuridica p in adm.PessoaJuridica)
+                IDocumentQuery<PatientEntity> query = client.CreateDocumentQuery<PatientEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
+                List<PatientEntity> results = new List<PatientEntity>();
+                while (query.HasMoreResults)
                 {
-                    foreach (Categoria c in p.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity pro in s.DoctorEntity)
-                            {
-                                // verificar lista de categorias
-                                if (pro.SchedulingEntity == null)
-                                {
-                                    pro.SchedulingEntity = new List<SchedulingEntity>();
-                                }
-                                if (pro.Id == agend.IdDoctorEntity)
-                                {
-                                    pro.SchedulingEntity.Add(agend);
-                                }
-                            }
-                        }
-                    }
+                    results.AddRange(await query.ExecuteNextAsync<PatientEntity>());
                 }
-                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, adm.Id), adm);
+
+                return results;
             }
             catch (Exception e)
             {
@@ -534,83 +284,43 @@ namespace Athenas.Repository
             }
         }
 
-        public static async Task<Document> AtualizarSchedulingEntity(Administrator adm, SchedulingEntity scheduling)
-        {
-            try
-            {
-                foreach (PessoaJuridica pj in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in pj.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity p in s.DoctorEntity)
-                            {
-                                foreach (SchedulingEntity a in p.SchedulingEntity)
-                                {
-                                    if (a.Id == scheduling.Id)
-                                    {
-                                        a.Id = scheduling.Id;
-                                        a.Dia = scheduling.Dia;
-                                        a.Horario = scheduling.Horario;
-                                        a.Cliente = scheduling.Cliente;
-                                        a.IdDoctorEntity = scheduling.IdDoctorEntity;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, adm.Id), adm);
-            }
-            catch (Exception e)
-            {
+        public static async Task<PatientEntity> GetPatient(string cpf)
+        {            
+            try{
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, cpf));
+                return (PatientEntity)(dynamic)document;
+            }catch (Exception e){
                 return null;
             }
         }
 
-        public static async Task<Document> DeletarSchedulingEntity(SchedulingEntity agend, Administrator adm)
-        {
-            try
-            {
-                foreach (PessoaJuridica pj in adm.PessoaJuridica)
-                {
-                    foreach (Categoria c in pj.Categoria)
-                    {
-                        foreach (Servico s in c.Servico)
-                        {
-                            foreach (DoctorEntity p in s.DoctorEntity)
-                            {
-                                foreach (SchedulingEntity a in p.SchedulingEntity)
-                                {
-                                    if (a.Id == agend.Id)
-                                    {
-                                        ICollection<SchedulingEntity> agends = new List<SchedulingEntity>(p.SchedulingEntity);
 
-                                        var item = agends.SingleOrDefault(x => x.Id == agend.Id);
-                                        if (item != null)
-                                        {
-                                            agends.Remove(item);
-                                            p.SchedulingEntity = agends;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, adm.Id), adm);
-            }
-            catch (Exception e)
-            {
+        //Atualiza o adm a partir do Cadastro de um servico
+        public static async Task<Document> RegisterPatient(PatientEntity pat)
+        {            
+            try{
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), pat);
+            } catch (Exception e){
                 return null;
             }
+
         }
+
+        public static async Task<Document> UpdatePatient(AdministratorEntityDTO adm, SchedulingEntity scheduling)
+        {            return null;
+
+        }
+
+        public static async Task<Document> DeletePatient(SchedulingEntity agend, AdministratorEntityDTO adm)
+        {            return null;
+
+        }
+
+
 
 
         // -------------------------------------------- TOKEN -----------------------------------------
-        public static async Task<Administrator> GetEmailAsync(string email, string senha)
+        public static async Task<AdministratorEntityDTO> GetEmailAsync(string email, string senha)
         {
             try
             {
@@ -625,7 +335,7 @@ namespace Athenas.Repository
                     results.AddRange(await query.ExecuteNextAsync<T>());
                 }
 
-                return (Administrator)(dynamic)results;
+                return (AdministratorEntityDTO)(dynamic)results;
             }
             catch (Exception e)
             {
@@ -633,12 +343,12 @@ namespace Athenas.Repository
             }
         }
 
-        public static async Task<Administrator> GetSenhaAsync(string senha)
+        public static async Task<AdministratorEntityDTO> GetPasswordAsync(string senha)
         {
             try
             {
                 Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, senha));
-                return (Administrator)(dynamic)document;
+                return (AdministratorEntityDTO)(dynamic)document;
             }
             catch (Exception e)
             {

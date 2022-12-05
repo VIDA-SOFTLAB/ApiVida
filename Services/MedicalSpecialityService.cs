@@ -5,22 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ApiVida.Service.Interfaces;
 using Microsoft.Azure.Documents;
-using ApiVida.Domain;
+using ApiVida.Domain.Entities;
 using ApiVida.Repository;
+using ApiVida.Service.Interfaces;
+
 namespace ApiVida.Service
 {
-    public class MedicalSpecialityService : IMedicalSpecialityService
+    public class MedicalSpecialityService //: IMedicalSpecialityService
     {
 
+/*
         public void Dispose()
         {
             //throw new NotImplementedException();
         }
 
         //Listagem de especialidade
-        public async Task<IEnumerable<MedicalSpeciality>> ListMedicalSpecialitys(string idAdm)
+        public async Task<IEnumerable<MedicalSpecialityEntity>> ListMedicalSpecialitys(string idAdm)
         {
-            List<MedicalSpeciality> especialidades = (List<MedicalSpeciality>)await Repository<MedicalSpeciality>.ListMedicalSpecialitys(idAdm);
+            List<MedicalSpecialityEntity> especialidades = (List<MedicalSpecialityEntity>)await Repository<MedicalSpecialityEntity>.ListMedical(idAdm);
 
             if (especialidades == null)
             {
@@ -33,9 +36,9 @@ namespace ApiVida.Service
         }
 
         //Listagem de especialidade
-        public async Task<IEnumerable<MedicalSpeciality>> ListAllMedicalSpecialitys(string idAdm)
+        public async Task<IEnumerable<MedicalSpecialityEntity>> ListAllMedicalSpecialitys(string idAdm)
         {
-            List<MedicalSpeciality> especialidades = (List<MedicalSpeciality>)await Repository<MedicalSpeciality>.ListAllMedicalSpecialitys(idAdm);
+            List<MedicalSpecialityEntity> especialidades = (List<MedicalSpecialityEntity>)await Repository<MedicalSpecialityEntity>.ListAllMedicalSpecialitys(idAdm);
 
             if (especialidades == null)
             {
@@ -48,23 +51,23 @@ namespace ApiVida.Service
         }
 
         //Cadastrar um especialidade
-        public async Task<MedicalSpeciality> CadastrarMedicalSpeciality(string idAdm, MedicalSpeciality especialidade)
+        public async Task<MedicalSpecialityEntity> CadastrarMedicalSpeciality(string idAdm, MedicalSpecialityEntity especialidade)
         {
             Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
 
-            MedicalSpeciality vali = await Repository<MedicalSpeciality>.PegarMedicalSpecialityPorNome2(adm, especialidade.Nome);
+            MedicalSpecialityEntity vali = await Repository<MedicalSpecialityEntity>.PegarMedicalSpecialityPorNome2(adm, especialidade.Nome);
 
             if (vali == null)
             {
 
-                var retorno = await Repository<MedicalSpeciality>.AddItem(especialidade);
+                var retorno = await Repository<MedicalSpecialityEntity>.AddItem(especialidade);
               //  especialidade = await Repository<PessoaJuridica>.PegarMedicalSpecialityPorNome(especialidade.Nome);
 
                 especialidade.Doctor = new List<Doctor>();
 
                 var retorno2 = await Repository<Administrator>.CadastrarMedicalSpeciality(adm, especialidade);
 
-                await Repository<MedicalSpeciality>.DeleteItem(especialidade.Id);
+                await Repository<MedicalSpecialityEntity>.DeleteItem(especialidade.Id);
 
                 if (adm == null || especialidade == null || retorno == null || retorno2 == null)
                 {
@@ -84,9 +87,9 @@ namespace ApiVida.Service
         }
 
         //Pegar um único especialidade
-        public async Task<MedicalSpeciality> PegarMedicalSpeciality(string idAdm, string id)
+        public async Task<MedicalSpecialityEntity> PegarMedicalSpeciality(string idAdm, string id)
         {
-            MedicalSpeciality especialidade = await Repository<MedicalSpeciality>.PegarMedicalSpeciality(idAdm, id);
+            MedicalSpecialityEntity especialidade = await Repository<MedicalSpecialityEntity>.PegarMedicalSpeciality(idAdm, id);
 
             if (especialidade == null)
             {
@@ -99,10 +102,10 @@ namespace ApiVida.Service
         }
 
         //Atualizar um especialidade
-        public async Task<MedicalSpeciality> AtualizarMedicalSpeciality(string idAdm, MedicalSpeciality especialidade)
+        public async Task<MedicalSpecialityEntity> AtualizarMedicalSpeciality(string idAdm, MedicalSpecialityEntity especialidade)
         {
             Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
-            var retorno = await Repository<MedicalSpeciality>.AtualizarMedicalSpeciality(adm, especialidade);
+            var retorno = await Repository<MedicalSpecialityEntity>.AtualizarMedicalSpeciality(adm, especialidade);
 
             if (especialidade == null || adm == null || retorno == null)
             {
@@ -117,7 +120,7 @@ namespace ApiVida.Service
         //Deletar um especialidade
         public async Task DeletarMedicalSpeciality(string idAdm, string id)
         {
-            MedicalSpeciality especialidade = await Repository<MedicalSpeciality>.PegarMedicalSpeciality(idAdm, id);
+            MedicalSpecialityEntity especialidade = await Repository<MedicalSpecialityEntity>.PegarMedicalSpeciality(idAdm, id);
 
             Administrator adm = await Repository<Administrator>.GetAdm(idAdm);
 
@@ -127,8 +130,8 @@ namespace ApiVida.Service
             }
             else
             {
-                await Repository<MedicalSpeciality>.DeletarMedicalSpeciality(especialidade, adm);
+                await Repository<MedicalSpecialityEntity>.DeletarMedicalSpeciality(especialidade, adm);
             }
-        }
+        }*/
     }
 }

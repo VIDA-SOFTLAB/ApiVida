@@ -4,24 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiVida.Domain;
 using Microsoft.Azure.Documents;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Service.Interfaces
 {
     public interface IMedicalSpecialityService : IDisposable
     {
         //Listagem de todas especialidades
-        Task<IEnumerable<MedicalSpeciality>> ListMedicalSpecialitys(string idAdm);
+        Task<IEnumerable<MedicalSpecialityEntity>> ListMedicalSpecialitys(string idAdm);
 
         //Cadastrar uma especialidade
-        Task<MedicalSpeciality> CadastrarMedicalSpeciality(string idAdm, MedicalSpeciality esp);
+        Task<MedicalSpecialityEntity> AddMedicalSpeciality(string idAdm, MedicalSpecialityEntity esp);
 
         //Pegar uma única especialidade
-        Task<MedicalSpeciality> PegarMedicalSpeciality(string idAdm, string id);
+        Task<MedicalSpecialityEntity> GetMedicalSpeciality(string idAdm, string id);
 
         //Atualizar uma especialidade
-        Task<MedicalSpeciality> AtualizarMedicalSpeciality(string idAdm, MedicalSpeciality esp);
+        Task<MedicalSpecialityEntity> UpdateMedicalSpeciality(string idAdm, MedicalSpecialityEntity esp);
 
         //Deletar uma especialidade
-        Task DeletarMedicalSpeciality(string idAdm, string id);
+        Task DeleteMedicalSpeciality(string idAdm, string id);
     }
 }

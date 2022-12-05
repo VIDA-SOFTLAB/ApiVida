@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using ApiVida.Domain.Errors;
+using ApiVida.Domain.Entities;
 
-namespace ApiVida.Entities
+namespace ApiVida.Domain.Entities
 {
     public class UserEntity
     {
@@ -61,7 +63,7 @@ namespace ApiVida.Entities
 
         [Required(ErrorMessage = ErrorBase.erro_nec)]
         [JsonProperty(PropertyName = "adress")]
-        public Adress Adress {get; set;}
+        public AdressEntity Adress {get; set;}
 
     }
 }

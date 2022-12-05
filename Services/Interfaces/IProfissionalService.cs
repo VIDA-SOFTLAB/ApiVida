@@ -4,21 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiVida.Domain;
 using Microsoft.Azure.Documents;
+using ApiVida.Domain.Entities;
+
 namespace ApiVida.Service.Interfaces
 {
     public interface IDoctorService : IDisposable
     {
         //Listagem de todos doctors
-        Task<IEnumerable<Doctor>> ListDoctors(string idAdm, string idMedicalSpeciality);
+        Task<IEnumerable<DoctorEntity>> ListDoctors(string idAdm, string idMedicalSpeciality);
 
         //Cadastrar um doctor
-        Task<Doctor> AddDoctor(string idAdm, string idMedicalSpeciality, Doctor pro, Scheduling ag);
+        Task<DoctorEntity> AddDoctor(string idAdm, string idMedicalSpeciality, DoctorEntity pro);
 
         //Pegar um único doctor
-        Task<Doctor> GetDoctor(string idAdm, string id);
+        Task<DoctorEntity> GetDoctor(string idAdm, string id);
 
         //Atualizar um doctor
-        Task<Doctor> UpdateDoctor(string idAdm, Doctor doctor, Scheduling ag);
+        Task<DoctorEntity> UpdateDoctor(string idAdm, DoctorEntity doctor);
 
         //Deletar um doctor
         Task DeleteDoctor(string idAdm, string id);

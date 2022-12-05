@@ -4,22 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiVida.Domain;
 using Microsoft.Azure.Documents;
+using ApiVida.Domain.Entities;
 
 namespace ApiVida.Service.Interfaces
 {
     public interface IMedicalInsuranceService : IDisposable
     {
         //Listagem de todos medicalinsurances
-        Task<IEnumerable<MedicalInsurance>> ListMedicalInsurances(string idAdm);
+        Task<IEnumerable<MedicalInsuranceEntity>> ListMedicalInsurances(string idAdm);
+
+
+        //Listagem de todos medicalinsurances do sistema
+        Task<IEnumerable<MedicalInsuranceEntity>> ListAllMedicalInsurances(string idAdm);
+
 
         //Cadastrar um medicalinsurance
-        Task<MedicalInsurance> AddMedicalInsurance(string idAdm, MedicalInsurance medicalinsurance);
+        Task<MedicalInsuranceEntity> AddMedicalInsurance(string idAdm, MedicalInsuranceEntity medicalinsurance);
 
         //Pegar um único serviço
-        Task<MedicalInsurance> GetMedicalInsurance(string idAdm, string id);
+        Task<MedicalInsuranceEntity> GetMedicalInsurance(string idAdm, string id);
 
         //Atualizar um medicalinsurance
-        Task<MedicalInsurance> UpdateMedicalInsurance(string idAdm, MedicalInsurance medicalinsurance);
+        Task<MedicalInsuranceEntity> UpdateMedicalInsurance(string idAdm, MedicalInsuranceEntity medicalinsurance);
 
         //Deletar um medicalinsurance
         Task DeleteMedicalInsurance(string idAdm, string id);

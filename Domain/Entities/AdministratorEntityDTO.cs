@@ -7,7 +7,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ApiVida.Domain
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ApiVida.Domain.Errors;
+
+namespace ApiVida.Domain.Entities
 {
     public class AdministratorEntityDTO
     {
@@ -23,6 +29,9 @@ namespace ApiVida.Domain
         [JsonProperty(PropertyName = "password")]
         [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
         public string Password { get; set; }
+
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
         // Hashear Password
         public void HashearPassword()
