@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Athenas.Service.Interfaces;
+using ApiVida.Service.Interfaces;
 using Microsoft.Azure.Documents;
-using Athenas.Domain;
-using Athenas.Repository;
-namespace Athenas.Service
+using ApiVida.Domain;
+using ApiVida.Repository;
+namespace ApiVida.Service
 {
     public class MedicalSpecialityService : IMedicalSpecialityService
     {

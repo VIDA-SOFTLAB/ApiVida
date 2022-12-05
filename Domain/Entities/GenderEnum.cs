@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Athenas.Domain
+namespace ApiVida.Domain
 {
     public enum GenderEnum
     {

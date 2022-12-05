@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace Athenas.Domain
+namespace ApiVida.Domain
 {
     public class MedicalCenterEntity
     {
@@ -22,7 +22,6 @@ namespace Athenas.Domain
         public AdressEntity CenterAdress { get; set; }
 
        [JsonProperty(PropertyName = "medicalSpecialty")]
-        public virtual ICollection<Medi
-        calSpecialityEntity> MedicalSpecialty { get; set; }
+        public virtual ICollection<MedicalSpecialityEntity> MedicalSpecialty { get; set; }
     }
 }

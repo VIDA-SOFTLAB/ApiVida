@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Athenas.Domain;
+using ApiVida.Domain;
 using Microsoft.AspNetCore.Cors;
-using Athenas.Repository;
-using Athenas.Service.Interfaces;
+using ApiVida.Repository;
+using ApiVida.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Athenas.Controllers;
+using ApiVida.Controllers;
 
-namespace Athenas.Controllers
+namespace ApiVida.Controllers
 {
 	[Route("api/[controller]/")]
 	[ApiController]

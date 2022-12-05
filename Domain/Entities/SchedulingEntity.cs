@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace Athenas.Domain
+namespace ApiVida.Domain
 {
     public class SchedulingEntity
     {

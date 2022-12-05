@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Athenas.Domain;
+using ApiVida.Domain;
 using Microsoft.Azure.Documents;
 
-namespace Athenas.Service.Interfaces
+namespace ApiVida.Service.Interfaces
 {
     public interface IMedicalSpecialityService : IDisposable
     {

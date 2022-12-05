@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Athenas.Repository;
+using ApiVida.Repository;
 using Microsoft.AspNetCore.Cors;
-using Athenas.Service.Interfaces;
-using Athenas.Domain;
+using ApiVida.Service.Interfaces;
+using ApiVida.Domain;
 
-namespace Athenas.Controllers
+namespace ApiVida.Controllers
 {
     [Route("api/[controller]/")]
     [EnableCors("AllowAllHeaders")]

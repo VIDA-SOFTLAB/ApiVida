@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace Athenas.Domain
+namespace ApiVida.Domain
 {
     public class MedicalSpecialityEntityDTO
     {

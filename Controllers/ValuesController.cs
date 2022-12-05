@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Athenas.Controllers
+namespace ApiVida.Controllers
 {
     [Route("api/[controller]")]
 	[EnableCors("AllowAllHeaders")]

@@ -6,8 +6,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using UserEntity;
 
-namespace Athenas.Domain
+namespace ApiVida.Domain
 {
 
     public class AdmEntity : UserEntity

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Athenas.JwtDomains;
-using Athenas.Domain;
-using Athenas.Repository;
+using ApiVida.JwtDomains;
+using ApiVida.Domain;
+using ApiVida.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace Athenas.Controllers
+namespace ApiVida.Controllers
 {
 
     [Route("api/[controller]")]
