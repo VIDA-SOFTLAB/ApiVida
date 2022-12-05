@@ -60,7 +60,8 @@ namespace ApiVida
 					});
 
 			services.RegisterServices();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+         //   services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllHeaders",
@@ -86,7 +87,7 @@ namespace ApiVida
 
             app.UseMvc();
 
-            Repository<AdmEntity>.Initialize("Collection");
+//            Repository<AdmEntity>.Initialize("Collection");
             Repository<PatientEntity>.Initialize("Collection");	
         }
     }
@@ -96,7 +97,7 @@ namespace ApiVida
         public static IServiceCollection RegisterServices(
             this IServiceCollection services)
         {
-            services.AddTransient<IAdministratorService, AdministratorService>();
+//            services.AddTransient<IAdministratorService, AdministratorService>();
             services.AddTransient<IPatienteService, PatientService>();
             return services;
         }

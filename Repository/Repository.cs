@@ -15,11 +15,12 @@ namespace ApiVida.Repository
 {
     public class Repository<T> where T : class
     {
-        private static readonly string Endpoint = "https://db-vida.documents.azure.com/";
-        private static readonly string Key = "CqzzcSBParBTTTcpgVLckyWOmpimIPNq6bLnlFTPg80CkyY8QqusQbNLmnt5WxVu9i1TGCQPRG2DACDbHy0Ilg=="; //C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
-        private static readonly string DatabaseId = "DBVida";
-        private static string CollectionId = "ConteinerVida";
+        private static readonly string Endpoint = "https://vida-nosql.documents.azure.com/";
+        private static readonly string Key = "i1p7r4kC1rYj90Yu8astkt0y9S5xjHOTesOhq3lpNrdaYDXHNYwtCQbC0VsHD9esbunRpwHyot6GACDbmHudyg=="; //C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
+        private static readonly string DatabaseId = "VidaDB";
+        private static string CollectionId = "VidaCollection";
         private static DocumentClient client;
+
 
 
         // TODO: listar, cdastrar, deletar e dar update em doctor, patient, schedulings..
@@ -37,6 +38,7 @@ namespace ApiVida.Repository
         //Verifica se determinado banco de dados existe e se não exisitr o cria
         private static async Task CreateDatabaseIfNotExistsAsync()
         {
+
             try
             {
                 await client.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(DatabaseId));
@@ -57,9 +59,15 @@ namespace ApiVida.Repository
         //Verifica se uma collection existe e se não existir a cria
         private static async Task CreateCollectionIfNotExistsAsync()
         {
+
+                 
+            DocumentCollection myCollection = new DocumentCollection();
+            myCollection.Id = "ContainerVida";
+            myCollection.PartitionKey.Paths.Add("/address");
             try
             {
-                await client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId));
+              await client.CreateDocumentCollectionAsync(UriFactory.CreateDatabaseUri(DatabaseId), myCollection,
+    new RequestOptions { OfferThroughput = 400 });
             }
             catch (DocumentClientException e)
             {
