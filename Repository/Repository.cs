@@ -17,8 +17,8 @@ namespace ApiVida.Repository
     {
         private static readonly string Endpoint = "https://db-vida.documents.azure.com:443/";
         private static readonly string Key = "CqzzcSBParBTTTcpgVLckyWOmpimIPNq6bLnlFTPg80CkyY8QqusQbNLmnt5WxVu9i1TGCQPRG2DACDbHy0Ilg=="; //C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
-        private static readonly string DatabaseId = "VidaDB5z00";
-        private static string CollectionId = "ContainerVida5z00";
+        private static readonly string DatabaseId = "VidaDBteste03";
+        private static string CollectionId = "ContainerVidateste03";
         private static DocumentClient client;
 
 
@@ -31,8 +31,8 @@ namespace ApiVida.Repository
         {
             CollectionId = collectionId;
             client = new DocumentClient(new Uri(Endpoint), Key, new ConnectionPolicy { EnableEndpointDiscovery = false });
-            CreateDatabaseIfNotExistsAsync().Wait();
-            CreateCollectionIfNotExistsAsync().Wait();
+  //          CreateDatabaseIfNotExistsAsync().Wait();
+//            CreateCollectionIfNotExistsAsync().Wait();
         }
 
         //Verifica se determinado banco de dados existe e se não exisitr o cria

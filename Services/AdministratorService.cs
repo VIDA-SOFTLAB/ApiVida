@@ -50,6 +50,8 @@ namespace ApiVida.Service
             {
                 return adm;
             }
+
+            return adm;
         }
 
         //Pegar um único adm
