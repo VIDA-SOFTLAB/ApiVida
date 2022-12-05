@@ -22,7 +22,7 @@ namespace ApiVida
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://localhost:5000", "http://172.16.10.5:5000")
+                .UseUrls("http://localhost:5000")
                 .UseStartup<Startup>();
     }
 
