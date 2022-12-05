@@ -17,6 +17,12 @@ namespace ApiVida.Domain.Entities
 
     public class AdmEntity : UserEntity
     {
+
+        [Key]
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+
         [Required(ErrorMessage = ErrorBase.erro_nec)]
         [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
         [MaxLength(64, ErrorMessage = ErrorBase.erro_max)]

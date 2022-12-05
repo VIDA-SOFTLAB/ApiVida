@@ -36,11 +36,11 @@ namespace ApiVida.Service
         }
 
         //Cadastrar um adm
-        public async Task<AdministratorEntityDTO> AddAdm(AdministratorEntityDTO adm)
+        public async Task<AdmEntity> AddAdm(AdmEntity adm)
         {
             adm.HashearPassword();
-            await Repository<AdministratorEntityDTO>.RegisterItem(adm);
-            adm = await Repository<AdministratorEntityDTO>.GetAdmByEmail(adm.Email);
+            await Repository<AdmEntity>.RegisterItem(adm);
+            adm = await Repository<AdmEntity>.GetAdmByEmail(adm.Email);
 
             if (adm == null)
             {
@@ -51,7 +51,6 @@ namespace ApiVida.Service
                 return adm;
             }
 
-            return adm;
         }
 
         //Pegar um único adm

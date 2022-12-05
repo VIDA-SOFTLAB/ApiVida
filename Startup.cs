@@ -87,8 +87,8 @@ namespace ApiVida
 
             app.UseMvc();
 
-            Repository<AdmEntity>.Initialize("Collection");
-            Repository<PatientEntity>.Initialize("Collection");	
+            Repository<AdmEntity>.Initialize("Adm");
+            Repository<PatientEntity>.Initialize("Patient");	
         }
     }
 

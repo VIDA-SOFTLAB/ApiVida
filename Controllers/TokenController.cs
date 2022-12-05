@@ -23,13 +23,13 @@ namespace ApiVida.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]AdministratorEntityDTO loginModel)
+        public async Task<IActionResult> Post([FromBody]AdmEntity loginModel)
         {
             //List<Administrator> administradores = (List<Administrator>)await Repository<Administrator>.ListAdm();
 
             //Administrator admin = administradores.FirstOrDefault(x => x.Email == loginModel.Email);
 
-            AdministratorEntityDTO admin = await Repository<AdministratorEntityDTO>.GetAdmByEmail(loginModel.Email);
+            AdmEntity admin = await Repository<AdmEntity>.GetAdmByEmail(loginModel.Email);
 
             if (admin == null)
                 return Unauthorized();
@@ -47,11 +47,10 @@ namespace ApiVida.Controllers
             {
                 var token = new JwtTokenBuilder()
                                 .AddSecurityKey(JwtSecurityKey.Create("a-password-very-big-to-be-good"))
-                                .AddIssuer("admin.com")
-                                .AddAudience("admin.com")
-                                .AddNameId(admin.Email)
-                                .AddClaim("administrador", admin.Id)
-                                .AddExpiry(1440)
+                                .AddIssuer(admin.Email)
+                                .AddAudience(admin.Email)
+                                .AddNameId(admin.Cpf)
+                                .AddClaim("administratorNow", admin.Id)
                                 .Build();
                 
 
@@ -60,6 +59,7 @@ namespace ApiVida.Controllers
                     { "token", token }
                 };
 
+                Console.WriteLine(o);
                 return Ok(o);
             }
         }

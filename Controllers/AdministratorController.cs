@@ -53,9 +53,9 @@ namespace ApiVida.Controllers
         //Cadastra um adm
         [HttpPost]
         //public async Task<ActionResult<Administrator>> Post([FromBody] Administrator administrator)
-        public async Task<IActionResult> Post([FromBody] AdministratorEntityDTO administrator)
+        public async Task<IActionResult> Post([FromBody] AdmEntity administrator)
         {
-            AdministratorEntityDTO admin = await administratorService.AddAdm(administrator);
+            AdmEntity admin = await administratorService.AddAdm(administrator);
 
             if (admin == null)
             {

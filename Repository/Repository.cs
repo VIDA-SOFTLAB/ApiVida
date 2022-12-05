@@ -31,8 +31,8 @@ namespace ApiVida.Repository
         {
             CollectionId = collectionId;
             client = new DocumentClient(new Uri(Endpoint), Key, new ConnectionPolicy { EnableEndpointDiscovery = false });
-  //          CreateDatabaseIfNotExistsAsync().Wait();
-//            CreateCollectionIfNotExistsAsync().Wait();
+            CreateDatabaseIfNotExistsAsync().Wait();
+            CreateCollectionIfNotExistsAsync(collectionId).Wait();
         }
 
         //Verifica se determinado banco de dados existe e se não exisitr o cria
@@ -57,10 +57,10 @@ namespace ApiVida.Repository
         }
 
         //Verifica se uma collection existe e se não existir a cria
-        private static async Task CreateCollectionIfNotExistsAsync()
+        private static async Task CreateCollectionIfNotExistsAsync(string collectionId)
         {
             DocumentCollection myCollection = new DocumentCollection();
-            myCollection.Id = "ContainerVida";
+            myCollection.Id = collectionId;
             try
             {
               await client.CreateDocumentCollectionAsync(UriFactory.CreateDatabaseUri(DatabaseId), myCollection,
@@ -70,6 +70,7 @@ namespace ApiVida.Repository
             {
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
+                    Console.WriteLine("Não encontrou collection!");
                     await client.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(DatabaseId),
                         new DocumentCollection
@@ -151,13 +152,13 @@ namespace ApiVida.Repository
         }
 
         // Busca um administrador especificao by seu email
-        public static async Task<AdministratorEntityDTO> GetAdmByEmail(string email)
+        public static async Task<AdmEntity> GetAdmByEmail(string email)
         {
             try
             {
-                AdministratorEntityDTO adm = new AdministratorEntityDTO();
+                AdmEntity adm = new AdmEntity();
 
-                adm = client.CreateDocumentQuery<AdministratorEntityDTO>(
+                adm = client.CreateDocumentQuery<AdmEntity>(
                     UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
                     new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
                         .Where(x => x.Email == email)

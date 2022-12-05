@@ -15,7 +15,7 @@ namespace ApiVida.Service.Interfaces
         Task<IEnumerable<AdministratorEntityDTO>> ListAdministrators();
 
 		//Cadastrar um adm
-		Task<AdministratorEntityDTO> AddAdm(AdministratorEntityDTO adm);
+		Task<AdmEntity> AddAdm(AdmEntity adm);
 
 		//Pegar um único adm por seu id
 		Task<AdministratorEntityDTO> GetAdm(string id);

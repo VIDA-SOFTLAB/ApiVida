@@ -30,26 +30,33 @@ namespace ApiVida.Domain.Entities
         [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
         public string Password { get; set; }
 
+        [Key]
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
         // Hashear Password
         public void HashearPassword()
         {
-            // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(this.Password + ErrorBase.global_salt));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
+            try{
+                // Create a SHA256   
+                using (SHA256 sha256Hash = SHA256.Create())
                 {
-                    builder.Append(bytes[i].ToString("x2"));
+                    // ComputeHash - returns byte array  
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(this.Password + ErrorBase.global_salt));
+
+                    // Convert byte array to a string   
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < bytes.Length; i++)
+                    {
+                        builder.Append(bytes[i].ToString("x2"));
+                    }
+                    this.Password = builder.ToString();
                 }
-                this.Password = builder.ToString();
+            } catch(Exception e){
+                Console.WriteLine("deu erro: ", e.Message);
+                throw;
             }
+
         }
     }
 }
