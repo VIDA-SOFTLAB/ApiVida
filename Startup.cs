@@ -87,8 +87,16 @@ namespace ApiVida
 
             app.UseMvc();
 
-            Repository<AdmEntity>.Initialize("Adm4");
-            Repository<PatientEntity>.Initialize("Patient4");	
+            Repository<AdmEntity>.Initialize("Adm", "VidaBD");
+            Repository<PatientEntity>.Initialize("Patient", "VidaBD");	
+            Repository<PatientEntity>.Initialize("MedicalInsurancePlan", "VidaBD");	
+            Repository<PatientEntity>.Initialize("MedicalInsurance", "VidaBD");	     
+            Repository<PatientEntity>.Initialize("MedicalSpeciality", "VidaBD");     
+            Repository<PatientEntity>.Initialize("MedicalCenter", "VidaBD");     
+            Repository<PatientEntity>.Initialize("Scheduling", "VidaBD");	    
+            Repository<PatientEntity>.Initialize("Doctor", "VidaBD");	    
+            Repository<PatientEntity>.Initialize("Adress", "VidaBD");     
+
         }
     }
 

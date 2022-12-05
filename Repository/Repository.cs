@@ -17,8 +17,8 @@ namespace ApiVida.Repository
     {
         private static readonly string Endpoint = "https://db-vida.documents.azure.com:443/";
         private static readonly string Key = "CqzzcSBParBTTTcpgVLckyWOmpimIPNq6bLnlFTPg80CkyY8QqusQbNLmnt5WxVu9i1TGCQPRG2DACDbHy0Ilg=="; //C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
-        private static readonly string DatabaseId = "VidaDBteste03";
-        private static string CollectionId = "ContainerVidateste03";
+        private static readonly string DatabaseId = "VidaBD";
+        private static string CollectionId = "ContainerVidaBD";
         private static DocumentClient client;
 
 
@@ -27,12 +27,12 @@ namespace ApiVida.Repository
 
         // -------------------------------------------- BDO -------------------------------------
         //Inicializa as collections especificadas (método chamado na classe Startup)
-        public static void Initialize(string collectionId)
+        public static void Initialize(string collectionId, string databaseId)
         {
             CollectionId = collectionId;
             client = new DocumentClient(new Uri(Endpoint), Key, new ConnectionPolicy { EnableEndpointDiscovery = false });
             CreateDatabaseIfNotExistsAsync().Wait();
-            CreateCollectionIfNotExistsAsync(collectionId).Wait();
+            CreateCollectionIfNotExistsAsync(collectionId, databaseId).Wait();
         }
 
         //Verifica se determinado banco de dados existe e se não exisitr o cria
@@ -57,14 +57,18 @@ namespace ApiVida.Repository
         }
 
         //Verifica se uma collection existe e se não existir a cria
-        private static async Task CreateCollectionIfNotExistsAsync(string collectionId)
+        private static async Task CreateCollectionIfNotExistsAsync(string collectionId, string databaseId)
         {
             DocumentCollection myCollection = new DocumentCollection();
             myCollection.Id = collectionId;
             try
             {
-              await client.CreateDocumentCollectionAsync(UriFactory.CreateDatabaseUri(DatabaseId), myCollection,
-              new RequestOptions { OfferThroughput = 400 });
+                await client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(databaseId, collectionId));
+
+                // Create collection with 400 RU/s
+
+//              await client.CreateDocumentCollectionAsync(UriFactory.CreateDatabaseUri(DatabaseId), myCollection,
+  //            new RequestOptions { OfferThroughput = 400 });
             }
             catch (DocumentClientException e)
             {
@@ -72,10 +76,10 @@ namespace ApiVida.Repository
                 {
                     Console.WriteLine("Não encontrou collection!");
                     await client.CreateDocumentCollectionAsync(
-                        UriFactory.CreateDatabaseUri(DatabaseId),
+                        UriFactory.CreateDatabaseUri(databaseId),
                         new DocumentCollection
                         {
-                            Id = CollectionId
+                            Id = collectionId
                         },
                         new RequestOptions { OfferThroughput = 400 });
                 }
@@ -307,6 +311,7 @@ namespace ApiVida.Repository
             try{
                 return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), pat);
             } catch (Exception e){
+                Console.WriteLine("erro : ", e.Message);
                 return null;
             }
 
