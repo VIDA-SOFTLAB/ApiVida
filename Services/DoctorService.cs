@@ -36,7 +36,7 @@ namespace ApiVida.Service
         public async Task<DoctorEntity> AddDoctor(string idAdm, string idMedicalSpeciality, DoctorEntity pro)
         {
 
-            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(idAdm);
+            AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
             pro.IdMedicalSpeciality = idMedicalSpeciality;
 
             DoctorEntity vali = await Repository<DoctorEntity>.GetDoctorEntityByEmail2(adm, pro.Email);
@@ -71,7 +71,7 @@ namespace ApiVida.Service
         //Pegar um único doctor
         public async Task<DoctorEntity> GetDoctor(string idAdm, string id)
         {
-            DoctorEntity doctor = await Repository<DoctorEntity>.GetDoctorEntity(idAdm, id);
+            DoctorEntity doctor = await Repository<AdmEntity>.GetDoctorEntity(idAdm, id);
 
             if (doctor == null)
             {
@@ -86,7 +86,7 @@ namespace ApiVida.Service
         //Atualizar um doctor
         public async Task<DoctorEntity> UpdateDoctor(string idAdm, DoctorEntity doctor)
         {
-            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(idAdm);
+            AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
             var retorno = await Repository<DoctorEntity>.UpdateDoctorEntity(adm, doctor);
 
             if (doctor == null || adm == null || retorno == null)
@@ -103,7 +103,7 @@ namespace ApiVida.Service
         public async Task DeleteDoctor(string idAdm, string id)
         {
             DoctorEntity doctor = await Repository<DoctorEntity>.GetDoctorEntity(idAdm, id);
-            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(idAdm);
+            AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
 
             if (doctor == null || adm == null)
             {

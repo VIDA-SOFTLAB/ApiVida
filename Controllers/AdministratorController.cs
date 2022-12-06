@@ -43,7 +43,7 @@ namespace ApiVida.Controllers
 
         //Lista adm específico
         [HttpGet("{id}")]
-        public async Task<AdministratorEntityDTO> Get(string id)
+        public async Task<AdmEntity> Get(string id)
         {
 			return await administratorService.GetAdm(id);
         }
@@ -69,7 +69,7 @@ namespace ApiVida.Controllers
 
         //Atualiza registro de determinado adm
         [HttpPut("{id}")]
-        public async void Put(string id, [FromBody]AdministratorEntityDTO adm)
+        public async void Put(string id, [FromBody]AdmEntity adm)
         {
               await administratorService.UpdateAdm(id, adm);
         }

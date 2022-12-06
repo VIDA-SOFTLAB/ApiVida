@@ -35,13 +35,35 @@ namespace ApiVida.Controllers
             await patientService.RegisterPatient(patient);
         }
 
-        //Lista agendamento específico
-        // GET api/<controller>/5
-        [HttpGet("{cpf}")]
-        public async Task<PatientEntity> PegarPatient(string cpf)
+       // GET api/<controller>/5
+        [HttpGet("get/{cpf}")]
+        public async  Task<ActionResult<PatientEntity>> GetPatientByCpf(string cpf)
         {
-            PatientEntity patient = await patientService.GetPatient(cpf);
-            return patient;
+            try{
+                Console.WriteLine("get by cpf");
+                PatientEntity patient = await patientService.GetPatientByCpf(cpf);
+
+                if(patient != null){
+                    return Ok(patient);
+                } else{
+                    return NotFound();
+                }
+
+            }catch(Exception e){
+                Console.WriteLine("erro: ", e.Message);
+                return null;
+            }
+        }
+
+
+        // GET api/<controller>/5
+        [HttpGet("{idPatient}")]
+        public async Task<PatientEntity> GetPatient(string idPatient)
+        {
+
+            Console.WriteLine("procura por id PATIENT");
+
+            return await patientService.GetPatient(idPatient);
         }
 
         //Lista todos os patients
@@ -58,6 +80,21 @@ namespace ApiVida.Controllers
             {
                 return Ok(patients);
             }
+        }
+
+          //Atualiza registro de determinado adm
+        [HttpPut("{idPatient}")]
+        public async void Put(string idPatient, [FromBody]PatientEntity p)
+        {
+            Console.WriteLine("atualizando: ", idPatient);
+              await patientService.UpdatePatient(idPatient, p);
+        }
+
+  // Deleta um patient especifico
+        [HttpDelete("{idPatient}")]
+        public async void Delete(string idPatient)
+        {
+            await patientService.DeletePatient(idPatient);
         }
 
     }

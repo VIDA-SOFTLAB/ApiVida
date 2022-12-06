@@ -18,10 +18,10 @@ namespace ApiVida.Service.Interfaces
 		Task<AdmEntity> AddAdm(AdmEntity adm);
 
 		//Pegar um único adm por seu id
-		Task<AdministratorEntityDTO> GetAdm(string id);
+		Task<AdmEntity> GetAdm(string id);
 
 		//Atualizar um adm
-		Task<Document> UpdateAdm(string id, AdministratorEntityDTO adm);
+		Task<Document> UpdateAdm(string id, AdmEntity adm);
 
 		//Deletar um adm
 		Task DeleteAdm(string id);

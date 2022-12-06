@@ -54,9 +54,9 @@ namespace ApiVida.Service
         }
 
         //Pegar um único adm
-        public async Task<AdministratorEntityDTO> GetAdm(string id)
+        public async Task<AdmEntity> GetAdm(string id)
         {
-            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(id);
+            AdmEntity adm = await Repository<AdmEntity>.GetAdm(id, "Adm");
 
             if (adm == null)
             {
@@ -70,9 +70,9 @@ namespace ApiVida.Service
 
 
         //Atualizar um adm
-        public async Task<Document> UpdateAdm(string id, AdministratorEntityDTO adm)
+        public async Task<Document> UpdateAdm(string id, AdmEntity adm)
         {
-            AdministratorEntityDTO admin = await Repository<AdministratorEntityDTO>.GetAdm(id);
+            AdmEntity admin = await Repository<AdmEntity>.GetAdm(id, "Adm");
 
             if (adm.Email == null)
             {
@@ -91,7 +91,7 @@ namespace ApiVida.Service
 
             adm.Id = id;
 
-            return await Repository<AdministratorEntityDTO>.UpdateAdm(id, adm);
+            return await Repository<AdmEntity>.UpdateAdm(id, adm);
         }
 
 

@@ -119,12 +119,12 @@ namespace ApiVida.Repository
 
         // -------------------------------------------- ADMINISTRATOR -------------------------------------
 
-        public static async Task<T> GetAdm(string id)
+        public static async Task<AdmEntity> GetAdm(string id, string collectionId)
         {
             try
             {
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id));
-                return (T)(dynamic)document;
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, id));
+                return (AdmEntity)(dynamic)document;
             }
             catch (Exception e)
             {
@@ -201,7 +201,7 @@ namespace ApiVida.Repository
 
         }
 
-        public static async Task<DoctorEntity> GetDoctorEntityByEmail2(AdministratorEntityDTO adm, string email)
+        public static async Task<DoctorEntity> GetDoctorEntityByEmail2(AdmEntity adm, string email)
         {
                 return null;
 
@@ -214,20 +214,20 @@ namespace ApiVida.Repository
         }
 
         //Atualiza o adm a partir do Cadastro de um servico
-        public static async Task<Document> RegisterDoctorEntity(AdministratorEntityDTO adm, DoctorEntity prof)
+        public static async Task<Document> RegisterDoctorEntity(AdmEntity adm, DoctorEntity prof)
         {
                 return null;
 
         }
 
         //Atualiza a categoria a partir do Cadastro de Serviço
-        public static async Task<Document> UpdateDoctorEntity(AdministratorEntityDTO adm, DoctorEntity profissional)
+        public static async Task<Document> UpdateDoctorEntity(AdmEntity adm, DoctorEntity profissional)
         {
                 return null;
 
         }
 
-        public static async Task<Document> DeleteDoctorEntity(DoctorEntity prof, AdministratorEntityDTO adm)
+        public static async Task<Document> DeleteDoctorEntity(DoctorEntity prof, AdmEntity adm)
         {
                 return null;
 
@@ -295,12 +295,40 @@ namespace ApiVida.Repository
             }
         }
 
-        public static async Task<PatientEntity> GetPatient(string cpf)
+
+        public static async Task<PatientEntity> GetPatient(string idPatient, string collectionId)
         {            
-            try{
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, cpf));
+            try
+            {
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, idPatient));
                 return (PatientEntity)(dynamic)document;
-            }catch (Exception e){
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public static async Task<PatientEntity> GetPatientByCpf(string cpf, string collectionId)
+        {            
+             try
+            {
+                PatientEntity p = new PatientEntity();
+
+                p = client.CreateDocumentQuery<PatientEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
+                        .Where(x => x.Cpf == cpf)
+                        .AsEnumerable()
+                        .FirstOrDefault();
+                Console.WriteLine("peguei! ", p.UserName.ToString());
+
+                return p;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("erro ao PEGAR um patient por cpf: ", e.Message.ToString());
+
                 return null;
             }
         }
@@ -318,13 +346,30 @@ namespace ApiVida.Repository
 
         }
 
-        public static async Task<Document> UpdatePatient(AdministratorEntityDTO adm, SchedulingEntity scheduling)
-        {            return null;
+        public static async Task<Document> UpdatePatient(string idPatient, PatientEntity patient, string collectionId)
+        {           
+
+             try
+            {
+                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, idPatient), patient);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
 
         }
 
-        public static async Task<Document> DeletePatient(SchedulingEntity agend, AdministratorEntityDTO adm)
-        {            return null;
+        public static async Task<Document> DeletePatient(string idPatient, string collectionId)
+        {            
+             try
+            {
+               return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, idPatient));
+            }
+            catch (Exception e)
+            {
+                throw null;
+            }
 
         }
 
@@ -456,7 +501,7 @@ namespace ApiVida.Repository
         }
 
 //deletar medical center dentro de medicalinsurance
-        public static async Task<Document> DeleteMedicalCenter(MedicalCenterEntity mc, MedicalInsuranceEntity medicalInsurance)
+        public static async Task<Document> DeleteMedicalCenter(MedicalCenterEntity mc, MedicalInsuranceEntity medicalInsurance, string collectionId)
         {
             try
             {
@@ -469,7 +514,7 @@ namespace ApiVida.Repository
                     medicalInsurance.MedicalCenters = medicalCenters;
                 }
 
-                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, medicalInsurance.EnterpriseId), medicalInsurance);
+                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, medicalInsurance.EnterpriseId), medicalInsurance);
             }
             catch (Exception e)
             {
@@ -612,7 +657,8 @@ namespace ApiVida.Repository
         }
 
 //deletar medical center dentro de medicalinsurance
-        public static async Task<Document> DeleteMedicalInsurance(MedicalInsuranceEntity mi, ICollection<MedicalCenterEntity> medicalCenters)
+
+        public static async Task<Document> DeleteMedicalInsurance(MedicalInsuranceEntity mi, ICollection<MedicalCenterEntity> medicalCenters, string collectionId)
         {
             try
             {
@@ -627,7 +673,7 @@ namespace ApiVida.Repository
                }
 
 //                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, mi.EnterpriseId), mi);
-                return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, mi.EnterpriseId));
+                return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, mi.EnterpriseId));
 
             }
             catch (Exception e)
@@ -643,12 +689,12 @@ namespace ApiVida.Repository
 
 
         // -------------------------------------------- TOKEN -----------------------------------------
-        public static async Task<AdministratorEntityDTO> GetEmailAsync(string email, string senha)
+        public static async Task<AdministratorEntityDTO> GetEmailAsync(string email, string senha, string collectionId)
         {
             try
             {
                 IDocumentQuery<T> query = client.CreateDocumentQuery<T>(
-                UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
                 new FeedOptions { MaxItemCount = -1 })
                 .AsDocumentQuery();
 
@@ -666,11 +712,11 @@ namespace ApiVida.Repository
             }
         }
 
-        public static async Task<AdministratorEntityDTO> GetPasswordAsync(string senha)
+        public static async Task<AdministratorEntityDTO> GetPasswordAsync(string senha, string collectionId)
         {
             try
             {
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, senha));
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, senha));
                 return (AdministratorEntityDTO)(dynamic)document;
             }
             catch (Exception e)

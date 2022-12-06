@@ -126,7 +126,7 @@ namespace ApiVida.Service
         public async Task DeleteMedicalCenter(string idAdm, string idMedicalCenter, string idMedicalInsurance)
         {
             MedicalCenterEntity medicalCenter = await Repository<MedicalCenterEntity>.GetMedicalCenter(idMedicalCenter, "MedicalCenter");
-            AdministratorEntityDTO adm = await Repository<AdministratorEntityDTO>.GetAdm(idAdm);
+            AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
             MedicalInsuranceEntity mi = await Repository<MedicalInsuranceEntity>.GetMedicalInsurance(idMedicalInsurance, "MedicalInsurance");
 
 
@@ -136,7 +136,7 @@ namespace ApiVida.Service
             }
             else
             {
-                await Repository<MedicalCenterEntity>.DeleteMedicalCenter(medicalCenter, mi);
+                await Repository<MedicalCenterEntity>.DeleteMedicalCenter(medicalCenter, mi, "MedicalCenter");
             }
         }
     }

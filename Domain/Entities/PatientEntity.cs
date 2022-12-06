@@ -20,9 +20,7 @@ namespace ApiVida.Domain.Entities
 {
     public class PatientEntity: UserEntity
     {
-        [Key]
         [JsonProperty("cpf")]
-        [JsonIgnore]
         public string Cpf { get; set; }
 
        // [Required(ErrorMessage = ErrorBase.erro_camponec)]

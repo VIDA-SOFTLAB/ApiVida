@@ -12,7 +12,6 @@ namespace ApiVida.Domain.Entities
     {
         [Key]
         [JsonProperty(PropertyName = "id")]
-        [JsonIgnore]
         public string Id { get; set; }
 
         [Required(ErrorMessage = ErrorBase.erro_camponec)]

@@ -14,7 +14,6 @@ namespace ApiVida.Domain.Entities
 
         [Key]
         [JsonProperty(PropertyName = "userId")]
-        [JsonIgnore]
         public string UserId { get; set; }
 		
         [Required(ErrorMessage = ErrorBase.erro_camponec)]

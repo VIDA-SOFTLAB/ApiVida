@@ -14,8 +14,15 @@ namespace ApiVida.Service.Interfaces
         Task<Document> RegisterPatient(PatientEntity p);
 
         //Pegar um único cliente
-        Task<PatientEntity> GetPatient(string cpf);
+        Task<PatientEntity> GetPatient(string idPatient);
+        Task<PatientEntity> GetPatientByCpf(string cpf);
 
         Task<IEnumerable<PatientEntity>> ListPatients();
+
+        //Atualizar um patient
+		Task<Document> UpdatePatient(string id, PatientEntity p);
+
+        //Deletar um patient
+		Task DeletePatient(string id);
     }
 }

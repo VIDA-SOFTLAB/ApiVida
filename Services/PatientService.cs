@@ -18,17 +18,17 @@ namespace ApiVida.Service
             //throw new NotImplementedException();
         }
 
-        //Cadastrar um patient
-        public async Task<Document> RegisterPatient(PatientEntity patients)
+        //Cadastrar um patient 
+        public async Task<Document> RegisterPatient(PatientEntity patient)
         {
-            return await Repository<PatientEntity>.RegisterPatient(patients);
+            return await Repository<PatientEntity>.RegisterPatient(patient);
 
         }
 
-        //Pegar um único patient
-        public async Task<PatientEntity> PegarPatient(string cpf)
+        //Pegar um único patient por cpf
+        public async Task<PatientEntity> GetPatientByCpf(string cpf)
         {
-            PatientEntity patients = await Repository<PatientEntity>.GetPatient(cpf);
+            PatientEntity patients = await Repository<PatientEntity>.GetPatientByCpf(cpf, "Patient");
 
             if (patients == null)
             {
@@ -39,6 +39,22 @@ namespace ApiVida.Service
                 return patients;
             }
         }
+
+  //Pegar um único patient
+        public async Task<PatientEntity> GetPatient(string id)
+        {
+            PatientEntity p = await Repository<PatientEntity>.GetPatient(id, "Patient");
+
+            if (p == null)
+            {
+                throw new ArgumentException("O ID informado está incorreto ou ele não existe.", "PATIENT");
+            }
+            else
+            {
+                return p;
+            }
+        }
+
 
         public async Task<IEnumerable<PatientEntity>> ListPatients()
         {
@@ -54,14 +70,44 @@ namespace ApiVida.Service
             }
         }
 
-        public Task<Document> AddPatient(PatientEntity p)
+         //Atualizar um patient
+        public async Task<Document> UpdatePatient(string idPatient, PatientEntity p)
         {
-            throw new NotImplementedException();
+            PatientEntity patientDesatualizado = await Repository<PatientEntity>.GetPatient(idPatient, "Patient");
+
+            if (p.Email == null)
+            {
+                p.Email = patientDesatualizado.Email;
+            }
+
+            if (p.Cpf == null)
+            {
+                p.Cpf = patientDesatualizado.Cpf;
+            }
+
+            if (p.PhoneNumber == null)
+            {
+                p.PhoneNumber = patientDesatualizado.PhoneNumber;
+            }
+
+            p.UserId = idPatient;
+
+            return await Repository<PatientEntity>.UpdatePatient(idPatient, p, "Patient");
         }
 
-        public Task<PatientEntity> GetPatient(string cpf)
+          //Deletar um adm
+        public async Task DeletePatient(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await Repository<PatientEntity>.DeleteItem(id);
+            }
+            catch (ArgumentException e)
+            {
+                throw null;
+            }
+
         }
+
     }
 }
