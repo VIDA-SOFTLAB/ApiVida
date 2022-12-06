@@ -21,13 +21,13 @@ namespace ApiVida.Service
 
 
         //Listagem de adm
-        public async Task<IEnumerable<AdministratorEntityDTO>> ListAdministrators()
+        public async Task<IEnumerable<AdmEntity>> ListAdministrators()
         {
-            List<AdministratorEntityDTO> administrators = (List<AdministratorEntityDTO>)await Repository<AdministratorEntityDTO>.ListAdm();
+            List<AdmEntity> administrators = (List<AdmEntity>)await Repository<AdmEntity>.ListAdm();
             
             if (administrators == null)
             {
-                throw new ArgumentException("O ID informado está incorreto ou ele não existe.", "adm");
+                throw new ArgumentException("Não há adms aqui: ");
             }
             else
             {
@@ -100,7 +100,7 @@ namespace ApiVida.Service
         {
             try
             {
-                await Repository<AdministratorEntityDTO>.DeletarItem(id);
+                await Repository<AdministratorEntityDTO>.DeleteItem(id);
             }
             catch (ArgumentException e)
             {

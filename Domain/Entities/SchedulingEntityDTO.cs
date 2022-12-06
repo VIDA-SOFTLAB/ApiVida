@@ -14,12 +14,12 @@ namespace ApiVida.Domain.Entities
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [DataType(DataType.Date, ErrorMessage = ErrorBase.erro_for)]
         [JsonProperty(PropertyName = "dateComplet")]
         public DateTime DateComplet { get; set; }
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [DataType(DataType.DateTime, ErrorMessage = ErrorBase.erro_for)]
         [JsonProperty(PropertyName = "hour")]
         public DateTime hour { get; set; }

@@ -27,9 +27,9 @@ namespace ApiVida.Controllers
 
         //Lista todos os administratores
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdministratorEntityDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<AdmEntity>>> Get()
         {
-            List<AdministratorEntityDTO> administratores = (List<AdministratorEntityDTO>)await administratorService.ListAdministrators();
+            List<AdmEntity> administratores = (List<AdmEntity>)await administratorService.ListAdministrators();
 
             if (administratores == null)
             {

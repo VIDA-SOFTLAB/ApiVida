@@ -8,10 +8,10 @@ using ApiVida.Domain.Entities;
 
 namespace ApiVida.Service.Interfaces
 {
-    public interface IPatienteService : IDisposable
+    public interface IPatientService : IDisposable
     {
         //Cadastrar um cliente
-        Task<Document> AddPatient(PatientEntity p);
+        Task<Document> RegisterPatient(PatientEntity p);
 
         //Pegar um único cliente
         Task<PatientEntity> GetPatient(string cpf);

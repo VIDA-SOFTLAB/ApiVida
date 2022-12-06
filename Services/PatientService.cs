@@ -11,7 +11,7 @@ using ApiVida.Service.Interfaces;
 
 namespace ApiVida.Service
 {
-    public class PatientService : IPatienteService
+    public class PatientService : IPatientService
     {
         public void Dispose()
         {
@@ -19,7 +19,7 @@ namespace ApiVida.Service
         }
 
         //Cadastrar um patient
-        public async Task<Document> CadastrarPatient(PatientEntity patients)
+        public async Task<Document> RegisterPatient(PatientEntity patients)
         {
             return await Repository<PatientEntity>.RegisterPatient(patients);
 

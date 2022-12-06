@@ -12,7 +12,7 @@ namespace ApiVida.Service.Interfaces
     {
 
 		//Listagem de todos os adm
-        Task<IEnumerable<AdministratorEntityDTO>> ListAdministrators();
+        Task<IEnumerable<AdmEntity>> ListAdministrators();
 
 		//Cadastrar um adm
 		Task<AdmEntity> AddAdm(AdmEntity adm);

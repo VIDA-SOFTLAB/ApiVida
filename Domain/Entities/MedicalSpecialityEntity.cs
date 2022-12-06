@@ -15,13 +15,13 @@ namespace ApiVida.Domain.Entities
         [JsonProperty(PropertyName = "medicalSpecialtyId")]
         public string MedicalSpecialtyId { get; set; }
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [MinLength(2, ErrorMessage = ErrorBase.erro_min)]
         [MaxLength(127, ErrorMessage = ErrorBase.erro_max)]
         [JsonProperty(PropertyName = "medicalSpecialtyName")]
         public string MedicalSpecialtyName { get; set; }
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [MinLength(4, ErrorMessage = ErrorBase.erro_min)]
         [MaxLength(255, ErrorMessage = ErrorBase.erro_max)]
         [JsonProperty(PropertyName = "description")]

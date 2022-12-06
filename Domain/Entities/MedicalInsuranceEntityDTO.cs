@@ -14,7 +14,7 @@ namespace ApiVida.Domain.Entities
         [JsonProperty(PropertyName = "enterpriseId")]
         public string EnterpriseId { get; set; }
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [MinLength(3, ErrorMessage = ErrorBase.erro_min)]
         [MaxLength(63, ErrorMessage = ErrorBase.erro_max)]
         [JsonProperty(PropertyName = "enterpriseName")]

@@ -22,11 +22,12 @@ namespace ApiVida.Domain.Entities
     {
         [Key]
         [JsonProperty("cpf")]
+        [JsonIgnore]
         public string Cpf { get; set; }
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
-        [JsonProperty(PropertyName = "medicalInsurance")]
-        public MedicalInsuranceEntity MedicalInsurance {get; set;}
+       // [Required(ErrorMessage = ErrorBase.erro_camponec)]
+    //    [JsonProperty(PropertyName = "medicalInsurance")]
+   //     public MedicalInsuranceEntity MedicalInsurance {get; set;}
 
     }
 }

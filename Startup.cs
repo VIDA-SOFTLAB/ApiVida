@@ -106,7 +106,12 @@ namespace ApiVida
             this IServiceCollection services)
         {
             services.AddTransient<IAdministratorService, AdministratorService>();
-            services.AddTransient<IPatienteService, PatientService>();
+            services.AddTransient<IPatientService, PatientService>();
+            services.AddTransient<IMedicalInsuranceService, MedicalInsuranceService>();
+//            services.AddTransient<IMedicalSpecialityService, MedicalSpecialityService>();
+            services.AddTransient<IDoctorService, DoctorService>();
+  //          services.AddTransient<ISchedulingService, SchedulingService>();
+            
             return services;
         }
     }

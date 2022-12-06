@@ -15,19 +15,19 @@ namespace ApiVida.Service.Interfaces
 
 
         //Listagem de todos medicalinsurances do sistema
-        Task<IEnumerable<MedicalInsuranceEntity>> ListAllMedicalInsurances(string idAdm);
+        Task<IEnumerable<MedicalInsuranceEntity>> ListAllMedicalInsurances();
 
 
         //Cadastrar um medicalinsurance
-        Task<MedicalInsuranceEntity> AddMedicalInsurance(string idAdm, MedicalInsuranceEntity medicalinsurance);
+        Task<MedicalInsuranceEntity> RegisterMedicalInsurance(string idAdm, MedicalInsuranceEntity medicalinsurance);
 
         //Pegar um único serviço
-        Task<MedicalInsuranceEntity> GetMedicalInsurance(string idAdm, string id);
+        Task<MedicalInsuranceEntity> GetMedicalInsurance(string idAdm, string idMedicalInsurance);
 
         //Atualizar um medicalinsurance
         Task<MedicalInsuranceEntity> UpdateMedicalInsurance(string idAdm, MedicalInsuranceEntity medicalinsurance);
 
         //Deletar um medicalinsurance
-        Task DeleteMedicalInsurance(string idAdm, string id);
+        Task DeleteMedicalInsurance(string idAdm, string idMedicalInsurance);
     }
 }

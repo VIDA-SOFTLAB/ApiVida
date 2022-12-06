@@ -48,7 +48,7 @@ namespace ApiVida.Controllers
         [HttpGet("all/{idAdm}/{idMedicalInsurance}")]
         public async Task<ActionResult<IEnumerable<MedicalInsuranceEntity>>> ListAllMedicalInsurances(string idAdm)
         {
-            List<MedicalInsuranceEntity> medicalinsurances = (List<MedicalInsuranceEntity>)await medicalinsuranceService.ListAllMedicalInsurances(idAdm);
+            List<MedicalInsuranceEntity> medicalinsurances = (List<MedicalInsuranceEntity>)await medicalinsuranceService.ListAllMedicalInsurances();
             if (medicalinsurances == null)
             {
                 return NotFound();
@@ -73,7 +73,7 @@ namespace ApiVida.Controllers
         [HttpPost("{idAdm}/{idMedicalInsurance}")]
 		public async Task<ActionResult<MedicalInsuranceEntity>> AddMedicalInsurance(string idAdm, string idCat, [FromBody] MedicalInsuranceEntity medicalinsurance)
 		{
-            medicalinsurance = await medicalinsuranceService.AddMedicalInsurance(idAdm, medicalinsurance);
+            medicalinsurance = await medicalinsuranceService.RegisterMedicalInsurance(idAdm, medicalinsurance);
 
             if (medicalinsurance == null)
             {

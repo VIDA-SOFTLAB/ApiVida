@@ -23,7 +23,7 @@ namespace ApiVida.Domain.Entities
         public string Id { get; set; }
 
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
         [MaxLength(64, ErrorMessage = ErrorBase.erro_max)]
         [DataType(DataType.EmailAddress, ErrorMessage = ErrorBase.erro_for)]
@@ -31,7 +31,7 @@ namespace ApiVida.Domain.Entities
         [JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [JsonProperty(PropertyName = "password")]
         [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
         public string Password { get; set; }

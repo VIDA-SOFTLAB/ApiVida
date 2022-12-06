@@ -49,7 +49,7 @@ namespace ApiVida.Controllers
                                 .AddSecurityKey(JwtSecurityKey.Create("a-password-very-big-to-be-good"))
                                 .AddIssuer(admin.Email)
                                 .AddAudience(admin.Email)
-                                .AddNameId(admin.Cpf)
+                                .AddNameId(admin.Id)
                                 .AddClaim("administratorNow", admin.Id)
                                 .Build();
                 

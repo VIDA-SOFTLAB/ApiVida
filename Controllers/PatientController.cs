@@ -22,9 +22,9 @@ namespace ApiVida.Controllers
     public class PatientController : Controller
     {
 
-        private readonly IPatienteService patientService;
+        private readonly IPatientService patientService;
 
-        public PatientController(IPatienteService patientService_)
+        public PatientController(IPatientService patientService_)
         {
             this.patientService = patientService_;
         }
@@ -32,7 +32,7 @@ namespace ApiVida.Controllers
         [HttpPost]
         public async void AddPatient([FromBody] PatientEntity patient)
         {
-            await patientService.AddPatient(patient);
+            await patientService.RegisterPatient(patient);
         }
 
         //Lista agendamento específico

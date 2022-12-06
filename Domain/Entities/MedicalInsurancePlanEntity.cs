@@ -14,9 +14,10 @@ namespace ApiVida.Domain.Entities
 
         [Key]
         [JsonProperty(PropertyName = "planId")]
+        [JsonIgnore]
         public string PlanId { get; set; }
 
-        [Required(ErrorMessage = ErrorBase.erro_nec)]
+        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [MinLength(3, ErrorMessage = ErrorBase.erro_min)]
         [MaxLength(63, ErrorMessage = ErrorBase.erro_max)]
         [JsonProperty(PropertyName = "planName")]

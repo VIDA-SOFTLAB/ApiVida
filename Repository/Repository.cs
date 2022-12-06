@@ -105,7 +105,7 @@ namespace ApiVida.Repository
         }
 
 
-        public static async Task DeletarItem(string id)
+        public static async Task DeleteItem(string id)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace ApiVida.Repository
             }
         }
 
-        // -------------------------------------------- ADMINISTRADOR -------------------------------------
+        // -------------------------------------------- ADMINISTRATOR -------------------------------------
 
         public static async Task<T> GetAdm(string id)
         {
@@ -132,19 +132,19 @@ namespace ApiVida.Repository
             }
         }
 
-        public static async Task<IEnumerable<AdministratorEntityDTO>> ListAdm()
+        public static async Task<IEnumerable<AdmEntity>> ListAdm()
         {
             try
             {
-                IDocumentQuery<AdministratorEntityDTO> query = client.CreateDocumentQuery<AdministratorEntityDTO>(
+                IDocumentQuery<AdmEntity> query = client.CreateDocumentQuery<AdmEntity>(
                     UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
                     new FeedOptions { MaxItemCount = -1 })
                     .AsDocumentQuery();
 
-                List<AdministratorEntityDTO> results = new List<AdministratorEntityDTO>();
+                List<AdmEntity> results = new List<AdmEntity>();
                 while (query.HasMoreResults)
                 {
-                    results.AddRange(await query.ExecuteNextAsync<AdministratorEntityDTO>());
+                    results.AddRange(await query.ExecuteNextAsync<AdmEntity>());
                 }
 
                 return results;
@@ -271,6 +271,7 @@ namespace ApiVida.Repository
 
 
         // -------------------------------------------- PATIENT -------------------------------------
+        // TODO: add collectionId, databaseId
         public static async Task<IEnumerable<PatientEntity>> ListPatients()
         {          
               try
@@ -326,6 +327,317 @@ namespace ApiVida.Repository
         {            return null;
 
         }
+
+
+
+
+
+        // -------------------------------------------- MEDICALCENTER -------------------------------------
+        // lista os medicalcenters a partir de medicalinsurance
+        public static async Task<IEnumerable<MedicalCenterEntity>> ListMedicalCenters(string idAdm, string collectionId)
+        {          
+              try
+            {
+                IDocumentQuery<MedicalCenterEntity> query = client.CreateDocumentQuery<MedicalCenterEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
+                List<MedicalCenterEntity> results = new List<MedicalCenterEntity>();
+                while (query.HasMoreResults)
+                {
+                    results.AddRange(await query.ExecuteNextAsync<MedicalCenterEntity>());
+                }
+
+                return results;
+            }
+            
+            catch (Exception e)
+            {
+                Console.WriteLine("erro AO listar MEDICALCENTERS: ", e.Message);
+                return null;
+            }
+        }
+
+
+        public static async Task<IEnumerable<MedicalCenterEntity>> ListMedicalCentersFromMedicalInsurance(string collectionId, string idMedicalInsurance)
+        {          
+              try
+            {
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, idMedicalInsurance));
+                MedicalInsuranceEntity mi = (MedicalInsuranceEntity)(dynamic)document;
+
+                List<MedicalCenterEntity> results = new List<MedicalCenterEntity>();
+                foreach (MedicalCenterEntity p in mi.MedicalCenters)
+                {
+                    results.Add(p);
+                }
+
+//                return results.Where(x => x.IdMedicalInsurance == mi.EnterpriseId).ToList();
+                  return results;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("erro ao listar MEDICALCENTER a partir de MEDICALINSURANCE: ", e.Message);                
+                return null;
+            }
+        }
+
+        public static async Task<MedicalCenterEntity> GetMedicalCenter(string idMedicalCenter, string collectionId)
+        {            
+            try{
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, idMedicalCenter));
+                return (MedicalCenterEntity)(dynamic)document;
+            }catch (Exception e){
+                Console.WriteLine("erro ao PEGAR um medicalcenter: ", e.Message);
+                return null;
+            }
+        }
+
+        
+        public static async Task<MedicalCenterEntity> GetMedicalCenterByName(string nome, string collectionId)
+        {            
+            try
+            {
+                MedicalCenterEntity mc = new MedicalCenterEntity();
+
+                mc = client.CreateDocumentQuery<MedicalCenterEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
+                        .Where(x => x.CenterName == nome)
+                        .AsEnumerable()
+                        .FirstOrDefault();
+
+                return mc;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+
+
+        public static async Task<Document> RegisterMedicalCenter(MedicalCenterEntity mc, string collectionId)
+        {            
+            try{
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId), mc);
+            } catch (Exception e){
+                Console.WriteLine("erro : ao add MEDICALCENTER", e.Message);
+                return null;
+            }
+
+        }
+
+// atualiza medical center dentro de medicalinsurance
+      public static async Task<Document> UpdateMedicalCenter(MedicalCenterEntity mc, MedicalInsuranceEntity medicalInsurance, string collectionId)
+        {          
+
+            try
+            {
+                foreach (MedicalCenterEntity m in medicalInsurance.MedicalCenters)
+                {
+                    if (m.Id == mc.Id)
+                    {
+                        m.Id = mc.Id;
+                        m.CenterAdress = mc.CenterAdress;
+                        m.CenterName = mc.CenterName;
+                        m.MedicalSpecialty = mc.MedicalSpecialty;
+                        m.IdMedicalInsurance = mc.IdMedicalInsurance;
+                        break;
+                    }
+                }
+                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, medicalInsurance.EnterpriseId), medicalInsurance);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+//deletar medical center dentro de medicalinsurance
+        public static async Task<Document> DeleteMedicalCenter(MedicalCenterEntity mc, MedicalInsuranceEntity medicalInsurance)
+        {
+            try
+            {
+                ICollection<MedicalCenterEntity> medicalCenters = new List<MedicalCenterEntity>(medicalInsurance.MedicalCenters);
+
+                var item = medicalCenters.SingleOrDefault(x => x.Id == mc.Id);
+                if (item != null)
+                {
+                    medicalCenters.Remove(item);
+                    medicalInsurance.MedicalCenters = medicalCenters;
+                }
+
+                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, medicalInsurance.EnterpriseId), medicalInsurance);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+
+        }
+
+
+
+
+        // -------------------------------------------- MEDICALINSURANCE -------------------------------------
+        // lista os medicalcenters a partir de medicalinsurance
+        public static async Task<IEnumerable<MedicalInsuranceEntity>> ListMedicalInsurances(string idAdm, string collectionId)
+        {          
+              try
+            {
+                IDocumentQuery<MedicalInsuranceEntity> query = client.CreateDocumentQuery<MedicalInsuranceEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
+                List<MedicalInsuranceEntity> results = new List<MedicalInsuranceEntity>();
+                while (query.HasMoreResults)
+                {
+                    results.AddRange(await query.ExecuteNextAsync<MedicalInsuranceEntity>());
+                }
+
+                return results;
+            }
+            
+            catch (Exception e)
+            {
+                Console.WriteLine("erro AO listar MedicalInsurance: ", e.Message);
+                return null;
+            }
+        }
+
+        public static async Task<IEnumerable<MedicalInsuranceEntity>> ListAllMedicalInsurances(string collectionId)
+        {          
+              try
+            {
+                IDocumentQuery<MedicalInsuranceEntity> query = client.CreateDocumentQuery<MedicalInsuranceEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
+                List<MedicalInsuranceEntity> results = new List<MedicalInsuranceEntity>();
+                while (query.HasMoreResults)
+                {
+                    results.AddRange(await query.ExecuteNextAsync<MedicalInsuranceEntity>());
+                }
+
+                return results;
+            }
+            
+            catch (Exception e)
+            {
+                Console.WriteLine("erro AO listar MedicalInsurance: ", e.Message);
+                return null;
+            }
+        }
+
+        public static async Task<MedicalInsuranceEntity> GetMedicalInsurance(string idMedicalInsurance, string collectionId)
+        {            
+            try{
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, idMedicalInsurance));
+                return (MedicalInsuranceEntity)(dynamic)document;
+            }catch (Exception e){
+                Console.WriteLine("erro ao PEGAR um MedicalInsurance: ", e.Message);
+                return null;
+            }
+        }
+
+        public static async Task<MedicalInsuranceEntity> GetMedicalInsuranceByName(string nome, string collectionId)
+        {            
+            try
+            {
+                MedicalInsuranceEntity mi = new MedicalInsuranceEntity();
+
+                mi = client.CreateDocumentQuery<MedicalInsuranceEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
+                        .Where(x => x.EnterpriseName == nome)
+                        .AsEnumerable()
+                        .FirstOrDefault();
+
+                return mi;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+
+
+        public static async Task<Document> RegisterMedicalInsurance(MedicalInsuranceEntity mi, string collectionId)
+        {            
+            try{
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId), mi);
+            } catch (Exception e){
+                Console.WriteLine("erro : ao add MEDICALCENTER", e.Message);
+                return null;
+            }
+
+        }
+
+// atualiza medicalinsurance center dentro de medicalcenter
+      public static async Task<Document> UpdateMedicalInsurance(/*ICollection<MedicalCenterEntity> medicalCenters,*/ MedicalInsuranceEntity mi, string collectionId)
+        {          
+
+            try
+            {
+                // TODO: verificar esta logica
+/*                foreach(var mc in medicalCenters){
+                    foreach (MedicalInsuranceEntity m in mc.IdMedicalInsurance)
+                    {
+                        if (m.EnterpriseId == mi.EnterpriseId)
+                        {
+                            m.EnterpriseId = mi.EnterpriseId;
+                            m.EnterpriseName = mi.EnterpriseName;
+                            m.MedicalCenters = mi.MedicalCenters;
+                            m.MedicalPlans = mi.MedicalPlans;
+                            break;
+                        }
+
+                    }
+
+                }
+                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, medicalCenter.Id), medicalCenter);*/
+                                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, mi.EnterpriseId), mi);
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+//deletar medical center dentro de medicalinsurance
+        public static async Task<Document> DeleteMedicalInsurance(MedicalInsuranceEntity mi, ICollection<MedicalCenterEntity> medicalCenters)
+        {
+            try
+            {
+
+               foreach(var mc in medicalCenters){
+                    foreach (MedicalInsuranceEntity m in mc.IdMedicalInsurance)
+                    {
+                        if(m.EnterpriseId == mi.EnterpriseId){
+                            mc.IdMedicalInsurance = null;
+                        }
+                    }
+               }
+
+//                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, mi.EnterpriseId), mi);
+                return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, mi.EnterpriseId));
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+
+        }
+
 
 
 
