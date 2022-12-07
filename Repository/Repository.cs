@@ -272,7 +272,7 @@ namespace ApiVida.Repository
 
         // -------------------------------------------- PATIENT -------------------------------------
         // TODO: add collectionId, databaseId
-        public static async Task<IEnumerable<PatientEntity>> ListPatients()
+        public static async Task<IEnumerable<PatientEntity>> ListPatients(string collectionId)
         {          
               try
             {
@@ -296,12 +296,19 @@ namespace ApiVida.Repository
         }
 
 
-        public static async Task<PatientEntity> GetPatient(string idPatient, string collectionId)
+        public static async Task<PatientEntity> GetPatient(AdmEntity adm,string idPatient, string collectionId)
         {            
             try
             {
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, idPatient));
-                return (PatientEntity)(dynamic)document;
+                PatientEntity pj = new PatientEntity();
+
+                List<PatientEntity> results = new List<PatientEntity>();
+                foreach (PatientEntity p in adm.Patient)
+                {
+                    results.Add(p);
+                }
+                PatientEntity pat = results.Where(x => x.UserId == idPatient).ToList()[0];
+                return pat;
             }
             catch (Exception e)
             {
@@ -309,38 +316,48 @@ namespace ApiVida.Repository
             }
         }
 
-        public static async Task<PatientEntity> GetPatientByCpf(string cpf, string collectionId)
+// TODO: add patients no domain do adm + idAdm em patient
+// usar como base:  https://bitbucket.org/atheninhas/athena-backend/src/master/Domain/Administrador.cs
+        public static async Task<PatientEntity> GetPatientByCpf(AdmEntity adm, string cpf, string collectionId)
+        {            
+            try
+            {
+                PatientEntity pj = new PatientEntity();
+
+                List<PatientEntity> results = new List<PatientEntity>();
+                foreach (PatientEntity p in adm.Patient)
+                {
+                    results.Add(p);
+                }
+                PatientEntity pat = results.Where(x => x.Cpf == cpf).ToList()[0];
+                return pat;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Erro ao buscar PATIENT por cpf!");
+                return null;
+            }
+        }
+
+
+        //add novo patient naquele adm
+        public static async Task<Document> RegisterPatient(AdmEntity adm, PatientEntity pat, string collectionId)
         {            
              try
             {
-                PatientEntity p = new PatientEntity();
+                if (adm.Patient == null)
+                {
+                    adm.Patient = new List<PatientEntity>();
+                }
+                if (adm.Id == pat.IdAdministrador)
+                {
+                    adm.Patient.Add(pat);
+                }
 
-                p = client.CreateDocumentQuery<PatientEntity>(
-                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
-                    new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
-                        .Where(x => x.Cpf == cpf)
-                        .AsEnumerable()
-                        .FirstOrDefault();
-                Console.WriteLine("peguei! ", p.UserName.ToString());
-
-                return p;
+                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, adm.Id), adm);
             }
             catch (Exception e)
             {
-                Console.WriteLine("erro ao PEGAR um patient por cpf: ", e.Message.ToString());
-
-                return null;
-            }
-        }
-
-
-        //Atualiza o adm a partir do Cadastro de um servico
-        public static async Task<Document> RegisterPatient(PatientEntity pat)
-        {            
-            try{
-                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), pat);
-            } catch (Exception e){
-                Console.WriteLine("erro : ", e.Message);
                 return null;
             }
 

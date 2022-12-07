@@ -19,16 +19,16 @@ namespace ApiVida.Service
         }
 
         //Cadastrar um patient 
-        public async Task<Document> RegisterPatient(PatientEntity patient)
+        public async Task<Document> RegisterPatient(PatientEntity patient, AdmEntity adm)
         {
-            return await Repository<PatientEntity>.RegisterPatient(patient);
+            return await Repository<PatientEntity>.RegisterPatient(adm, patient, "PatientUpdated");
 
         }
 
         //Pegar um único patient por cpf
-        public async Task<PatientEntity> GetPatientByCpf(string cpf)
+        public async Task<PatientEntity> GetPatientByCpf(string cpf, AdmEntity adm)
         {
-            PatientEntity patients = await Repository<PatientEntity>.GetPatientByCpf(cpf, "Patient");
+            PatientEntity patients = await Repository<PatientEntity>.GetPatientByCpf(adm, cpf, "PatientUpdated2");
 
             if (patients == null)
             {
@@ -41,9 +41,11 @@ namespace ApiVida.Service
         }
 
   //Pegar um único patient
-        public async Task<PatientEntity> GetPatient(string id)
+        public async Task<PatientEntity> GetPatient(string id, string idAdm)
         {
-            PatientEntity p = await Repository<PatientEntity>.GetPatient(id, "Patient");
+            AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
+
+            PatientEntity p = await Repository<PatientEntity>.GetPatient(adm, id, "PatientUpdated2");
 
             if (p == null)
             {
@@ -58,7 +60,7 @@ namespace ApiVida.Service
 
         public async Task<IEnumerable<PatientEntity>> ListPatients()
         {
-            List<PatientEntity> patients = (List<PatientEntity>)await Repository<PatientEntity>.ListPatients();
+            List<PatientEntity> patients = (List<PatientEntity>)await Repository<PatientEntity>.ListPatients("Patient");
 
             if (patients == null)
             {
@@ -71,9 +73,12 @@ namespace ApiVida.Service
         }
 
          //Atualizar um patient
-        public async Task<Document> UpdatePatient(string idPatient, PatientEntity p)
+        public async Task<Document> UpdatePatient(string idPatient, PatientEntity p, string idAdm)
         {
-            PatientEntity patientDesatualizado = await Repository<PatientEntity>.GetPatient(idPatient, "Patient");
+            AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
+
+            PatientEntity patientDesatualizado = await Repository<PatientEntity>.GetPatient(adm, idPatient, "PatientUpdated2");
+
 
             if (p.Email == null)
             {

@@ -23,6 +23,10 @@ namespace ApiVida.Domain.Entities
         [JsonProperty("cpf")]
         public string Cpf { get; set; }
 
+         [JsonProperty(PropertyName = "idAdministrador")]
+        public string IdAdministrador { get; set; }
+        
+
        // [Required(ErrorMessage = ErrorBase.erro_camponec)]
     //    [JsonProperty(PropertyName = "medicalInsurance")]
    //     public MedicalInsuranceEntity MedicalInsurance {get; set;}

@@ -36,6 +36,10 @@ namespace ApiVida.Domain.Entities
         [MinLength(8, ErrorMessage = ErrorBase.erro_min)]
         public string Password { get; set; }
 
+        
+        [JsonProperty(PropertyName = "patient")]
+        public virtual ICollection<PatientEntity> Patient { get; set; }
+
 /*        [JsonProperty(PropertyName = "doctorEntity")]
         public virtual ICollection<DoctorEntity> DoctorEntity { get; set; }
 */

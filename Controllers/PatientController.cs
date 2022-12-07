@@ -15,7 +15,7 @@ using ApiVida.Domain.Entities;
 
 namespace ApiVida.Controllers
 {
-    [Route("api/[controller]/")]
+    [Route("api/{idAdm}/[controller]/")]
     [ApiController]
 	[EnableCors("AllowAllHeaders")]
 	[Authorize]
@@ -30,21 +30,28 @@ namespace ApiVida.Controllers
         }
 
         [HttpPost]
-        public async void AddPatient([FromBody] PatientEntity patient)
+        public async void AddPatient([FromBody] PatientEntity patient, string idAdm)
         {
-            await patientService.RegisterPatient(patient);
+            AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
+
+            await patientService.RegisterPatient(patient, adm);
         }
 
        // GET api/<controller>/5
-        [HttpGet("get/{cpf}")]
-        public async  Task<ActionResult<PatientEntity>> GetPatientByCpf(string cpf)
+        [HttpGet("cpf/{cpf}")]
+        public async  Task<ActionResult<PatientEntity>> GetPatientByCpf(string cpf, string idAdm)
         {
             try{
                 Console.WriteLine("get by cpf");
-                PatientEntity patient = await patientService.GetPatientByCpf(cpf);
 
-                if(patient != null){
-                    return Ok(patient);
+                AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
+            List<PatientEntity> patients = (List<PatientEntity>)await Repository<PatientEntity>.ListPatients("PatientUpdated2");
+            PatientEntity p = patients.FirstOrDefault(x => x.Cpf == cpf);
+
+             //   PatientEntity patient = await patientService.GetPatientByCpf(cpf, adm);
+
+                if(p != null){
+                    return Ok(p);
                 } else{
                     return NotFound();
                 }
@@ -58,12 +65,30 @@ namespace ApiVida.Controllers
 
         // GET api/<controller>/5
         [HttpGet("{idPatient}")]
-        public async Task<PatientEntity> GetPatient(string idPatient)
+        public async  Task<ActionResult<PatientEntity>> GetPatient(string idAdm, string idPatient)
         {
 
-            Console.WriteLine("procura por id PATIENT");
+           try{
+                Console.WriteLine("get by cpf");
 
-            return await patientService.GetPatient(idPatient);
+                AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
+            List<PatientEntity> patients = (List<PatientEntity>)await Repository<PatientEntity>.ListPatients("PatientUpdated2");
+            PatientEntity p = patients.FirstOrDefault(x => x.UserId == idPatient);
+
+             //   PatientEntity patient = await patientService.GetPatientByCpf(cpf, adm);
+
+                if(p != null){
+                    return Ok(p);
+                } else{
+                    return NotFound();
+                }
+
+            }catch(Exception e){
+                Console.WriteLine("erro: ", e.Message);
+                return null;
+            }
+
+//            return await patientService.GetPatient(idAdm, idPatient);
         }
 
         //Lista todos os patients
@@ -84,10 +109,10 @@ namespace ApiVida.Controllers
 
           //Atualiza registro de determinado adm
         [HttpPut("{idPatient}")]
-        public async void Put(string idPatient, [FromBody]PatientEntity p)
+        public async void Put(string idAdm, string idPatient, [FromBody]PatientEntity p)
         {
             Console.WriteLine("atualizando: ", idPatient);
-              await patientService.UpdatePatient(idPatient, p);
+              await patientService.UpdatePatient(idPatient, p, idAdm);
         }
 
   // Deleta um patient especifico
