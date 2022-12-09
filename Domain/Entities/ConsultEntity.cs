@@ -9,12 +9,12 @@ using ApiVida.Domain.Entities;
 
 namespace ApiVida.Domain.Entities
 {
-    public class ExamEntity
+    public class ConsulEntity
     {
 
         [Key]
-        [JsonProperty(PropertyName = "examId")]
-        public string ExamId { get; set; }
+        [JsonProperty(PropertyName = "consultId")]
+        public string ConsultId { get; set; }
 		
         [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [JsonProperty(PropertyName = "specialty")]
@@ -26,7 +26,7 @@ namespace ApiVida.Domain.Entities
 
 //        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [DataType(DataType.Date, ErrorMessage = ErrorBase.erro_for)]
-        [JsonProperty(PropertyName = "examDatetime")]
+        [JsonProperty(PropertyName = "consultDatetime")]
         public DateTime ExamDatetime { get; set; }
 
   //      [Required(ErrorMessage = ErrorBase.erro_camponec)]
@@ -41,6 +41,9 @@ namespace ApiVida.Domain.Entities
 
         [JsonProperty(PropertyName = "patientId")]
         public string PatientId { get; set; }
+
+        [JsonProperty(PropertyName = "doctorId")]
+        public string DoctorId { get; set; }
 
     }
 }
