@@ -341,20 +341,11 @@ namespace ApiVida.Repository
 
 
         //add novo patient naquele adm
-        public static async Task<Document> RegisterPatient(AdmEntity adm, PatientEntity pat, string collectionId)
+        public static async Task<Document> RegisterPatient(PatientEntity pat, string collectionId)
         {            
              try
             {
-                if (adm.Patient == null)
-                {
-                    adm.Patient = new List<PatientEntity>();
-                }
-                if (adm.Id == pat.IdAdministrador)
-                {
-                    adm.Patient.Add(pat);
-                }
-
-                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, adm.Id), adm);
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), pat);
             }
             catch (Exception e)
             {

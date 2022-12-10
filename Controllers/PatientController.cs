@@ -34,7 +34,7 @@ namespace ApiVida.Controllers
         {
             AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
 
-            await patientService.RegisterPatient(patient, adm);
+            await patientService.RegisterPatient(patient);
         }
 
        // GET api/<controller>/5

@@ -11,7 +11,7 @@ namespace ApiVida.Service.Interfaces
     public interface IPatientService : IDisposable
     {
         //Cadastrar um cliente
-        Task<Document> RegisterPatient(PatientEntity p, AdmEntity adm);
+        Task<Document> RegisterPatient(PatientEntity p);
 
         //Pegar um único cliente
         Task<PatientEntity> GetPatient(string idPatient, string idAdm);

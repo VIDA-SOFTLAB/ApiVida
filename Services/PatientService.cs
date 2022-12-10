@@ -19,9 +19,9 @@ namespace ApiVida.Service
         }
 
         //Cadastrar um patient 
-        public async Task<Document> RegisterPatient(PatientEntity patient, AdmEntity adm)
+        public async Task<Document> RegisterPatient(PatientEntity patient)
         {
-            return await Repository<PatientEntity>.RegisterPatient(adm, patient, "PatientUpdated");
+            return await Repository<PatientEntity>.RegisterPatient(patient, "PatientUpdated2");
 
         }
 
