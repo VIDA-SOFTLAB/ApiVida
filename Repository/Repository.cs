@@ -267,6 +267,51 @@ namespace ApiVida.Repository
 
         }
 
+        public static async Task<IEnumerable<ExamEntity>> ListExams(string collectionId)
+        {          
+              try
+            {
+                IDocumentQuery<ExamEntity> query = client.CreateDocumentQuery<ExamEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
+                List<ExamEntity> results = new List<ExamEntity>();
+                while (query.HasMoreResults)
+                {
+                    results.AddRange(await query.ExecuteNextAsync<ExamEntity>());
+                }
+
+                return results;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public static async Task<IEnumerable<ConsultEntity>> ListConsults(string collectionId)
+        {          
+              try
+            {
+                IDocumentQuery<ConsultEntity> query = client.CreateDocumentQuery<ConsultEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
+                List<ConsultEntity> results = new List<ConsultEntity>();
+                while (query.HasMoreResults)
+                {
+                    results.AddRange(await query.ExecuteNextAsync<ConsultEntity>());
+                }
+
+                return results;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
 
 
 
@@ -339,6 +384,29 @@ namespace ApiVida.Repository
             }
         }
 
+        public static async Task<Document> RegisterExam(ExamEntity exam, string collectionId)
+        {            
+             try
+            {
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), exam);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public static async Task<Document> RegisterConsult(ConsultEntity consult, string collectionId)
+        {            
+             try
+            {
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), consult);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
 
         //add novo patient naquele adm
         public static async Task<Document> RegisterPatient(PatientEntity pat, string collectionId)

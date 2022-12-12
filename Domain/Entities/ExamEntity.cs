@@ -21,8 +21,8 @@ namespace ApiVida.Domain.Entities
         public string Specialty { get; set; }
 
         //[Required(ErrorMessage = ErrorBase.erro_camponec)]
-        [JsonProperty(PropertyName = "medicalCenterId")]
-        public string MedicalCenterId { get; set; }
+        [JsonProperty(PropertyName = "medicalCenterName")]
+        public string MedicalCenterName { get; set; }
 
 //        [Required(ErrorMessage = ErrorBase.erro_camponec)]
         [DataType(DataType.Date, ErrorMessage = ErrorBase.erro_for)]
@@ -39,8 +39,8 @@ namespace ApiVida.Domain.Entities
         [JsonProperty(PropertyName = "lastRegisterUpdate")]
         public DateTime LastRegisterUpdate { get; set; }
 
-        [JsonProperty(PropertyName = "patientId")]
-        public string PatientId { get; set; }
+        [JsonProperty(PropertyName = "patientCpf")]
+        public string PatientCpf { get; set; }
 
     }
 }
