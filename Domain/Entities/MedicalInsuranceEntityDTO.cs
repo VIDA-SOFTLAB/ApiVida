@@ -8,10 +8,9 @@ using ApiVida.Domain.Errors;
 
 namespace ApiVida.Domain.Entities
 {
-    public class MedicalInsuranceEntity
+    public class MedicalInsuranceEntityDTO
     {
-    
-        [Key]
+    [Key]
         [JsonProperty(PropertyName = "enterpriseId")]
         public string EnterpriseId { get; set; }
 
@@ -28,8 +27,5 @@ namespace ApiVida.Domain.Entities
         // pode ter mais de local que atende
         [JsonProperty(PropertyName = "medicalCenters")]
         public virtual ICollection<MedicalCenterEntity> MedicalCenters { get; set; }
-       
-
-    }
-
+        }
 }
