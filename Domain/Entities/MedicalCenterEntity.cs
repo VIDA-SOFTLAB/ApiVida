@@ -29,7 +29,7 @@ namespace ApiVida.Domain.Entities
         public virtual ICollection<MedicalSpecialityEntity> MedicalSpecialty { get; set; }
 
        [JsonProperty(PropertyName = "idMedicalInsurance")]
-        public virtual ICollection<MedicalInsuranceEntity> IdMedicalInsurance { get; set; }
+        public virtual ICollection<MedicalInsuranceEntity> MedicalInsurance { get; set; }
 
     }
 }

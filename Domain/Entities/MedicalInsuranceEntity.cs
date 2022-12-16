@@ -20,7 +20,7 @@ namespace ApiVida.Domain.Entities
         [MaxLength(63, ErrorMessage = ErrorBase.erro_max)]
         [JsonProperty(PropertyName = "enterpriseName")]
         public string EnterpriseName { get; set; }
-
+        public List<string> CenterIds { get; set; }
         // um horario possui apenas um paciente
         [JsonProperty(PropertyName = "medicalPlans")]
         public virtual ICollection<MedicalInsurancePlanEntity> MedicalPlans { get; set; }

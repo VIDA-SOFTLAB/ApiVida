@@ -91,10 +91,10 @@ namespace ApiVida.Controllers
                     medicalCenter.MedicalSpecialty = medicalCenterNovo.MedicalSpecialty;
                 }
 
-                if (medicalCenter.IdMedicalInsurance == null)
-                {
-                    medicalCenter.IdMedicalInsurance = medicalCenterNovo.IdMedicalInsurance;
-                }
+                //if (medicalCenter.IdMedicalInsurance == null)
+                //{
+                //    medicalCenter.IdMedicalInsurance = medicalCenterNovo.IdMedicalInsurance;
+                //}
 
                 medicalCenter.Id = idMedicalCenter;
             }
