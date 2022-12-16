@@ -15,7 +15,7 @@ namespace ApiVida.Service
     {
          public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         //Listagem de medicalinsurance
@@ -78,8 +78,8 @@ namespace ApiVida.Service
         {
             AdmEntity adm = await Repository<AdmEntity>.GetAdm(idAdm, "Adm");
 
-            MedicalInsuranceEntity vali = await Repository<MedicalInsuranceEntity>.GetMedicalInsuranceByName(medicalinsurance.EnterpriseName, "MedicalInsurance");
-
+            //GetMedicalInsuranceByName = await Repository<MedicalInsuranceEntity>.GetMedicalInsuranceByName(medicalinsurance.EnterpriseName, "MedicalInsurance");
+            string  vali = null;
             if (vali == null)
             {
 

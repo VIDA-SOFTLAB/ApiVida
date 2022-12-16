@@ -64,7 +64,7 @@ namespace ApiVida.Service
                 medicalCenter = await Repository<MedicalCenterEntity>.GetMedicalCenter(medicalCenter.Id, "MedicalCenter");
 
                 medicalCenter.MedicalSpecialty = new List<MedicalSpecialityEntity>();
-                medicalCenter.IdMedicalInsurance = new List<MedicalInsuranceEntity>();
+                //medicalCenter.IdMedicalInsurance = new List<MedicalInsuranceEntity>();
 
 
                 var retorno2 = await Repository<AdministratorEntityDTO>.RegisterMedicalCenter(medicalCenter, "MedicalCenter");
