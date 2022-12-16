@@ -838,5 +838,42 @@ namespace ApiVida.Repository
                 return null;
             }
         }
+
+
+        public static async Task<Document> RegisterMedicalInsuranceNew(MedicalInsuranceNewEntity mi, string collectionId)
+        {
+            try
+            {
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), mi);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+
+        public static async Task<IEnumerable<MedicalInsuranceNewEntity>> ListMedicalInsuranceNew(string collectionId)
+        {
+            try
+            {
+                IDocumentQuery<MedicalInsuranceNewEntity> query = client.CreateDocumentQuery<MedicalInsuranceNewEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
+                List<MedicalInsuranceNewEntity> results = new List<MedicalInsuranceNewEntity>();
+                while (query.HasMoreResults)
+                {
+                    results.AddRange(await query.ExecuteNextAsync<MedicalInsuranceNewEntity>());
+                }
+
+                return results;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
     }
 }

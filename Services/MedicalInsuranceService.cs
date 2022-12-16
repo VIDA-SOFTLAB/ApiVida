@@ -83,20 +83,19 @@ namespace ApiVida.Service
             if (vali == null)
             {
 
-                var retorno = await Repository<MedicalInsuranceEntity>.RegisterItem(medicalinsurance);
-                medicalinsurance = await Repository<MedicalInsuranceEntity>.GetMedicalInsuranceByName(medicalinsurance.EnterpriseName, "MedicalInsurance");
-                var retorno2 = await Repository<AdmEntity>.RegisterMedicalInsurance(medicalinsurance, "MedicalInsurance");
-                List<MedicalInsurancePlanEntity> plans = new List<MedicalInsurancePlanEntity>(medicalinsurance.MedicalPlans);
-                await Repository<MedicalInsuranceEntity>.DeleteItem(medicalinsurance.EnterpriseId);
-                await Repository< MedicalInsurancePlanEntity >.RegisterMedicalInsurancePlan(plans, "MedicalInsurancePlan");
-                if (adm == null || medicalinsurance == null || retorno == null || retorno2 == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return medicalinsurance;
-                }
+                //var retorno = await Repository<MedicalInsuranceEntity>.RegisterItem(medicalinsurance);
+                //List<MedicalInsurancePlanEntity> plans = new List<MedicalInsurancePlanEntity>(medicalinsurance.MedicalPlans);
+                //await Repository<MedicalInsuranceEntity>.DeleteItem(medicalinsurance.EnterpriseId);
+                //await Repository< MedicalInsurancePlanEntity >.RegisterMedicalInsurancePlan(plans, "MedicalInsurancePlan");
+                //if (adm == null || medicalinsurance == null || retorno == null || retorno2 == null)
+                //{
+                //    return null;
+                //}
+                //else
+                //{
+                    
+                //}
+                return medicalinsurance;
             }
             else
             {
