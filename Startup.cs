@@ -107,6 +107,7 @@ namespace ApiVida
             Repository<PatientEntity>.Initialize("Doctor", "VidaBD");	    
             Repository<PatientEntity>.Initialize("Adress", "VidaBD");
             Repository<MedicalInsuranceNewEntity>.Initialize("MINew", "VidaBD");
+            Repository<MedicalCenterNewEntity>.Initialize("MCNew", "VidaBD");
             Repository<ExamEntity>.Initialize("Exam", "VidaBD");   
             Repository<ConsultEntity>.Initialize("Consult", "VidaBD");
 
@@ -136,6 +137,8 @@ namespace ApiVida
 //            services.AddTransient<IMedicalSpecialityService, MedicalSpecialityService>();
             services.AddTransient<IDoctorService, DoctorService>();
             services.AddTransient<IMedicalInsuranceNewService, MedicalInsuranceNewService>();
+            services.AddTransient<IMedicalCenterNewService, MedicalCenterNewService>();
+
             //          services.AddTransient<ISchedulingService, SchedulingService>();
 
             return services;
