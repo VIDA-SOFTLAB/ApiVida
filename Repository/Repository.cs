@@ -489,10 +489,7 @@ namespace ApiVida.Repository
                 MedicalInsuranceEntity mi = (MedicalInsuranceEntity)(dynamic)document;
 
                 List<MedicalCenterEntity> results = new List<MedicalCenterEntity>();
-                foreach (MedicalCenterEntity p in mi.MedicalCenters)
-                {
-                    results.Add(p);
-                }
+
 
 //                return results.Where(x => x.IdMedicalInsurance == mi.EnterpriseId).ToList();
                   return results;
@@ -556,18 +553,18 @@ namespace ApiVida.Repository
 
             try
             {
-                foreach (MedicalCenterEntity m in medicalInsurance.MedicalCenters)
-                {
-                    if (m.Id == mc.Id)
-                    {
-                        m.Id = mc.Id;
-                        m.CenterAdress = mc.CenterAdress;
-                        m.CenterName = mc.CenterName;
-                        m.MedicalSpecialty = mc.MedicalSpecialty;
-                        m.IdMedicalInsurance = mc.IdMedicalInsurance;
-                        break;
-                    }
-                }
+                //foreach (MedicalCenterEntity m in medicalInsurance.MedicalCenters)
+                //{
+                //    if (m.Id == mc.Id)
+                //    {
+                //        m.Id = mc.Id;
+                //        m.CenterAdress = mc.CenterAdress;
+                //        m.CenterName = mc.CenterName;
+                //        m.MedicalSpecialty = mc.MedicalSpecialty;
+                //        m.IdMedicalInsurance = mc.IdMedicalInsurance;
+                //        break;
+                //    }
+                //}
                 return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, medicalInsurance.EnterpriseId), medicalInsurance);
             }
             catch (Exception e)
@@ -581,14 +578,14 @@ namespace ApiVida.Repository
         {
             try
             {
-                ICollection<MedicalCenterEntity> medicalCenters = new List<MedicalCenterEntity>(medicalInsurance.MedicalCenters);
+                //ICollection<MedicalCenterEntity> medicalCenters = new List<MedicalCenterEntity>(medicalInsurance.MedicalCenters);
 
-                var item = medicalCenters.SingleOrDefault(x => x.Id == mc.Id);
-                if (item != null)
-                {
-                    medicalCenters.Remove(item);
-                    medicalInsurance.MedicalCenters = medicalCenters;
-                }
+                //var item = medicalCenters.SingleOrDefault(x => x.Id == mc.Id);
+                //if (item != null)
+                //{
+                //    medicalCenters.Remove(item);
+                //    medicalInsurance.MedicalCenters = medicalCenters;
+                //}
 
                 return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, medicalInsurance.EnterpriseId), medicalInsurance);
             }
@@ -609,6 +606,11 @@ namespace ApiVida.Repository
         {          
               try
             {
+                var query1= client.CreateDocumentQuery<MedicalInsuranceEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
                 IDocumentQuery<MedicalInsuranceEntity> query = client.CreateDocumentQuery<MedicalInsuranceEntity>(
                     UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
                     new FeedOptions { MaxItemCount = -1 })
@@ -654,6 +656,30 @@ namespace ApiVida.Repository
                 return null;
             }
         }
+        public static async Task<IEnumerable<MedicalInsurancePlanEntity>> ListAllMedicalInsurancePlans(string collectionId)
+        {
+            try
+            {
+                IDocumentQuery<MedicalInsurancePlanEntity> query = client.CreateDocumentQuery<MedicalInsurancePlanEntity>(
+                    UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .AsDocumentQuery();
+
+                List<MedicalInsurancePlanEntity> results = new List<MedicalInsurancePlanEntity>();
+                while (query.HasMoreResults)
+                {
+                    results.AddRange(await query.ExecuteNextAsync<MedicalInsurancePlanEntity>());
+                }
+
+                return results;
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine("erro AO listar Planos do convênio: ", e.Message);
+                return null;
+            }
+        }
 
         public static async Task<MedicalInsuranceEntity> GetMedicalInsurance(string idMedicalInsurance, string collectionId)
         {            
@@ -694,14 +720,26 @@ namespace ApiVida.Repository
             try{
                 return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId), mi);
             } catch (Exception e){
-                Console.WriteLine("erro : ao add MEDICALCENTER", e.Message);
+                Console.WriteLine("erro : ao add convenio médico", e.Message);
                 return null;
             }
 
         }
+        public static async Task<Document> RegisterMedicalInsurancePlan(List<MedicalInsurancePlanEntity> mi, string collectionId)
+        {
+            try
+            {
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, collectionId), mi);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("erro : ao add convenio médico", e.Message);
+                return null;
+            }
 
-// atualiza medicalinsurance center dentro de medicalcenter
-      public static async Task<Document> UpdateMedicalInsurance(/*ICollection<MedicalCenterEntity> medicalCenters,*/ MedicalInsuranceEntity mi, string collectionId)
+        }
+        // atualiza medicalinsurance center dentro de medicalcenter
+        public static async Task<Document> UpdateMedicalInsurance(/*ICollection<MedicalCenterEntity> medicalCenters,*/ MedicalInsuranceEntity mi, string collectionId)
         {          
 
             try
@@ -734,19 +772,19 @@ namespace ApiVida.Repository
 
 //deletar medical center dentro de medicalinsurance
 
-        public static async Task<Document> DeleteMedicalInsurance(MedicalInsuranceEntity mi, ICollection<MedicalCenterEntity> medicalCenters, string collectionId)
+        public static async Task<Document> DeleteMedicalInsurance(MedicalInsuranceEntity mi, string collectionId)
         {
             try
             {
 
-               foreach(var mc in medicalCenters){
-                    foreach (MedicalInsuranceEntity m in mc.IdMedicalInsurance)
-                    {
-                        if(m.EnterpriseId == mi.EnterpriseId){
-                            mc.IdMedicalInsurance = null;
-                        }
-                    }
-               }
+               //foreach(var mc in medicalCenters){
+               //     foreach (MedicalInsuranceEntity m in mc.IdMedicalInsurance)
+               //     {
+               //         if(m.EnterpriseId == mi.EnterpriseId){
+               //             mc.IdMedicalInsurance = null;
+               //         }
+               //     }
+               //}
 
 //                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, mi.EnterpriseId), mi);
                 return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, collectionId, mi.EnterpriseId));

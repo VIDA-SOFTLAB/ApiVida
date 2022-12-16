@@ -15,12 +15,12 @@ namespace ApiVida.Service.Interfaces
         Task<IEnumerable<MedicalCenterEntity>> ListMedicalCentersFromMedicalInsurance(string idMedicalInsurance);
 
 
-        //Listagem de todos medicalinsurances do sistema
+        //Listagem de todos MedicalCenter do sistema
         //lista sem dependencia de nada!
         Task<IEnumerable<MedicalCenterEntity>> ListMedicalCenters(string idAdm);
 
 
-        //Cadastrar um medicalinsurance
+        //Cadastrar um MedicalCenter
         // nao tem dependencia de nada
         Task<MedicalCenterEntity> RegisterMedicalCenter(string idMedicalInsurance, MedicalCenterEntity medicalCenter);
 
@@ -30,7 +30,7 @@ namespace ApiVida.Service.Interfaces
         //Atualizar um medicalCenter
         Task<MedicalCenterEntity> UpdateMedicalCenter(string idAdm, MedicalCenterEntity medicalCenter, string idMedicalInsurance);
 
-        //Deletar um medicalinsurance
+        //Deletar um MedicalCenter
         Task DeleteMedicalCenter(string idAdm, string idMedicalCenter, string idMedicalInsurance);
     }
 }

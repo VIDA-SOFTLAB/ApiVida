@@ -25,11 +25,7 @@ namespace ApiVida.Domain.Entities
         [JsonProperty(PropertyName = "medicalPlans")]
         public virtual ICollection<MedicalInsurancePlanEntity> MedicalPlans { get; set; }
 
-        // pode ter mais de local que atende
-        [JsonProperty(PropertyName = "medicalCenters")]
-        public virtual ICollection<MedicalCenterEntity> MedicalCenters { get; set; }
-       
-
+      
     }
 
 }

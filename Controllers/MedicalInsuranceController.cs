@@ -28,11 +28,11 @@ namespace ApiVida.Controllers
 
 		//Lista todos os medicalinsurances
 		//GET api/medicalinsurance
-		[HttpGet("{idAdm}/{idMedicalInsurance}")]
-        public async Task<ActionResult<IEnumerable<MedicalInsuranceEntity>>> ListMedicalInsurances(string idAdm, string idCat)
+		[HttpGet("ListMedicalInsurancePlan/{idMedicalInsurance}")]
+        public async Task<ActionResult<IEnumerable<MedicalInsurancePlanEntity>>> ListMedicalInsurancePlan(string idAdm)
         {
             // TODO: arrumar esat rota +  o que precisa para cadastrar
-            List<MedicalInsuranceEntity> medicalinsurances = (List<MedicalInsuranceEntity>)await medicalinsuranceService.ListMedicalInsurances(idAdm);
+            List<MedicalInsurancePlanEntity> medicalinsurances = (List<MedicalInsurancePlanEntity>)await medicalinsuranceService.ListAllMedicalInsurancesPlans(idAdm);
             if (medicalinsurances == null)
             {
                 return NotFound();
@@ -45,7 +45,8 @@ namespace ApiVida.Controllers
 
         //Lista todos os medicalinsurances do sistema
         //GET api/medicalinsurance
-        [HttpGet("all/{idAdm}/{idMedicalInsurance}")]
+        [HttpGet("ListMedicalInsurance")]
+        //[HttpGet("all/{idAdm}/{idMedicalInsurance}")]
         public async Task<ActionResult<IEnumerable<MedicalInsuranceEntity>>> ListAllMedicalInsurances(string idAdm)
         {
             List<MedicalInsuranceEntity> medicalinsurances = (List<MedicalInsuranceEntity>)await medicalinsuranceService.ListAllMedicalInsurances();
@@ -61,17 +62,17 @@ namespace ApiVida.Controllers
 
         //Lista medicalinsurance específico
         // GET api/<controller>/5
-        [HttpGet("specific/{idMedicalInsurance}/{id}")]
+        [HttpGet("specific/{id}")]
         public async Task<MedicalInsuranceEntity> GetMedicalInsurance(string idAdm, string id)
         {
-            MedicalInsuranceEntity medicalinsurance = await medicalinsuranceService.GetMedicalInsurance(idAdm, id);
+            MedicalInsuranceEntity medicalinsurance = await medicalinsuranceService.ListMedicalInsuranceInfo(idAdm, id);
             return medicalinsurance;
         }
 
         //Cadastra um medicalinsurance
         //POST api/<controller>
-        [HttpPost("{idAdm}/{idMedicalInsurance}")]
-		public async Task<ActionResult<MedicalInsuranceEntity>> AddMedicalInsurance(string idAdm, string idCat, [FromBody] MedicalInsuranceEntity medicalinsurance)
+        [HttpPost("{idAdm}")]
+		public async Task<ActionResult<MedicalInsuranceEntity>> AddMedicalInsurance(string idAdm, [FromBody] MedicalInsuranceEntity medicalinsurance)
 		{
             medicalinsurance = await medicalinsuranceService.RegisterMedicalInsurance(idAdm, medicalinsurance);
 
@@ -84,6 +85,22 @@ namespace ApiVida.Controllers
                 return Ok(medicalinsurance);
             }            
 		}
+        //Cadastra um medicalinsurance
+        //POST api/<controller>
+        [HttpPost("AddPlan/{idAdm}")]
+        public async Task<ActionResult<MedicalInsurancePlanEntity>> AddMedicalInsurancePlan(string idAdm, [FromBody] List<MedicalInsurancePlanEntity> medicalinsurance)
+        {
+            var retorno = await medicalinsuranceService.RegisterMedicalInsurancePlan(idAdm, medicalinsurance);
+
+            if (retorno == false)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok("Registrado com sucesso");
+            }
+        }
 
         //Atualiza registro de determinado medicalinsurance
         // PUT api/<controller>/5
@@ -99,10 +116,10 @@ namespace ApiVida.Controllers
                     medicalinsuranceDTO.EnterpriseName = serv.EnterpriseName;
                 }
 
-                if (medicalinsuranceDTO.MedicalCenters == null)
-                {
-                    medicalinsuranceDTO.MedicalCenters = serv.MedicalCenters;
-                }
+                //if (medicalinsuranceDTO.MedicalCenters == null)
+                //{
+                //    medicalinsuranceDTO.MedicalCenters = serv.MedicalCenters;
+                //}
 
                 if (medicalinsuranceDTO.MedicalPlans == null)
                 {
@@ -114,7 +131,7 @@ namespace ApiVida.Controllers
             }
 
             serv.EnterpriseName = medicalinsuranceDTO.EnterpriseName;
-            serv.MedicalCenters = medicalinsuranceDTO.MedicalCenters;
+            //serv.MedicalCenters = medicalinsuranceDTO.MedicalCenters;
             serv.MedicalPlans = medicalinsuranceDTO.MedicalPlans;
             serv.EnterpriseId = id;
 

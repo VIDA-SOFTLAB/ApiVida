@@ -10,16 +10,19 @@ namespace ApiVida.Service.Interfaces
 {
     public interface IMedicalInsuranceService : IDisposable
     {
-        //Listagem de todos medicalinsurances
-        Task<IEnumerable<MedicalInsuranceEntity>> ListMedicalInsurances(string idAdm);
+        //Retorna infos convenio especifico
+        Task<MedicalInsuranceEntity> ListMedicalInsuranceInfo(string idAdm, string EnterpriseId);
 
-
-        //Listagem de todos medicalinsurances do sistema
+        //Listagem de convenios
         Task<IEnumerable<MedicalInsuranceEntity>> ListAllMedicalInsurances();
-
+        
+        //Listagem de planos de saúde
+        Task<IEnumerable<MedicalInsurancePlanEntity>> ListAllMedicalInsurancesPlans(string EnterpriseId);
 
         //Cadastrar um medicalinsurance
         Task<MedicalInsuranceEntity> RegisterMedicalInsurance(string idAdm, MedicalInsuranceEntity medicalinsurance);
+        
+        Task<Boolean> RegisterMedicalInsurancePlan(string idAdm, List<MedicalInsurancePlanEntity> medicalinsurance);
 
         //Pegar um único serviço
         Task<MedicalInsuranceEntity> GetMedicalInsurance(string idAdm, string idMedicalInsurance);
